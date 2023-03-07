@@ -1,0 +1,63 @@
+﻿  AudioManager.cpp
+  BackgroundManager.cpp
+  Box.cpp
+  Button.cpp
+  Button1.cpp
+  Cave1.cpp
+  Cave2.cpp
+  Cave3.cpp
+  Cave4.cpp
+  Cave5.cpp
+  Cave6.cpp
+  Checkpoint.cpp
+  CollisionManager.cpp
+  ColorObj.cpp
+  Enemy.cpp
+  EntityManager.cpp
+  GameObject.cpp
+  GameStateManager.cpp
+  GameState_Credits.cpp
+  GameState_End.cpp
+  Generating Code...
+  Compiling...
+  GameState_Extra.cpp
+  GameState_Level1.cpp
+  GameState_Level2.cpp
+  GameState_Level3.cpp
+  GameState_Level4.cpp
+  GameState_Level5.cpp
+  GameState_Level6.cpp
+  GameState_Level7.cpp
+  GameState_Level8.cpp
+  GameState_LS.cpp
+  GameState_Menu.cpp
+  GameState_SplashScreen.cpp
+  Gate.cpp
+  Gate2.cpp
+  Gate3.cpp
+  Gate4.cpp
+  ImageBox.cpp
+  Lever.cpp
+  Lever1.cpp
+  Main.cpp
+C:\Users\JJ\Desktop\SIT\Year 1\2nd Sem\Software Engineering Project 2 (CSD 1450) (Gam 150)\Chroma\JFKS\Chroma\Main.cpp(42,9): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  Generating Code...
+  Compiling...
+  OptionsMenuManager.cpp
+  PauseMenuManager.cpp
+  PhysicsManager.cpp
+  Player.cpp
+  RenderData.cpp
+  RenderManager.cpp
+  Spikes.cpp
+  Test_Level.cpp
+  Tile.cpp
+  TileManager.cpp
+  UIManager.cpp
+  Wall_Blue.cpp
+  Wall_Green.cpp
+  Wall_Red.cpp
+  Wall_Yellow.cpp
+  Generating Code...
+C:\Users\JJ\Desktop\SIT\Year 1\2nd Sem\Software Engineering Project 2 (CSD 1450) (Gam 150)\Chroma\JFKS\Chroma\OptionsMenuManager.cpp(231): warning C4706: assignment within conditional expression
+  Chroma.vcxproj -> C:\Users\JJ\Desktop\SIT\Year 1\2nd Sem\Software Engineering Project 2 (CSD 1450) (Gam 150)\Chroma\JFKS\Chroma\bin\Debug-x64\Chroma.exe

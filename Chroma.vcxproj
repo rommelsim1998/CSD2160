@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{42c87d85-9bc6-42bd-bb73-6566989d531b}</ProjectGuid>
+    <RootNamespace>Chroma</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(SolutionDir)coresound\inc;$(SolutionDir)External Libs\AlphaEngine_V3.08\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)coresound\lib;$(SolutionDir)External Libs\AlphaEngine_V3.08\lib;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)\bin\$(Configuration)-$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)\.tmp\$(Configuration)-$(Platform)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)\bin\$(Configuration)-$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)\.tmp\$(Configuration)-$(Platform)\</IntDir>
+    <IncludePath>$(SolutionDir)coresound\inc;$(SolutionDir)External Libs\AlphaEngine_V3.08\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)coresound\lib;$(SolutionDir)External Libs\AlphaEngine_V3.08\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>fmodL_vc.lib;Alpha_EngineD.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>fmod_vc.lib;Alpha_Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="AudioManager.cpp" />
+    <ClCompile Include="BackgroundManager.cpp" />
+    <ClCompile Include="Box.cpp" />
+    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Button1.cpp" />
+    <ClCompile Include="Cave1.cpp" />
+    <ClCompile Include="Cave2.cpp" />
+    <ClCompile Include="Cave3.cpp" />
+    <ClCompile Include="Cave4.cpp" />
+    <ClCompile Include="Cave5.cpp" />
+    <ClCompile Include="Cave6.cpp" />
+    <ClCompile Include="Checkpoint.cpp" />
+    <ClCompile Include="CollisionManager.cpp" />
+    <ClCompile Include="ColorObj.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EntityManager.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameStateManager.cpp" />
+    <ClCompile Include="GameState_Credits.cpp" />
+    <ClCompile Include="GameState_End.cpp" />
+    <ClCompile Include="GameState_Extra.cpp" />
+    <ClCompile Include="GameState_Level1.cpp" />
+    <ClCompile Include="GameState_Level2.cpp" />
+    <ClCompile Include="GameState_Level3.cpp" />
+    <ClCompile Include="GameState_Level4.cpp" />
+    <ClCompile Include="GameState_Level5.cpp" />
+    <ClCompile Include="GameState_Level6.cpp" />
+    <ClCompile Include="GameState_Level7.cpp" />
+    <ClCompile Include="GameState_Level8.cpp" />
+    <ClCompile Include="GameState_LS.cpp" />
+    <ClCompile Include="GameState_Menu.cpp" />
+    <ClCompile Include="GameState_SplashScreen.cpp" />
+    <ClCompile Include="Gate.cpp" />
+    <ClCompile Include="Gate2.cpp" />
+    <ClCompile Include="Gate3.cpp" />
+    <ClCompile Include="Gate4.cpp" />
+    <ClCompile Include="ImageBox.cpp" />
+    <ClCompile Include="Lever.cpp" />
+    <ClCompile Include="Lever1.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="OptionsMenuManager.cpp" />
+    <ClCompile Include="PauseMenuManager.cpp" />
+    <ClCompile Include="PhysicsManager.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="RenderData.cpp" />
+    <ClCompile Include="RenderManager.cpp" />
+    <ClCompile Include="Spikes.cpp" />
+    <ClCompile Include="Test_Level.cpp" />
+    <ClCompile Include="Tile.cpp" />
+    <ClCompile Include="TileManager.cpp" />
+    <ClCompile Include="UIManager.cpp" />
+    <ClCompile Include="Wall_Blue.cpp" />
+    <ClCompile Include="Wall_Green.cpp" />
+    <ClCompile Include="Wall_Red.cpp" />
+    <ClCompile Include="Wall_Yellow.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AudioManager.h" />
+    <ClInclude Include="BackgroundManager.h" />
+    <ClInclude Include="Box.h" />
+    <ClInclude Include="Button.h" />
+    <ClInclude Include="Button1.h" />
+    <ClInclude Include="Cave1.h" />
+    <ClInclude Include="Cave2.h" />
+    <ClInclude Include="Cave3.h" />
+    <ClInclude Include="Cave4.h" />
+    <ClInclude Include="Cave5.h" />
+    <ClInclude Include="Cave6.h" />
+    <ClInclude Include="Checkpoint.h" />
+    <ClInclude Include="CollisionManager.h" />
+    <ClInclude Include="ColorList.h" />
+    <ClInclude Include="ColorObj.h" />
+    <ClInclude Include="Constants.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyStateList.h" />
+    <ClInclude Include="EntityList.h" />
+    <ClInclude Include="EntityManager.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameStateList.h" />
+    <ClInclude Include="GameStateManager.h" />
+    <ClInclude Include="GameState_Credits.h" />
+    <ClInclude Include="GameState_End.h" />
+    <ClInclude Include="GameState_Extra.h" />
+    <ClInclude Include="GameState_Level1.h" />
+    <ClInclude Include="GameState_Level2.h" />
+    <ClInclude Include="GameState_Level3.h" />
+    <ClInclude Include="GameState_Level4.h" />
+    <ClInclude Include="GameState_Level5.h" />
+    <ClInclude Include="GameState_Level6.h" />
+    <ClInclude Include="GameState_Level7.h" />
+    <ClInclude Include="GameState_Level8.h" />
+    <ClInclude Include="GameState_LS.h" />
+    <ClInclude Include="GameState_Menu.h" />
+    <ClInclude Include="GameState_SplashScreen.h" />
+    <ClInclude Include="Gate.h" />
+    <ClInclude Include="Gate2.h" />
+    <ClInclude Include="Gate3.h" />
+    <ClInclude Include="Gate4.h" />
+    <ClInclude Include="GateStateList.h" />
+    <ClInclude Include="ImageBox.h" />
+    <ClInclude Include="Lever.h" />
+    <ClInclude Include="Lever1.h" />
+    <ClInclude Include="Main.h" />
+    <ClInclude Include="OptionsMenuManager.h" />
+    <ClInclude Include="PauseMenuManager.h" />
+    <ClInclude Include="PhysicsManager.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="RenderData.h" />
+    <ClInclude Include="RenderManager.h" />
+    <ClInclude Include="Spikes.h" />
+    <ClInclude Include="Test_Level.h" />
+    <ClInclude Include="Tile.h" />
+    <ClInclude Include="TileManager.h" />
+    <ClInclude Include="Tiletype.h" />
+    <ClInclude Include="UIManager.h" />
+    <ClInclude Include="Wall_Blue.h" />
+    <ClInclude Include="Wall_Green.h" />
+    <ClInclude Include="Wall_Red.h" />
+    <ClInclude Include="Wall_Yellow.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="bin\Resources\credits2.png" />
+    <Image Include="bin\Resources\DigiPen_Singapore_WEB_WHITE.png" />
+    <Image Include="Resources\Box.png" />
+    <Image Include="Resources\DigiPen_Singapore_WEB_BLACK.png" />
+    <Image Include="Resources\DigiPen_Singapore_WEB_RED.png" />
+    <Image Include="Resources\Empty.png" />
+    <Image Include="Resources\Enemy.png" />
+    <Image Include="Resources\Idle_Player.png" />
+    <Image Include="Resources\Moving_Player.png" />
+    <Image Include="Resources\PlanetTexture.png" />
+    <Image Include="Resources\Pushing_or_Pulling_Moving_Player.png" />
+    <Image Include="Resources\Pushing_or_Pulling_Moving_Player_2.png" />
+    <Image Include="Resources\Wall.png" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
