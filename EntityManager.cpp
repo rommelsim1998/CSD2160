@@ -135,6 +135,15 @@ void EntityManager::EntityManagerLoad()
 			obj->SetPosition(pos);
 			obj->SetRestartPos(pos);
 		}
+		else if (tile.getTileType() == TileType::TILE_CAVE7)
+		{
+			obj = CreateEntity(TYPE_CAVE7);
+			pos = tile.getPosition();
+			pos.x = (pos.x + 0.5f) * TILE_WIDTH;
+			pos.y = (pos.y + 0.5f) * TILE_HEIGHT;
+			obj->SetPosition(pos);
+			obj->SetRestartPos(pos);
+		}
 		else if (tile.getTileType() == TileType::TILE_WALL_BLUE)
 		{
 			obj = CreateEntity(TYPE_WALL_BLUE);
@@ -616,6 +625,14 @@ GameObject* EntityManager::CreateEntity(int type)
 		Cave6* cave6{ new Cave6(++idCounter) };
 		gameObjList.emplace(cave6->GetID(), cave6);
 		gameObject = cave6;
+		gameObject->SetRenderOrder(1);
+		break;
+	}
+	case TYPE_CAVE7:
+	{
+		Cave7* cave7{ new Cave7(++idCounter) };
+		gameObjList.emplace(cave7->GetID(), cave7);
+		gameObject = cave7;
 		gameObject->SetRenderOrder(1);
 		break;
 	}

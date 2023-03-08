@@ -64,6 +64,10 @@ void RenderManager::RenderManagerLoad()
 		{
 			tile.getRenderData()->SetRendTexture(AEGfxTextureLoad("Resources/sign4.png"));
 		}
+		else if (tile.getTileType() == TileType::TILE_SIGN5)
+		{
+			tile.getRenderData()->SetRendTexture(AEGfxTextureLoad("Resources/sign5.png"));
+		}
 		else
 			tile.getRenderData()->SetRendTexture(AEGfxTextureLoad("Resources/empty.png"));
 
@@ -287,6 +291,10 @@ void RenderManager::AssignTexture(int id, int type, RenderData* rendData)
 		rendData->SetRendTexture(AEGfxTextureLoad("Resources/cave 1.png"));
 	}
 	else if (type == TYPE_CAVE6)
+	{
+		rendData->SetRendTexture(AEGfxTextureLoad("Resources/cave 1.png"));
+	}
+	else if (type == TYPE_CAVE7)
 	{
 		rendData->SetRendTexture(AEGfxTextureLoad("Resources/cave 1.png"));
 	}

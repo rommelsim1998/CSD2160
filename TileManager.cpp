@@ -98,7 +98,7 @@ void TileManager::TileManagerLoad(std::string const& filename)
 		//MapTile;
 
 		//count width and height
-		Map_Width = static_cast<int>(buffer.find_last_of("xX*PEL_qwebBlR|Suiop6789nNmMaAcC%^&@#$!dfghjkrt(y)"));
+		Map_Width = static_cast<int>(buffer.find_last_of("xX*PEL_qwebBlR|Suiop6789nNmMaAcC%^&@#$!dfghjkrt(yz)}"));
 		Map_Width++;
 
 		while (std::getline(fp, buffer))
@@ -143,7 +143,7 @@ void TileManager::TileManagerLoad(std::string const& filename)
 				/*===================================*
 							Setting Map Tile
 				*====================================*/
-				pos1 = static_cast<int>(buffer.find_first_of("xX*PEL_qwebBlR|Suiop6789nNmMaAcC%^&@#$!dfghjkrt(y)"));
+				pos1 = static_cast<int>(buffer.find_first_of("xX*PEL_qwebBlR|Suiop6789nNmMaAcC%^&@#$!dfghjkrt(yz)}"));
 				//MapTile[i] = buffer.substr(pos1, 1);
 
 				MapTile[counter].setTileType(static_cast<TileType>(buffer[pos1]));

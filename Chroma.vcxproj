@@ -99,6 +99,7 @@
     <ClCompile Include="Cave4.cpp" />
     <ClCompile Include="Cave5.cpp" />
     <ClCompile Include="Cave6.cpp" />
+    <ClCompile Include="Cave7.cpp" />
     <ClCompile Include="Checkpoint.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="ColorObj.cpp" />
@@ -156,6 +157,7 @@
     <ClInclude Include="Cave4.h" />
     <ClInclude Include="Cave5.h" />
     <ClInclude Include="Cave6.h" />
+    <ClInclude Include="Cave7.h" />
     <ClInclude Include="Checkpoint.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="ColorList.h" />

@@ -201,6 +201,9 @@
     <ClCompile Include="OptionsMenuManager.cpp">
       <Filter>Source Files\ecs</Filter>
     </ClCompile>
+    <ClCompile Include="Cave7.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameStateManager.h">
@@ -388,6 +391,9 @@
     </ClInclude>
     <ClInclude Include="OptionsMenuManager.h">
       <Filter>Header Files\ecs</Filter>
+    </ClInclude>
+    <ClInclude Include="Cave7.h">
+      <Filter>Header Files\Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

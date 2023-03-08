@@ -50,6 +50,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include "Cave4.h"
 #include "Cave5.h"
 #include "Cave6.h"
+#include "Cave7.h"
 #include "Wall_Blue.h"
 #include "Wall_Green.h"
 #include "Wall_Red.h"

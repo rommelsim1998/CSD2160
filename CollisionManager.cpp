@@ -636,6 +636,11 @@ void CollisionManager::CollisionManagerUpdate()
 						isOptionsEnabled = true;
 						//current = GS_QUIT;
 					}
+					if (it2->second->GetType() == TYPE_CAVE7 && AEInputCheckTriggered(AEVK_UP) && (Colide == true))
+					{
+						// connect to ip address page
+
+					}
 
 				}
 				if (current == GS_LS)
