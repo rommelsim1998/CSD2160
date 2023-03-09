@@ -18,3 +18,8 @@
 .vs/Chroma/v17/Browse.VC.db
 .tmp/Debug-x64
 *.ipch
+*.obj
+.vs/Chroma/v17/.suo
+.vs/Chroma/v17/Browse.VC.db
+bin/Debug-x64/Chroma.exe
+bin/Debug-x64/Chroma.pdb
