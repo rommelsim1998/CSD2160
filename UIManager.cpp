@@ -188,8 +188,8 @@ void UIManager::UIManagerUpdate()
    
     if (current == GS_MAINMENU)
     {
-        AEVec2Set(&title1.pos, 550.0f, 500.0f);
-        AEVec2Set(&title2.pos, 735.0f, 500.0f);
+        AEVec2Set(&title1.pos, 780.0f, 500.0f);
+        AEVec2Set(&title2.pos, 955.0f, 500.0f);
 
         for (size_t j = 0; j < title.size(); ++j)
         {

@@ -14,3 +14,7 @@
 *.vsidx
 .vs/Chroma/v17/.suo
 .vs/Chroma/v17/Browse.VC.db
+.vs/Chroma/v17/ipch/AutoPCH/a5f9186ce4310f02/RENDERMANAGER.ipch
+.vs/Chroma/v17/Browse.VC.db
+.tmp/Debug-x64
+*.ipch
