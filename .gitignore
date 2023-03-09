@@ -18,3 +18,8 @@
 .vs/Chroma/v17/Browse.VC.db
 .tmp/Debug-x64
 *.ipch
+*.obj
+*.ilk
+*.log
+*.tlog
+*.idb

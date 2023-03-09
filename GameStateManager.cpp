@@ -128,6 +128,46 @@ void GSM_Update()
 		fpFree = GameStateLSFree;
 		fpUnload = GameStateLSUnload;
 		break;
+	case GS_CONNECTION:
+		fpLoad = GameStateLSLoad;
+		fpInitialize = GameStateLSInit;
+		fpUpdate = GameStateLSUpdate;
+		fpDraw = GameStateLSDraw;
+		fpFree = GameStateLSFree;
+		fpUnload = GameStateLSUnload;
+		break;
+	case GS_MLEVEL1:
+		fpLoad = GameStateLSLoad;
+		fpInitialize = GameStateLSInit;
+		fpUpdate = GameStateLSUpdate;
+		fpDraw = GameStateLSDraw;
+		fpFree = GameStateLSFree;
+		fpUnload = GameStateLSUnload;
+		break;
+	case GS_MLEVEL2:
+		fpLoad = GameStateLSLoad;
+		fpInitialize = GameStateLSInit;
+		fpUpdate = GameStateLSUpdate;
+		fpDraw = GameStateLSDraw;
+		fpFree = GameStateLSFree;
+		fpUnload = GameStateLSUnload;
+		break;
+	case GS_MLEVEL3:
+		fpLoad = GameStateLSLoad;
+		fpInitialize = GameStateLSInit;
+		fpUpdate = GameStateLSUpdate;
+		fpDraw = GameStateLSDraw;
+		fpFree = GameStateLSFree;
+		fpUnload = GameStateLSUnload;
+		break;
+	case GS_MLEVEL4:
+		fpLoad = GameStateLSLoad;
+		fpInitialize = GameStateLSInit;
+		fpUpdate = GameStateLSUpdate;
+		fpDraw = GameStateLSDraw;
+		fpFree = GameStateLSFree;
+		fpUnload = GameStateLSUnload;
+		break;
 	case GS_EXTRA:
 		fpLoad = GameStateExtraLoad;
 		fpInitialize = GameStateExtraInit;

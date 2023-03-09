@@ -638,8 +638,7 @@ void CollisionManager::CollisionManagerUpdate()
 					}
 					if (it2->second->GetType() == TYPE_CAVE7 && AEInputCheckTriggered(AEVK_UP) && (Colide == true))
 					{
-						// connect to ip address page
-
+						next = GS_CONNECTION;
 					}
 
 				}
