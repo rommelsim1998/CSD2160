@@ -129,45 +129,47 @@ void GSM_Update()
 		fpUnload = GameStateLSUnload;
 		break;
 	case GS_CONNECTION:
-		fpLoad = GameStateLSLoad;
-		fpInitialize = GameStateLSInit;
-		fpUpdate = GameStateLSUpdate;
-		fpDraw = GameStateLSDraw;
-		fpFree = GameStateLSFree;
-		fpUnload = GameStateLSUnload;
+		fpLoad = GameStateLevelconnectLoad;
+		fpInitialize = GameStateLevelconnectInit;
+		fpUpdate = GameStateLevelconnectUpdate;
+		fpDraw = GameStateLevelconnectDraw;
+		fpFree = GameStateLevelconnectFree;
+		fpUnload = GameStateLevelconnectUnload;
 		break;
+		/*
 	case GS_MLEVEL1:
-		fpLoad = GameStateLSLoad;
-		fpInitialize = GameStateLSInit;
-		fpUpdate = GameStateLSUpdate;
-		fpDraw = GameStateLSDraw;
-		fpFree = GameStateLSFree;
-		fpUnload = GameStateLSUnload;
+		fpLoad = GameStateMLevel1Load;
+		fpInitialize = GameStateMLevel1Init;
+		fpUpdate = GameStateMLevel1Update;
+		fpDraw = GameStateMLevel1Draw;
+		fpFree = GameStateMLevel1Free;
+		fpUnload = GameStateMLevel1unload;
 		break;
 	case GS_MLEVEL2:
-		fpLoad = GameStateLSLoad;
-		fpInitialize = GameStateLSInit;
-		fpUpdate = GameStateLSUpdate;
-		fpDraw = GameStateLSDraw;
-		fpFree = GameStateLSFree;
-		fpUnload = GameStateLSUnload;
+		fpLoad = GameStateMLevel2Load;
+		fpInitialize = GameStateMLevel2Init;
+		fpUpdate = GameStateMLevel2Update;
+		fpDraw = GameStateMLevel2Draw;
+		fpFree = GameStateMLevel12Free;
+		fpUnload = GameStateMLevel2unload;
 		break;
 	case GS_MLEVEL3:
-		fpLoad = GameStateLSLoad;
-		fpInitialize = GameStateLSInit;
-		fpUpdate = GameStateLSUpdate;
-		fpDraw = GameStateLSDraw;
-		fpFree = GameStateLSFree;
-		fpUnload = GameStateLSUnload;
+		fpLoad = GameStateMLevel3Load;
+		fpInitialize = GameStateMLevel3Init;
+		fpUpdate = GameStateMLevel3Update;
+		fpDraw = GameStateMLevel3Draw;
+		fpFree = GameStateMLevel3Free;
+		fpUnload = GameStateMLevel3unload;
 		break;
 	case GS_MLEVEL4:
-		fpLoad = GameStateLSLoad;
-		fpInitialize = GameStateLSInit;
-		fpUpdate = GameStateLSUpdate;
-		fpDraw = GameStateLSDraw;
-		fpFree = GameStateLSFree;
-		fpUnload = GameStateLSUnload;
+		fpLoad = GameStateMLevel4Load;
+		fpInitialize = GameStateMLevel4Init;
+		fpUpdate = GameStateMLevel4Update;
+		fpDraw = GameStateMLevel4Draw;
+		fpFree = GameStateMLevel4Free;
+		fpUnload = GameStateMLevel4unload;
 		break;
+		*/
 	case GS_EXTRA:
 		fpLoad = GameStateExtraLoad;
 		fpInitialize = GameStateExtraInit;
