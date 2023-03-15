@@ -31,14 +31,17 @@ bool isPaused;
 bool isOptionsEnabled;
 
 // main
-
+/*
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 					  _In_opt_ HINSTANCE hPrevInstance,
 					  _In_ LPWSTR lpCmdLine,
 					  _In_ int nCmdShow){
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
+	*/
 
+	int main()
+	{
 #if de  fined(DEBUG) | defined(_DEBUG)
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
@@ -52,7 +55,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	// Using custom window procedure
 	//AESysInit(hInstance, nCmdShow, 800, 600, 1, 60, true, NULL);
-	AESysInit(hInstance, nCmdShow, 1600, 800, 0, 60, true, NULL);
+	//AESysInit(hInstance, nCmdShow, 1600, 800, 0, 60, true, NULL);
+
+	AESysInit(NULL, SW_SHOWDEFAULT, 1600, 800, 0, 60, true, NULL);
 	//font = AEGfxCreateFont("Resources/Arial Italic.ttf", 50.0f);
 	font = AEGfxCreateFont("Resources/Arial Italic.ttf", 20);
 

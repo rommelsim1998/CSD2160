@@ -56,6 +56,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// Creates the singleton instance once function is called.
 	EntityManager::GetInstance();
 
+	//only enable this when subsystem is windows
 	// Using custom window procedure
 	//AESysInit(hInstance, nCmdShow, 800, 600, 1, 60, true, NULL);
 	//AESysInit(hInstance, nCmdShow, 1600, 800, 0, 60, true, NULL);
