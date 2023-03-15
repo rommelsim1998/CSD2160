@@ -8,18 +8,17 @@ Reproduction or disclosure of this file or its contents without the
 prior written consent of DigiPen Institute of Technology is prohibited.
 ******************************************************************************/
 
-#include "Constants.h"
+#include "GameState_Connect.h"
+#include "Main.h"
+#include <iostream>
+#include "External Libs/AlphaEngine_V3.08/include/AEEngine.h"
 
-// Create manager instances. (Make them static)
-static UIManager& _um = UIManager::GetInstance();
-static EntityManager& _em = EntityManager::GetInstance();
-static RenderManager& _rm = RenderManager::GetInstance();
-static PhysicsManager& _pm = PhysicsManager::GetInstance();
-static TileManager& _tm = TileManager::GetInstance();
-static CollisionManager& _cm = CollisionManager::GetInstance();
-static BackgroundManager& _bm = BackgroundManager::GetInstance();
-static AudioManager& _am = AudioManager::GetInstance();
-static PauseMenuManager& _pmm = PauseMenuManager::GetInstance();
+AEMtx33 Connectscale, ConnectPosition, Connectfinish;
+AEVec2 Connectpos{ 0.0f, 0.0f };
+AEGfxVertexList* pMesh3 = 0;
+AEGfxTexture* pTex3;
+f32 cy, cx;
+
 
  /**************************************************************************/
 /*!
@@ -28,6 +27,7 @@ static PauseMenuManager& _pmm = PauseMenuManager::GetInstance();
 	/**************************************************************************/
 void GameStateLevelconnectLoad(void)
 {
+	/*
 	_tm.TileManagerLoad("Resources/Level_connect.txt");
 	_em.EntityManagerLoad();        // Makes the objects from map info.
 	_rm.RenderManagerLoad();
@@ -35,7 +35,20 @@ void GameStateLevelconnectLoad(void)
 	_bm.BackgroundManagerLoad();
 	_pmm.PauseMenuManagerLoad();
 	_am.AudioManagerLoad();
+	*/
 
+	AEGfxMeshStart();
+	AEGfxTriAdd(
+		-0.5f, -0.5f, 0xFFFF0000, 0.0f, 1.0f,
+		0.5f, -0.5f, 0xFFFF0000, 1.0f, 1.0f,
+		-0.5f, 0.5f, 0xFFFF0000, 0.0f, 0.0f);
+	AEGfxTriAdd(
+		0.5f, -0.5f, 0xFFFF0000, 1.0f, 1.0f,
+		0.5f, 0.5f, 0xFFFF0000, 1.0f, 0.0f,
+		-0.5f, 0.5f, 0xFFFF0000, 0.0f, 0.0f);
+
+	pMesh3 = AEGfxMeshEnd();
+	AE_ASSERT_MESG(pMesh3, "fail to create object!!");
 }
 
 /**************************************************************************/
@@ -45,9 +58,17 @@ void GameStateLevelconnectLoad(void)
 	/**************************************************************************/
 void GameStateLevelconnectInit(void)
 {
+	/*
 	_em.EntityManagerInitialize();  // Initializes all object's init function.
 	AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
 	AEGfxSetCamPosition(0, 0);
+	*/
+
+	AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
+	AEGfxSetCamPosition(0.0f, 0.0f);
+	pTex3 = AEGfxTextureLoad("Resources/player_waiting.png");
+	AE_ASSERT_MESG(pTex3, "fail!!");
+	cy = 0.0f;
 
 }
 
@@ -58,6 +79,9 @@ void GameStateLevelconnectInit(void)
 	/**************************************************************************/
 void GameStateLevelconnectUpdate(void)
 {
+	// get IP address and try connect here
+
+	/*
 	//if its in pause state
 	if (!isPaused)
 	{
@@ -70,6 +94,8 @@ void GameStateLevelconnectUpdate(void)
 	}
 	_am.AudioManagerUpdate();
 	_pmm.PauseMenuManagerUpdate();
+
+	*/
 }
 /**************************************************************************/
 /*!
@@ -78,11 +104,23 @@ void GameStateLevelconnectUpdate(void)
 	/**************************************************************************/
 void GameStateLevelconnectDraw(void)
 {
+	AEMtx33Scale(&Connectscale, (f32)AEGetWindowWidth(), (f32)AEGetWindowHeight()); // not sure how it will turn out on full screen
+	AEMtx33Trans(&ConnectPosition, 0,0);
+	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
+	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
+	AEGfxSetTintColor(1.0f, 1.0f, 1.0f, 1.0f);
+	AEGfxTextureSet(pTex3, 0.0f, 0.0f);
+	AEMtx33Concat(&Connectfinish, &Connectscale, &ConnectPosition);
+	AEGfxSetTransparency(1.0f);
+	AEGfxSetTransform(Connectfinish.m);
+	AEGfxMeshDraw(pMesh3, AE_GFX_MDM_TRIANGLES);
+	/*
 	// Object's Draw functions called inside RenderManagerDraw();
 	_bm.BackgroundManagerDraw();
 	_rm.RenderManagerDraw();
 	_um.UIManagerDraw();
 	_pmm.PauseMenuManagerDraw();
+	*/
 }
 
 /**************************************************************************/
@@ -105,6 +143,7 @@ void GameStateLevelconnectFree(void)
 	/**************************************************************************/
 void GameStateLevelconnectUnload(void)
 {
+	/*
 	_rm.RenderManagerUnload();
 	_em.EntityManagerUnload();
 	_tm.TileManagerUnload();
@@ -112,4 +151,8 @@ void GameStateLevelconnectUnload(void)
 	_um.UIManagerUnload();
 	_pmm.PauseMenuManagerUnload();
 	_am.AudioManagerUnload();
+	*/
+
+	AEGfxMeshFree(pMesh3);
+	AEGfxTextureUnload(pTex3);
 }

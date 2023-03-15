@@ -32,6 +32,7 @@ bool isOptionsEnabled;
 
 // main
 
+
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 					  _In_opt_ HINSTANCE hPrevInstance,
 					  _In_ LPWSTR lpCmdLine,
@@ -39,6 +40,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
+	
 #if de  fined(DEBUG) | defined(_DEBUG)
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
@@ -46,6 +48,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	//int* pi = new int;
 
 	//int gGameRunning = 1;
+
 
 
 	// Creates the singleton instance once function is called.
@@ -66,7 +69,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	isPaused = false;
 	isOptionsEnabled = false;
-	full_screen_me = true;
+	full_screen_me = false;
 	AEToogleFullScreen(full_screen_me);
 
 	GSM_Initialize(GS_SPLASHSCREEN);
@@ -133,3 +136,4 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	// THIS LINE OF CODE IS FOR TEST BRANCH
 }
+
