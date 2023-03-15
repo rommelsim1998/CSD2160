@@ -113,7 +113,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>fmodL_vc.lib;Alpha_EngineD.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>fmodL_vc.lib;Alpha_EngineD.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -176,6 +176,7 @@
     <ClCompile Include="Lever.cpp" />
     <ClCompile Include="Lever1.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Network.cpp" />
     <ClCompile Include="OptionsMenuManager.cpp" />
     <ClCompile Include="PauseMenuManager.cpp" />
     <ClCompile Include="PhysicsManager.cpp" />
@@ -242,6 +243,7 @@
     <ClInclude Include="Lever.h" />
     <ClInclude Include="Lever1.h" />
     <ClInclude Include="Main.h" />
+    <ClInclude Include="Network.h" />
     <ClInclude Include="OptionsMenuManager.h" />
     <ClInclude Include="PauseMenuManager.h" />
     <ClInclude Include="PhysicsManager.h" />

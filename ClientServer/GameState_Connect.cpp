@@ -7,9 +7,9 @@ Copyright (C) 2021 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the
 prior written consent of DigiPen Institute of Technology is prohibited.
 ******************************************************************************/
-
+#pragma once
+#include "Network.h"
 #include "Constants.h"
-
 // Create manager instances. (Make them static)
 static UIManager& _um = UIManager::GetInstance();
 static EntityManager& _em = EntityManager::GetInstance();
@@ -49,6 +49,10 @@ void GameStateLevelconnectInit(void)
 	AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
 	AEGfxSetCamPosition(0, 0);
 
+	// Server Init
+	const std::string ip = "192.168.144.135";
+	const short unsigned port = 5050;
+	Network::Init(ip, port);
 }
 
 /**************************************************************************/
