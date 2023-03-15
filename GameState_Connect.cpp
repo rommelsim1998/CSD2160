@@ -11,7 +11,10 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include "GameState_Connect.h"
 #include "Main.h"
 #include <iostream>
+
 #include "External Libs/AlphaEngine_V3.08/include/AEEngine.h"
+
+
 
 AEMtx33 Connectscale, ConnectPosition, Connectfinish;
 AEVec2 Connectpos{ 0.0f, 0.0f };
@@ -79,6 +82,15 @@ void GameStateLevelconnectInit(void)
 	/**************************************************************************/
 void GameStateLevelconnectUpdate(void)
 {
+
+	if (current == GS_CONNECTION)
+	{
+		if (AEInputCheckTriggered(AEVK_ESCAPE))
+		{
+			next = GS_MAINMENU; // To main menu
+		}
+	}
+
 	// get IP address and try connect here
 
 	/*

@@ -13,6 +13,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #ifndef CS230_GAME_STATE_LEVEL_CONNECT_H_
 #define CS230_GAME_STATE_LEVEL_CONNECT_H_
 
+
 // ---------------------------------------------------------------------------
 
 void GameStateLevelconnectLoad();

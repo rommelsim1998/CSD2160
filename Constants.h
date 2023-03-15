@@ -22,6 +22,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <map>
 #include <vector>
 #include <AEEngine.h>
+//#include <WS2tcpip.h>	// socket programming
 
 // ==== ENUMS ====
 
