@@ -66,7 +66,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	isPaused = false;
 	isOptionsEnabled = false;
-	full_screen_me = true;
+	full_screen_me = false;
 	AEToogleFullScreen(full_screen_me);
 
 	GSM_Initialize(GS_SPLASHSCREEN);

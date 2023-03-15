@@ -2,9 +2,10 @@
 
 #include <WS2tcpip.h>
 #include <winsock.h>
+#include <WinSock2.h>
 #include <string>
 #include <iostream>
-
+#pragma comment(lib, "Ws2_32.lib")
 
 namespace Network
 {
@@ -13,7 +14,7 @@ namespace Network
 	static sockaddr_in serverAddr; //
 
 	// Definitions
-	void Init(const std::string& ip_addr, const unsigned short& portNum)
+	inline void Init(const std::string& ip_addr, const unsigned short& portNum)
 	{
 
 		std::cout << "Initializing WSA and server information" << std::endl;
@@ -51,5 +52,7 @@ namespace Network
 			WSACleanup();
 			std::exit(EXIT_FAILURE);
 		}
+
+		std::cout << "Server successfully created.\n";
 	}
 }
