@@ -176,6 +176,7 @@
     <ClCompile Include="Lever.cpp" />
     <ClCompile Include="Lever1.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Network.cpp" />
     <ClCompile Include="OptionsMenuManager.cpp" />
     <ClCompile Include="PauseMenuManager.cpp" />
     <ClCompile Include="PhysicsManager.cpp" />
@@ -242,6 +243,7 @@
     <ClInclude Include="Lever.h" />
     <ClInclude Include="Lever1.h" />
     <ClInclude Include="Main.h" />
+    <ClInclude Include="Network.h" />
     <ClInclude Include="OptionsMenuManager.h" />
     <ClInclude Include="PauseMenuManager.h" />
     <ClInclude Include="PhysicsManager.h" />
