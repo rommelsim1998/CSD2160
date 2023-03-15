@@ -29,7 +29,7 @@ AEGfxTexture* pTex3;
 f32 cy, cx;
 
 //************** CHANGE THIS TO SERVER IP *********************
-std::string ipAddr{ "192.168.144.135" };
+std::string ipAddr{ "172.22.224.1" }; 
 unsigned short port{ 5050 };
 
  /**************************************************************************/
@@ -83,6 +83,9 @@ void GameStateLevelconnectInit(void)
 	cy = 0.0f;
 
 	Connectionmanager::Connect(ipAddr, port);
+	std::cout << "Client Side Initialized\n";
+	std::cout << "Client connecting to IP: "<<ipAddr<<"\n";
+	std::cout << "Client connecting to PORT: "<<port<<"\n";
 
 }
 

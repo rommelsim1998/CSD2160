@@ -49,10 +49,34 @@ void GameStateLevelconnectInit(void)
 	AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
 	AEGfxSetCamPosition(0, 0);
 
+
+	
+
 	// Server Init
-	const std::string ip = "192.168.144.135";
+	const std::string ip = "172.22.224.1";
 	const short unsigned port = 5050;
 	Network::Init(ip, port);
+
+	// gets host name and ip address of the host automatically, no need to key in manually
+	char hostname[1024];
+	gethostname(hostname, 1024);
+
+	struct addrinfo hints, * addr;
+	ZeroMemory(&hints, sizeof(hints));
+	hints.ai_family = AF_INET;
+
+	getaddrinfo(hostname, NULL, &hints, &addr);
+
+	char ipstr[INET_ADDRSTRLEN];
+	inet_ntop(addr->ai_family, &(((struct sockaddr_in*)addr->ai_addr)->sin_addr), ipstr, sizeof(ipstr));
+	std::cout << "IP address: " << ipstr << std::endl;
+
+
+
+
+	std::cout << "Server Side initialized \n";
+	std::cout << "Server Ip Address: "<<ip <<"\n";
+	std::cout << "Server Port is "<<port<<"\n";
 }
 
 /**************************************************************************/
