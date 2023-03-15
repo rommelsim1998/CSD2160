@@ -44,7 +44,6 @@ extern bool     isOptionsEnabled;
 #include "EntityManager.h"
 #include "RenderManager.h"
 #include "AudioManager.h"
-#include "GameState_Connect.h"
 #include "GameState_Menu.h"
 
 

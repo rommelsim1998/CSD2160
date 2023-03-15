@@ -7,10 +7,16 @@ Copyright (C) 2021 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the
 prior written consent of DigiPen Institute of Technology is prohibited.
 ******************************************************************************/
-
+#include <WS2tcpip.h>
+#include <winsock.h>
 #include "GameState_Connect.h"
+#include "ConnectionManager.h"
 #include "Main.h"
 #include <iostream>
+
+#pragma comment(lib, "Ws2_32.lib")
+
+
 
 #include "External Libs/AlphaEngine_V3.08/include/AEEngine.h"
 
@@ -22,6 +28,9 @@ AEGfxVertexList* pMesh3 = 0;
 AEGfxTexture* pTex3;
 f32 cy, cx;
 
+//************** CHANGE THIS TO SERVER IP *********************
+std::string ipAddr{ "192.168.144.135" };
+unsigned short port{ 5050 };
 
  /**************************************************************************/
 /*!
@@ -73,6 +82,8 @@ void GameStateLevelconnectInit(void)
 	AE_ASSERT_MESG(pTex3, "fail!!");
 	cy = 0.0f;
 
+	Connectionmanager::Connect(ipAddr, port);
+
 }
 
 /**************************************************************************/
@@ -90,6 +101,8 @@ void GameStateLevelconnectUpdate(void)
 			next = GS_MAINMENU; // To main menu
 		}
 	}
+
+	
 
 	// get IP address and try connect here
 
