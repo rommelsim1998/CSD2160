@@ -51,6 +51,9 @@ namespace Connectionmanager {
 		std::cout << "Sent: " << buffer << " to server" << std::endl;
 	}
 
+	
+	
+
 	void PreUpdate()
 	{
 
@@ -68,18 +71,43 @@ namespace Connectionmanager {
 
 	void ConnectionStageUpdate()
 	{
-
+		// 
 	}
 
 	void GameLoopStageUpdate()
 	{
 
+		// game update loop here client side
+		
+		//! Send user input to server
+
+	// Create game message
+		/*
+		CreateGameMessage(buffer, MTU, playerID, playerLogic->pressedDurations, sequenceNumber);
+
+		// Send message to server
+		int sendResult{ sendto(sendSocket, buffer, MTU, 0, reinterpret_cast<SOCKADDR*>(&serverAddr), sizeof(serverAddr)) };
+		if (sendResult == SOCKET_ERROR)
+		{
+			std::cerr << "sendto() error: " << WSAGetLastError() << std::endl;
+			closesocket(sendSocket);
+			WSACleanup();
+			std::exit(EXIT_FAILURE);
+		}
+
+		// Push input into pending acknowledgments queue
+		pendingInputs.push({ sequenceNumber, playerLogic->pressedDurations });
+
+		// Increment sequence number
+		sequenceNumber == UINT32_MAX ? 0 : ++sequenceNumber;
+		*/
 	}
 
 	void GameLoopStagePostUpdate()
 	{
 
 	}
+
 
 
 

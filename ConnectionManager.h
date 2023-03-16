@@ -20,6 +20,8 @@ namespace Connectionmanager
 	static std::chrono::steady_clock::time_point prevTP;
 	static double serverUpdateRate{ 0.0 };
 
+	static bool is2PlayersConnected = false;
+
 	void Connect(const std::string& _ipAddress, unsigned short _portNum);
 
 	void PreUpdate();

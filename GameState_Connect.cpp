@@ -96,6 +96,11 @@ void GameStateLevelconnectInit(void)
 	/**************************************************************************/
 void GameStateLevelconnectUpdate(void)
 {
+	if (!Connectionmanager::is2PlayersConnected)
+		Connectionmanager::ConnectionStageUpdate();
+	else
+		Connectionmanager::GameLoopStageUpdate();
+
 
 	if (current == GS_CONNECTION)
 	{
@@ -103,6 +108,10 @@ void GameStateLevelconnectUpdate(void)
 		{
 			next = GS_MAINMENU; // To main menu
 		}
+
+
+
+
 	}
 	
 
