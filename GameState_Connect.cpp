@@ -29,7 +29,7 @@ AEGfxTexture* pTex3;
 f32 cy, cx;
 
 //************** CHANGE THIS TO SERVER IP *********************
-std::string ipAddr{ "172.22.224.1" }; 
+std::string ipAddr{ "192.168.189.56" }; 
 unsigned short port{ 5050 };
 
  /**************************************************************************/
@@ -104,10 +104,11 @@ void GameStateLevelconnectUpdate(void)
 			next = GS_MAINMENU; // To main menu
 		}
 	}
-
 	
 
 	// get IP address and try connect here
+
+
 
 	/*
 	//if its in pause state

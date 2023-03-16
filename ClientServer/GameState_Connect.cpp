@@ -53,7 +53,7 @@ void GameStateLevelconnectInit(void)
 	
 
 	// Server Init
-	const std::string ip = "172.22.224.1";
+	const std::string ip = "192.168.189.56";
 	const short unsigned port = 5050;
 	Network::Init(ip, port);
 
@@ -86,6 +86,8 @@ void GameStateLevelconnectInit(void)
 	/**************************************************************************/
 void GameStateLevelconnectUpdate(void)
 {
+
+	Network::ClientConnectionStageUpdate();
 	//if its in pause state
 	if (!isPaused)
 	{
@@ -95,9 +97,14 @@ void GameStateLevelconnectUpdate(void)
 		_bm.BackgroundManagerUpdate();
 		_um.UIManagerUpdate();
 		
+		
 	}
+	
 	_am.AudioManagerUpdate();
 	_pmm.PauseMenuManagerUpdate();
+	
+
+
 }
 /**************************************************************************/
 /*!
