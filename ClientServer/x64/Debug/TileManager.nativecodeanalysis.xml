@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\biwen\OneDrive\Documents\GitHub\Network\CSD2160\ClientServer\</FILEPATH>
+      <FILENAME>Tile.h</FILENAME>
+      <LINE>39</LINE>
+      <COLUMN>0</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Tile::tileID' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Tile::{ctor}</FUNCTION>
+    <DECORATED>??0Tile@@QEAA@XZ</DECORATED>
+    <FUNCLINE>39</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>Tile::tileID</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\biwen\OneDrive\Documents\GitHub\Network\CSD2160\ClientServer\</FILEPATH>
+      <FILENAME>Tile.h</FILENAME>
+      <LINE>39</LINE>
+      <COLUMN>0</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Tile::type' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Tile::{ctor}</FUNCTION>
+    <DECORATED>??0Tile@@QEAA@XZ</DECORATED>
+    <FUNCLINE>39</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>Tile::type</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\biwen\OneDrive\Documents\GitHub\Network\CSD2160\ClientServer\</FILEPATH>
+      <FILENAME>Tile.h</FILENAME>
+      <LINE>39</LINE>
+      <COLUMN>0</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Tile::position' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Tile::{ctor}</FUNCTION>
+    <DECORATED>??0Tile@@QEAA@XZ</DECORATED>
+    <FUNCLINE>39</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>Tile::position</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

@@ -53,7 +53,7 @@ void GameStateLevelconnectInit(void)
 	
 
 	// Server Init
-	const std::string ip = "192.168.189.56";
+	const std::string ip = "192.168.232.97";
 	const short unsigned port = 5050;
 	Network::Init(ip, port);
 

@@ -198,6 +198,7 @@
     <ClInclude Include="Lever.h" />
     <ClInclude Include="Lever1.h" />
     <ClInclude Include="Main.h" />
+    <ClInclude Include="Network.h" />
     <ClInclude Include="OptionsMenuManager.h" />
     <ClInclude Include="PauseMenuManager.h" />
     <ClInclude Include="PhysicsManager.h" />

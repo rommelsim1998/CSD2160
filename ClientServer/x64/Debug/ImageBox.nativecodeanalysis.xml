@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\biwen\OneDrive\Documents\GitHub\Network\CSD2160\ClientServer\</FILEPATH>
+      <FILENAME>ImageBox.cpp</FILENAME>
+      <LINE>41</LINE>
+      <COLUMN>10</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'ImageBox::horizontal_Scale' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>ImageBox::{ctor}</FUNCTION>
+    <DECORATED>??0ImageBox@@QEAA@HH@Z</DECORATED>
+    <FUNCLINE>41</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>ImageBox::horizontal_Scale</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\biwen\OneDrive\Documents\GitHub\Network\CSD2160\ClientServer\</FILEPATH>
+      <FILENAME>ImageBox.cpp</FILENAME>
+      <LINE>41</LINE>
+      <COLUMN>10</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'ImageBox::detectionBox' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>ImageBox::{ctor}</FUNCTION>
+    <DECORATED>??0ImageBox@@QEAA@HH@Z</DECORATED>
+    <FUNCLINE>41</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>ImageBox::detectionBox</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\biwen\OneDrive\Documents\GitHub\Network\CSD2160\ClientServer\</FILEPATH>
+      <FILENAME>ImageBox.cpp</FILENAME>
+      <LINE>41</LINE>
+      <COLUMN>10</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'ImageBox::timerMode' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>ImageBox::{ctor}</FUNCTION>
+    <DECORATED>??0ImageBox@@QEAA@HH@Z</DECORATED>
+    <FUNCLINE>41</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>ImageBox::timerMode</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\biwen\OneDrive\Documents\GitHub\Network\CSD2160\ClientServer\</FILEPATH>
+      <FILENAME>ImageBox.cpp</FILENAME>
+      <LINE>41</LINE>
+      <COLUMN>10</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'ImageBox::timer' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>ImageBox::{ctor}</FUNCTION>
+    <DECORATED>??0ImageBox@@QEAA@HH@Z</DECORATED>
+    <FUNCLINE>41</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>ImageBox::timer</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\biwen\OneDrive\Documents\GitHub\Network\CSD2160\ClientServer\</FILEPATH>
+      <FILENAME>ImageBox.cpp</FILENAME>
+      <LINE>41</LINE>
+      <COLUMN>10</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'ImageBox::vertical_Scale' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>ImageBox::{ctor}</FUNCTION>
+    <DECORATED>??0ImageBox@@QEAA@HH@Z</DECORATED>
+    <FUNCLINE>41</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>ImageBox::vertical_Scale</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>
