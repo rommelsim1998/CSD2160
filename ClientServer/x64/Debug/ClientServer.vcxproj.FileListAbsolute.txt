@@ -1,0 +1,2 @@
+C:\Users\biwen\OneDrive\Documents\GitHub\Network\CSD2160\x64\Debug\ClientServer.exe.lastcodeanalysissucceeded
+C:\Users\biwen\OneDrive\Documents\GitHub\Network\CSD2160\ClientServer\x64\Debug\NativeCodeAnalysis.read.1.tlog

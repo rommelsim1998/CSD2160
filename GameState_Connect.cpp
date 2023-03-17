@@ -10,7 +10,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <WS2tcpip.h>
 #include <winsock.h>
 #include "GameState_Connect.h"
-#include "ConnectionManager.h"
+//#include "ConnectionManager.h"
+#include "Network.h"
 #include "Main.h"
 #include <iostream>
 
@@ -28,9 +29,9 @@ AEGfxVertexList* pMesh3 = 0;
 AEGfxTexture* pTex3;
 f32 cy, cx;
 
-//************** CHANGE THIS TO SERVER IP *********************
-std::string ipAddr{ "192.168.189.56" }; 
-unsigned short port{ 5050 };
+////************** CHANGE THIS TO SERVER IP *********************
+//std::string ipAddr{ "192.168.189.56" }; 
+//unsigned short port{ 5050 };
 
  /**************************************************************************/
 /*!
@@ -81,8 +82,11 @@ void GameStateLevelconnectInit(void)
 	pTex3 = AEGfxTextureLoad("Resources/player_waiting.png");
 	AE_ASSERT_MESG(pTex3, "fail!!");
 	cy = 0.0f;
+	std::string ipAddr{ "192.168.232.97" };
+	unsigned short port{ 54000 };
 
-	Connectionmanager::Connect(ipAddr, port);
+
+	Network::Initialize(ipAddr, port);
 	std::cout << "Client Side Initialized\n";
 	std::cout << "Client connecting to IP: "<<ipAddr<<"\n";
 	std::cout << "Client connecting to PORT: "<<port<<"\n";
@@ -96,10 +100,11 @@ void GameStateLevelconnectInit(void)
 	/**************************************************************************/
 void GameStateLevelconnectUpdate(void)
 {
-	if (!Connectionmanager::is2PlayersConnected)
-		Connectionmanager::ConnectionStageUpdate();
-	else
-		Connectionmanager::GameLoopStageUpdate();
+	//if (!Connectionmanager::is2PlayersConnected)
+	//	Connectionmanager::ConnectionStageUpdate();
+	//else
+	//	Connectionmanager::GameLoopStageUpdate();
+	Network::ConnectionStageUpdate();
 
 
 	if (current == GS_CONNECTION)
