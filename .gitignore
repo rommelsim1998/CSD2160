@@ -1,4 +1,3 @@
-
 .vs/Chroma/v17/Browse.VC.opendb
 .vs/Chroma/v17/Browse.VC.db-wal
 .vs/Chroma/v17/Browse.VC.db-shm
@@ -23,3 +22,18 @@
 .vs/Chroma/v17/Browse.VC.db
 bin/Debug-x64/Chroma.exe
 bin/Debug-x64/Chroma.pdb
+*.ilk
+*.log
+*.tlog
+*.idb
+*.tmp
+*.bak
+*.swp
+*.pyc
+*.class
+*.o
+*.pdb
+*.exe
+__pycache__/
+.idea/
+.vscode/
