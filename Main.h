@@ -35,6 +35,7 @@ extern bool     isOptionsEnabled;
 #include "GameState_Level6.h"
 #include "GameState_Level7.h"
 #include "GameState_Level8.h"
+#include "GameState_Connect.h"
 #include "GameState_LS.h"
 #include "GameState_End.h"
 #include "GameState_SplashScreen.h"
@@ -43,8 +44,9 @@ extern bool     isOptionsEnabled;
 #include "EntityManager.h"
 #include "RenderManager.h"
 #include "AudioManager.h"
-
 #include "GameState_Menu.h"
+
+
 
 extern s8		font;
 
