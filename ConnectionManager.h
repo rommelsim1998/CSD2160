@@ -6,10 +6,10 @@
 #include <iostream>
 #include <queue>
 #include <chrono>
-#include "Constants.h"
+
 #pragma comment(lib, "Ws2_32.lib")
 
-
+#include "Constants.h"
 namespace Connectionmanager
 {
 	struct Input
