@@ -23,8 +23,15 @@ private:
 	bool isStanding = false;
 	bool pull = false;
 	Color startingColor = Color::COLOR_GREY;
-
+	int playerid = -1;
 public:
+
+
+	std::array<int, 4> pressedDurations{ 0 }; // Store held durations of each axis. Indices: XHeld = 0, XReleased = 1, YHeld = 2, YReleased = 3
+	std::array<int, 4> applyDuration{ 0 };
+	bool isCatcher{ false };
+	int score{};
+	int roundScore{};
 	/*===================================*
 				Constructors
 	*====================================*/

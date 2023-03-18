@@ -8,8 +8,9 @@ Copyright (C) 2021 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the
 prior written consent of DigiPen Institute of Technology is prohibited.
 ******************************************************************************/
-
+#include "ConnectionManager.h"
 #include "Constants.h"
+
 
 using _em = EntityManager;
 static TileManager& _tm = TileManager::GetInstance();
@@ -121,11 +122,13 @@ void Player2::GameObjectInitialize()
 void Player2::GameObjectUpdate()
 {
 	// Trigger game fullscreen
+	/*
 	if (AEInputCheckTriggered(AEVK_O))
 	{
 		full_screen_me = !full_screen_me;
 		AEToogleFullScreen(full_screen_me);
 	}
+	*/
 
 	// Enable or disable Player gravity based on tile
 	if (_tm.GetTileTypeAt(GetPosition().x, GetPosition().y) == TileType::TILE_EMPTY)
@@ -143,14 +146,14 @@ void Player2::GameObjectUpdate()
 	}
 
 	// Movement left and right of Player
-	if (AEInputCheckCurr(AEVK_LEFT))
+	if (AEInputCheckCurr(AEVK_A))
 	{
 		SetDirection(pi);
 		AEVec2 newvel = GetVelocity();
 		newvel.x = -playerSpeed * g_dt;
 		SetVelocity(newvel);
 	}
-	else if (AEInputCheckCurr(AEVK_RIGHT))
+	else if (AEInputCheckCurr(AEVK_D))
 	{
 		SetDirection(0.0f);
 		AEVec2 newvel = GetVelocity();
@@ -171,13 +174,13 @@ void Player2::GameObjectUpdate()
 	// Player climbing up the ladder
 	if (_tm.GetTileTypeAt(GetPosition().x, GetPosition().y) == TileType::TILE_LADDER)
 	{
-		if (AEInputCheckCurr(AEVK_UP))
+		if (AEInputCheckCurr(AEVK_W))
 		{
 			AEVec2 newvel = GetVelocity();
 			newvel.y = 5.0f;
 			SetVelocity(newvel);
 		}
-		else if (AEInputCheckReleased(AEVK_UP))
+		else if (AEInputCheckReleased(AEVK_W))
 		{
 			SetHasGravity(false);
 			AEVec2 newvel = GetVelocity();
@@ -189,13 +192,13 @@ void Player2::GameObjectUpdate()
 	// Player climbing down the ladder
 	if (_tm.GetTileTypeAt(GetPosition().x, GetPosition().y - GetScale() * 0.5f) == TileType::TILE_LADDER)
 	{
-		if (AEInputCheckCurr(AEVK_DOWN))
+		if (AEInputCheckCurr(AEVK_S))
 		{
 			AEVec2 newvel = GetVelocity();
 			newvel.y = -5.0f;
 			SetVelocity(newvel);
 		}
-		else if (AEInputCheckReleased(AEVK_DOWN))
+		else if (AEInputCheckReleased(AEVK_S))
 		{
 			SetHasGravity(false);
 			AEVec2 newvel = GetVelocity();
@@ -205,7 +208,7 @@ void Player2::GameObjectUpdate()
 	}
 
 	// Player jump
-	if (AEInputCheckTriggered(AEVK_RALT) && ((GetCollisionFlag() & COLLISION_BOTTOM) || isStanding ||
+	if (AEInputCheckTriggered(AEVK_W) && ((GetCollisionFlag() & COLLISION_BOTTOM) || isStanding ||
 		_tm.GetTileTypeAt(GetPosition().x, GetPosition().y - GetScale() * 0.5f) == TileType::TILE_LADDER))
 	{
 		AEVec2 vel = GetVelocity();
@@ -215,11 +218,11 @@ void Player2::GameObjectUpdate()
 	}
 
 	// Direction player is facing when pulling the box
-	if (AEInputCheckCurr(AEVK_LSHIFT) && AEInputCheckCurr(AEVK_LEFT))
+	if (AEInputCheckCurr(AEVK_LSHIFT) && AEInputCheckCurr(AEVK_A))
 	{
 		SetDirection(0.0f);
 	}
-	else if (AEInputCheckCurr(AEVK_LSHIFT) && AEInputCheckCurr(AEVK_RIGHT))
+	else if (AEInputCheckCurr(AEVK_LSHIFT) && AEInputCheckCurr(AEVK_D))
 	{
 		SetDirection(pi);
 	}
@@ -238,34 +241,42 @@ void Player2::GameObjectUpdate()
 			// Red color
 			if (((found = line.find("A")) != std::string::npos))
 			{
-				if (AEInputCheckTriggered(AEVK_U) &&
-					(_bm.GetCounter() <= 0.0f))
+				if (Connectionmanager::isMultiplayer == true)
 				{
-					SetColor(Color::COLOR_RED);
-					if (GetColor() != _bm.GetColor())
-						_bm.ChangeColor(Color::COLOR_RED);
-
-					const std::map<int, GameObject*>& list = _em::GetInstance().GetEntityList();
-					for (auto it = list.begin(); it != list.end(); it++)
+					// do nothing
+				}
+				else
+				{
+					if (AEInputCheckTriggered(AEVK_U) &&
+						(_bm.GetCounter() <= 0.0f))
 					{
-						if (it->second->GetColor() != Color::COLOR_BLACK)
+						SetColor(Color::COLOR_RED);
+						if (GetColor() != _bm.GetColor())
+							_bm.ChangeColor(Color::COLOR_RED);
+
+						const std::map<int, GameObject*>& list = _em::GetInstance().GetEntityList();
+						for (auto it = list.begin(); it != list.end(); it++)
 						{
-							if (it->second->GetColor() == GetColor())
+							if (it->second->GetColor() != Color::COLOR_BLACK)
 							{
-								it->second->SetIsCollidable(false);
-							}
-							else
-							{
-								it->second->SetIsCollidable(true);
+								if (it->second->GetColor() == GetColor())
+								{
+									it->second->SetIsCollidable(false);
+								}
+								else
+								{
+									it->second->SetIsCollidable(true);
+								}
 							}
 						}
 					}
 				}
+			
 			}
 			// Blue color
 			if (((found = line.find("B")) != std::string::npos))
 			{
-				if (AEInputCheckTriggered(AEVK_I) &&
+				if (AEInputCheckTriggered(AEVK_C) &&
 					(_bm.GetCounter() <= 0.0f))
 				{
 					SetColor(Color::COLOR_BLUE);
@@ -292,25 +303,32 @@ void Player2::GameObjectUpdate()
 			// Green color
 			if (((found = line.find("C")) != std::string::npos))
 			{
-				if (AEInputCheckTriggered(AEVK_O) &&
-					(_bm.GetCounter() <= 0.0f))
+				if (Connectionmanager::isMultiplayer == true)
 				{
-					SetColor(Color::COLOR_GREEN);
-					if (GetColor() != _bm.GetColor())
-						_bm.ChangeColor(Color::COLOR_GREEN);
-
-					const std::map<int, GameObject*>& list = _em::GetInstance().GetEntityList();
-					for (auto it = list.begin(); it != list.end(); it++)
+					// do nothing
+				}
+				else
+				{
+					if (AEInputCheckTriggered(AEVK_O) &&
+						(_bm.GetCounter() <= 0.0f))
 					{
-						if (it->second->GetColor() != Color::COLOR_BLACK)
+						SetColor(Color::COLOR_GREEN);
+						if (GetColor() != _bm.GetColor())
+							_bm.ChangeColor(Color::COLOR_GREEN);
+
+						const std::map<int, GameObject*>& list = _em::GetInstance().GetEntityList();
+						for (auto it = list.begin(); it != list.end(); it++)
 						{
-							if (it->second->GetColor() == GetColor())
+							if (it->second->GetColor() != Color::COLOR_BLACK)
 							{
-								it->second->SetIsCollidable(false);
-							}
-							else
-							{
-								it->second->SetIsCollidable(true);
+								if (it->second->GetColor() == GetColor())
+								{
+									it->second->SetIsCollidable(false);
+								}
+								else
+								{
+									it->second->SetIsCollidable(true);
+								}
 							}
 						}
 					}
@@ -319,7 +337,7 @@ void Player2::GameObjectUpdate()
 			// Yellow color
 			if (((found = line.find("D")) != std::string::npos))
 			{
-				if (AEInputCheckTriggered(AEVK_P) &&
+				if (AEInputCheckTriggered(AEVK_V) &&
 					(_bm.GetCounter() <= 0.0f))
 				{
 					SetColor(Color::COLOR_YELLOW);

@@ -10,6 +10,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 ******************************************************************************/
 
 #include "Constants.h"
+#include "../ConnectionManager.h"
 
 using _em = EntityManager;
 static TileManager& _tm = TileManager::GetInstance();
@@ -265,25 +266,32 @@ void Player::GameObjectUpdate()
 			// Blue color
 			if (((found = line.find("B")) != std::string::npos))
 			{
-				if (AEInputCheckTriggered(AEVK_2) &&
-					(_bm.GetCounter() <= 0.0f))
+				if (Connectionmanager::isMultiplayer == true)
 				{
-					SetColor(Color::COLOR_BLUE);
-					if (GetColor() != _bm.GetColor())
-						_bm.ChangeColor(Color::COLOR_BLUE);
-
-					const std::map<int, GameObject*>& list = _em::GetInstance().GetEntityList();
-					for (auto it = list.begin(); it != list.end(); it++)
+					//  do nothing
+				}
+				else
+				{
+					if (AEInputCheckTriggered(AEVK_2) &&
+						(_bm.GetCounter() <= 0.0f))
 					{
-						if (it->second->GetColor() != Color::COLOR_BLACK)
+						SetColor(Color::COLOR_BLUE);
+						if (GetColor() != _bm.GetColor())
+							_bm.ChangeColor(Color::COLOR_BLUE);
+
+						const std::map<int, GameObject*>& list = _em::GetInstance().GetEntityList();
+						for (auto it = list.begin(); it != list.end(); it++)
 						{
-							if (it->second->GetColor() == GetColor())
+							if (it->second->GetColor() != Color::COLOR_BLACK)
 							{
-								it->second->SetIsCollidable(false);
-							}
-							else
-							{
-								it->second->SetIsCollidable(true);
+								if (it->second->GetColor() == GetColor())
+								{
+									it->second->SetIsCollidable(false);
+								}
+								else
+								{
+									it->second->SetIsCollidable(true);
+								}
 							}
 						}
 					}
@@ -319,29 +327,39 @@ void Player::GameObjectUpdate()
 			// Yellow color
 			if (((found = line.find("D")) != std::string::npos))
 			{
-				if (AEInputCheckTriggered(AEVK_4) &&
-					(_bm.GetCounter() <= 0.0f))
-				{
-					SetColor(Color::COLOR_YELLOW);
-					if (GetColor() != _bm.GetColor())
-						_bm.ChangeColor(Color::COLOR_YELLOW);
 
-					const std::map<int, GameObject*>& list = _em::GetInstance().GetEntityList();
-					for (auto it = list.begin(); it != list.end(); it++)
+				if (Connectionmanager::isMultiplayer == true)
+				{
+					//  do nothing
+				}
+				else
+				{
+				
+					if (AEInputCheckTriggered(AEVK_4) &&
+						(_bm.GetCounter() <= 0.0f))
 					{
-						if (it->second->GetColor() != Color::COLOR_BLACK)
+						SetColor(Color::COLOR_YELLOW);
+						if (GetColor() != _bm.GetColor())
+							_bm.ChangeColor(Color::COLOR_YELLOW);
+
+						const std::map<int, GameObject*>& list = _em::GetInstance().GetEntityList();
+						for (auto it = list.begin(); it != list.end(); it++)
 						{
-							if (it->second->GetColor() == GetColor())
+							if (it->second->GetColor() != Color::COLOR_BLACK)
 							{
-								it->second->SetIsCollidable(false);
-							}
-							else
-							{
-								it->second->SetIsCollidable(true);
+								if (it->second->GetColor() == GetColor())
+								{
+									it->second->SetIsCollidable(false);
+								}
+								else
+								{
+									it->second->SetIsCollidable(true);
+								}
 							}
 						}
 					}
 				}
+			
 			}
 		}
 		colorfile.close();

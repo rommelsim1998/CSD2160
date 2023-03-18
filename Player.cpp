@@ -9,6 +9,7 @@ Reproduction or disclosure of this file or its contents without the
 prior written consent of DigiPen Institute of Technology is prohibited.
 ******************************************************************************/
 
+#include "ConnectionManager.h"
 #include "Constants.h"
 
 using _em = EntityManager;
@@ -121,11 +122,13 @@ void Player::GameObjectInitialize()
 void Player::GameObjectUpdate() 
 {
 	// Trigger game fullscreen
+	/*
 	if (AEInputCheckTriggered(AEVK_O))
 	{
 		full_screen_me = !full_screen_me;
 		AEToogleFullScreen(full_screen_me);
 	}
+	*/
 
 	// Enable or disable Player gravity based on tile
 	if (_tm.GetTileTypeAt(GetPosition().x, GetPosition().y) == TileType::TILE_EMPTY)
@@ -142,87 +145,197 @@ void Player::GameObjectUpdate()
 		}
 	}
 
-	// Movement left and right of Player
-	if (AEInputCheckCurr(AEVK_A))
+	if (Connectionmanager::isMultiplayer == true)
 	{
-		SetDirection(pi);
-		AEVec2 newvel = GetVelocity();
-		newvel.x = -playerSpeed * g_dt;
-		SetVelocity(newvel);
-	}
-	else if (AEInputCheckCurr(AEVK_D))
-	{
-		SetDirection(0.0f);
-		AEVec2 newvel = GetVelocity();
-		newvel.x = playerSpeed * g_dt;
-		SetVelocity(newvel);
+		// Movement left and right of Player
+		if (AEInputCheckCurr(AEVK_LEFT))
+		{
+			SetDirection(pi);
+			AEVec2 newvel = GetVelocity();
+			newvel.x = -playerSpeed * g_dt;
+			SetVelocity(newvel);
+		}
+		else if (AEInputCheckCurr(AEVK_RIGHT))
+		{
+			SetDirection(0.0f);
+			AEVec2 newvel = GetVelocity();
+			newvel.x = playerSpeed * g_dt;
+			SetVelocity(newvel);
+		}
+		else
+		{
+			AEVec2 newvel = GetVelocity();
+			newvel.x = 0.0f;
+			if (GetCollisionFlag() == COLLISION_BOTTOM)
+			{
+				newvel.y = 0.0f;
+			}
+			SetVelocity(newvel);
+		}
+
 	}
 	else
 	{
-		AEVec2 newvel = GetVelocity();
-		newvel.x = 0.0f;
-		if (GetCollisionFlag() == COLLISION_BOTTOM)
+		// Movement left and right of Player
+		if (AEInputCheckCurr(AEVK_A))
 		{
-			newvel.y = 0.0f;
-		}
-		SetVelocity(newvel);
-	}
-
-	// Player climbing up the ladder
-	if (_tm.GetTileTypeAt(GetPosition().x, GetPosition().y) == TileType::TILE_LADDER)
-	{
-		if (AEInputCheckCurr(AEVK_W))
-		{
+			SetDirection(pi);
 			AEVec2 newvel = GetVelocity();
-			newvel.y = 5.0f;
+			newvel.x = -playerSpeed * g_dt;
 			SetVelocity(newvel);
 		}
-		else if (AEInputCheckReleased(AEVK_W))
+		else if (AEInputCheckCurr(AEVK_D))
 		{
-			SetHasGravity(false);
+			SetDirection(0.0f);
 			AEVec2 newvel = GetVelocity();
-			newvel.y = 0.0f;
+			newvel.x = playerSpeed * g_dt;
 			SetVelocity(newvel);
 		}
-	}
-
-	// Player climbing down the ladder
-	if (_tm.GetTileTypeAt(GetPosition().x, GetPosition().y - GetScale() * 0.5f) == TileType::TILE_LADDER)
-	{
-		if (AEInputCheckCurr(AEVK_S))
+		else
 		{
 			AEVec2 newvel = GetVelocity();
-			newvel.y = -5.0f;
-			SetVelocity(newvel);
-		}
-		else if (AEInputCheckReleased(AEVK_S))
-		{
-			SetHasGravity(false);
-			AEVec2 newvel = GetVelocity();
-			newvel.y = 0.0f;
+			newvel.x = 0.0f;
+			if (GetCollisionFlag() == COLLISION_BOTTOM)
+			{
+				newvel.y = 0.0f;
+			}
 			SetVelocity(newvel);
 		}
 	}
 
-	// Player jump
-	if (AEInputCheckTriggered(AEVK_SPACE) && ((GetCollisionFlag() & COLLISION_BOTTOM) || isStanding ||
-		_tm.GetTileTypeAt(GetPosition().x, GetPosition().y - GetScale() * 0.5f) == TileType::TILE_LADDER))
+	if (Connectionmanager::isMultiplayer == true)
 	{
-		AEVec2 vel = GetVelocity();
-		vel.y = PLAYER_JUMP;
-		SetVelocity(vel);
-		isStanding = false;
+		// Player climbing up the ladder
+		if (_tm.GetTileTypeAt(GetPosition().x, GetPosition().y) == TileType::TILE_LADDER)
+		{
+			if (AEInputCheckCurr(AEVK_UP))
+			{
+				AEVec2 newvel = GetVelocity();
+				newvel.y = 5.0f;
+				SetVelocity(newvel);
+			}
+			else if (AEInputCheckReleased(AEVK_UP))
+			{
+				SetHasGravity(false);
+				AEVec2 newvel = GetVelocity();
+				newvel.y = 0.0f;
+				SetVelocity(newvel);
+			}
+		}
+
+		// Player climbing down the ladder
+		if (_tm.GetTileTypeAt(GetPosition().x, GetPosition().y - GetScale() * 0.5f) == TileType::TILE_LADDER)
+		{
+			if (AEInputCheckCurr(AEVK_DOWN))
+			{
+				AEVec2 newvel = GetVelocity();
+				newvel.y = -5.0f;
+				SetVelocity(newvel);
+			}
+			else if (AEInputCheckReleased(AEVK_DOWN))
+			{
+				SetHasGravity(false);
+				AEVec2 newvel = GetVelocity();
+				newvel.y = 0.0f;
+				SetVelocity(newvel);
+			}
+		}
+
+	}
+	else
+	{
+		// Player climbing up the ladder
+		if (_tm.GetTileTypeAt(GetPosition().x, GetPosition().y) == TileType::TILE_LADDER)
+		{
+			if (AEInputCheckCurr(AEVK_W))
+			{
+				AEVec2 newvel = GetVelocity();
+				newvel.y = 5.0f;
+				SetVelocity(newvel);
+			}
+			else if (AEInputCheckReleased(AEVK_W))
+			{
+				SetHasGravity(false);
+				AEVec2 newvel = GetVelocity();
+				newvel.y = 0.0f;
+				SetVelocity(newvel);
+			}
+		}
+
+		// Player climbing down the ladder
+		if (_tm.GetTileTypeAt(GetPosition().x, GetPosition().y - GetScale() * 0.5f) == TileType::TILE_LADDER)
+		{
+			if (AEInputCheckCurr(AEVK_S))
+			{
+				AEVec2 newvel = GetVelocity();
+				newvel.y = -5.0f;
+				SetVelocity(newvel);
+			}
+			else if (AEInputCheckReleased(AEVK_S))
+			{
+				SetHasGravity(false);
+				AEVec2 newvel = GetVelocity();
+				newvel.y = 0.0f;
+				SetVelocity(newvel);
+			}
+		}
 	}
 
-	// Direction player is facing when pulling the box
-	if (AEInputCheckCurr(AEVK_LCTRL) && AEInputCheckCurr(AEVK_A))
+
+
+	if (Connectionmanager::isMultiplayer == true)
 	{
-		SetDirection(0.0f);
+		// Player jump
+		if (AEInputCheckTriggered(AEVK_UP) && ((GetCollisionFlag() & COLLISION_BOTTOM) || isStanding ||
+			_tm.GetTileTypeAt(GetPosition().x, GetPosition().y - GetScale() * 0.5f) == TileType::TILE_LADDER))
+		{
+			AEVec2 vel = GetVelocity();
+			vel.y = PLAYER_JUMP;
+			SetVelocity(vel);
+			isStanding = false;
+		}
 	}
-	else if (AEInputCheckCurr(AEVK_LCTRL) && AEInputCheckCurr(AEVK_D))
+	else
 	{
-		SetDirection(pi);
+		// Player jump
+		if (AEInputCheckTriggered(AEVK_SPACE) && ((GetCollisionFlag() & COLLISION_BOTTOM) || isStanding ||
+			_tm.GetTileTypeAt(GetPosition().x, GetPosition().y - GetScale() * 0.5f) == TileType::TILE_LADDER))
+		{
+			AEVec2 vel = GetVelocity();
+			vel.y = PLAYER_JUMP;
+			SetVelocity(vel);
+			isStanding = false;
+		}
 	}
+	
+
+	if (Connectionmanager::isMultiplayer==true)
+	{
+		// Direction player is facing when pulling the box
+		if (AEInputCheckCurr(AEVK_M) && AEInputCheckCurr(AEVK_LEFT))
+		{
+			SetDirection(0.0f);
+		}
+		else if (AEInputCheckCurr(AEVK_M) && AEInputCheckCurr(AEVK_RIGHT))
+		{
+			SetDirection(pi);
+		}
+	}
+	else
+	{
+		// Direction player is facing when pulling the box
+		if (AEInputCheckCurr(AEVK_LCTRL) && AEInputCheckCurr(AEVK_A))
+		{
+			SetDirection(0.0f);
+		}
+		else if (AEInputCheckCurr(AEVK_LCTRL) && AEInputCheckCurr(AEVK_D))
+		{
+			SetDirection(pi);
+		}
+
+	}
+
+	
 
 	// Read color.txt file to see if player has unlocked that color so to be able to use it
 	std::ifstream colorfile;
@@ -238,7 +351,7 @@ void Player::GameObjectUpdate()
 			// Red color
 			if (((found = line.find("A")) != std::string::npos))
 			{
-				if (AEInputCheckTriggered(AEVK_1) &&
+				if (AEInputCheckTriggered(AEVK_COMMA) &&
 					(_bm.GetCounter() <= 0.0f))
 				{
 					SetColor(Color::COLOR_RED);
@@ -265,34 +378,44 @@ void Player::GameObjectUpdate()
 			// Blue color
 			if (((found = line.find("B")) != std::string::npos))
 			{
-				if (AEInputCheckTriggered(AEVK_2) &&
-					(_bm.GetCounter() <= 0.0f))
+				if (Connectionmanager::isMultiplayer == true)
 				{
-					SetColor(Color::COLOR_BLUE);
-					if (GetColor() != _bm.GetColor())
-						_bm.ChangeColor(Color::COLOR_BLUE);
 
-					const std::map<int, GameObject*>& list = _em::GetInstance().GetEntityList();
-					for (auto it = list.begin(); it != list.end(); it++)
+				}
+				else
+				{
+
+					if (AEInputCheckTriggered(AEVK_2) &&
+						(_bm.GetCounter() <= 0.0f))
 					{
-						if (it->second->GetColor() != Color::COLOR_BLACK)
+						SetColor(Color::COLOR_BLUE);
+						if (GetColor() != _bm.GetColor())
+							_bm.ChangeColor(Color::COLOR_BLUE);
+
+						const std::map<int, GameObject*>& list = _em::GetInstance().GetEntityList();
+						for (auto it = list.begin(); it != list.end(); it++)
 						{
-							if (it->second->GetColor() == GetColor())
+							if (it->second->GetColor() != Color::COLOR_BLACK)
 							{
-								it->second->SetIsCollidable(false);
-							}
-							else
-							{
-								it->second->SetIsCollidable(true);
+								if (it->second->GetColor() == GetColor())
+								{
+									it->second->SetIsCollidable(false);
+								}
+								else
+								{
+									it->second->SetIsCollidable(true);
+								}
 							}
 						}
 					}
+
 				}
+		
 			}
 			// Green color
 			if (((found = line.find("C")) != std::string::npos))
 			{
-				if (AEInputCheckTriggered(AEVK_3) &&
+				if (AEInputCheckTriggered(AEVK_PERIOD) &&
 					(_bm.GetCounter() <= 0.0f))
 				{
 					SetColor(Color::COLOR_GREEN);
@@ -319,29 +442,38 @@ void Player::GameObjectUpdate()
 			// Yellow color
 			if (((found = line.find("D")) != std::string::npos))
 			{
-				if (AEInputCheckTriggered(AEVK_4) &&
-					(_bm.GetCounter() <= 0.0f))
-				{
-					SetColor(Color::COLOR_YELLOW);
-					if (GetColor() != _bm.GetColor())
-						_bm.ChangeColor(Color::COLOR_YELLOW);
 
-					const std::map<int, GameObject*>& list = _em::GetInstance().GetEntityList();
-					for (auto it = list.begin(); it != list.end(); it++)
+				if (Connectionmanager::isMultiplayer == true)
+				{
+
+				}
+				else
+				{
+					if (AEInputCheckTriggered(AEVK_4) &&
+						(_bm.GetCounter() <= 0.0f))
 					{
-						if (it->second->GetColor() != Color::COLOR_BLACK)
+						SetColor(Color::COLOR_YELLOW);
+						if (GetColor() != _bm.GetColor())
+							_bm.ChangeColor(Color::COLOR_YELLOW);
+
+						const std::map<int, GameObject*>& list = _em::GetInstance().GetEntityList();
+						for (auto it = list.begin(); it != list.end(); it++)
 						{
-							if (it->second->GetColor() == GetColor())
+							if (it->second->GetColor() != Color::COLOR_BLACK)
 							{
-								it->second->SetIsCollidable(false);
-							}
-							else
-							{
-								it->second->SetIsCollidable(true);
+								if (it->second->GetColor() == GetColor())
+								{
+									it->second->SetIsCollidable(false);
+								}
+								else
+								{
+									it->second->SetIsCollidable(true);
+								}
 							}
 						}
 					}
 				}
+		
 			}
 		}
 		colorfile.close();

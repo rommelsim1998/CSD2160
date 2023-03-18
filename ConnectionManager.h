@@ -29,6 +29,7 @@ namespace Connectionmanager
 
 	static std::chrono::steady_clock::time_point prevTP;
 	static double serverUpdateRate{ 0.0 };
+	
 
 
 	// Game Variables
@@ -48,6 +49,9 @@ namespace Connectionmanager
 	static uint_least32_t sequenceNumber{ 0 };
 
 	static bool is2PlayersConnected = false;
+
+	static bool isMultiplayer = true;
+
 
 	void Connect(const std::string& _ipAddress, unsigned short _portNum);
 
