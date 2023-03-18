@@ -205,7 +205,7 @@ void Player2::GameObjectUpdate()
 	}
 
 	// Player jump
-	if (AEInputCheckTriggered(AEVK_SPACE) && ((GetCollisionFlag() & COLLISION_BOTTOM) || isStanding ||
+	if (AEInputCheckTriggered(AEVK_RALT) && ((GetCollisionFlag() & COLLISION_BOTTOM) || isStanding ||
 		_tm.GetTileTypeAt(GetPosition().x, GetPosition().y - GetScale() * 0.5f) == TileType::TILE_LADDER))
 	{
 		AEVec2 vel = GetVelocity();
