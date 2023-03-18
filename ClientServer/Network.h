@@ -272,6 +272,7 @@ namespace Network
 		}*/
 	}
 
+	/*
 	void CreateNewClientMessage(char* _buffer, int _bufferSize, int _playerID, bool _gameStart)
 	{
 		// Clear buffer
@@ -282,7 +283,7 @@ namespace Network
 		// Set gameStart
 		std::memcpy(_buffer + sizeof(_playerID), &_gameStart, sizeof(_gameStart));
 	}
-
+	*/
 
 	void CreateGameMessage(char* _buffer, int _bufferSize, int _playerID1, AEVec2 _pos1, int _playerID2, AEVec2 _pos2, bool _caught, uint32_t _seq)
 	{
