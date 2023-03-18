@@ -1,22 +1,20 @@
+#pragma once
 /******************************************************************************
-* \file			Player.h
-* \brief		This file declares the Player class
-* \author		Sebastian Yew Kai Jie, 100% Code Contribution
+* \file			Player2.h
+* \brief		This file declares the Player2 class
+* \author		
 
-Copyright (C) 2021 DigiPen Institute of Technology.
+Copyright (C) 2023 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the
 prior written consent of DigiPen Institute of Technology is prohibited.
 ******************************************************************************/
 
-#ifndef PLAYER_H
-#define PLAYER_H
+#ifndef PLAYER2_H
+#define PLAYER2_H
 
-#include <array>
-#include "AEVec2.h"
- 
 #include "Constants.h"
 
-class Player : public GameObject{
+class Player2 : public GameObject {
 private:
 	/*===================================*
 			Private - Data Members
@@ -25,24 +23,16 @@ private:
 	float playerSpeed = 200.0f;
 	bool isStanding = false;
 	bool pull = false;
-	Color startingColor = Color::COLOR_GREY;
+	Color startingColor = Color::COLOR_YELLOW;
 	int playerid = -1;
 
 public:
-
-
-	std::array<int, 4> pressedDurations{ 0 }; // Store held durations of each axis. Indices: XHeld = 0, XReleased = 1, YHeld = 2, YReleased = 3
-	std::array<int, 4> applyDuration{ 0 };
-	bool isCatcher{ false };
-	int score{};
-	int roundScore{};
-
 	/*===================================*
 				Constructors
 	*====================================*/
-	Player() = delete;
-	Player(int);
-	~Player();
+	Player2() = delete;
+	Player2(int);
+	~Player2();
 
 	/*===================================*
 					Accessors

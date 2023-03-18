@@ -68,7 +68,8 @@ enum class TileType :char {
 	TILE_IMAGEBOX5 = 'j',
 	TILE_IMAGEBOX6 = 'k',
 	TILE_COLOROBJ_RED = '(',
-	TILE_CHECKPOINT = '!'
+	TILE_CHECKPOINT = '!',
+	TILE_PLAYER2 = 'D'
 
 };
 #endif

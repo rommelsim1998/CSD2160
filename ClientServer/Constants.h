@@ -68,7 +68,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include "Gate3.h"
 #include "Gate4.h"
 #include "Button1.h"
-
+#include "Player2.h"
 // ==== MANAGERS ====
 
 #include "TileManager.h"

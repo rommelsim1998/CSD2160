@@ -1,6 +1,6 @@
 /******************************************************************************
 * \file			Player.cpp
-* \brief		This file handles the initializing of player object, updates in 
+* \brief		This file handles the initializing of player object, updates in
 				which the user can do, and drawing the player object.
 * \author		Sebastian Yew Kai Jie, 100% Code Contribution
 
@@ -19,7 +19,7 @@ static BackgroundManager& _bm = BackgroundManager::GetInstance();
 /***************************************************************************/
 /*!
 \brief
-	Player constructor that constructs the player objects by inheriting 
+	Player constructor that constructs the player objects by inheriting
 	from GameObject. It also checks if a color.txt file is available, else
 	create one. It also set the starting background color for all game states.
 
@@ -27,7 +27,7 @@ static BackgroundManager& _bm = BackgroundManager::GetInstance();
 	The id value tagged to the player object.
 */
 /**************************************************************************/
-Player::Player(int id) : GameObject{TYPE_PLAYER, id}, test{ 6 }
+Player2::Player2(int id) : GameObject{ TYPE_PLAYER2, id }, test{ 6 }
 {
 	//Checks if a color.txt file is available, else create one.
 	std::ifstream colorfile;
@@ -46,10 +46,10 @@ Player::Player(int id) : GameObject{TYPE_PLAYER, id}, test{ 6 }
 	}
 
 	//Set starting background color of levels
-	if (current == GS_LEVEL1 || current == GS_MAINMENU || current == GS_LEVEL2 || current == GS_TESTLEVEL || 
+	if (current == GS_LEVEL1 || current == GS_MAINMENU || current == GS_LEVEL2 || current == GS_TESTLEVEL ||
 		current == GS_LEVEL4 || current == GS_LEVEL7 || current == GS_LEVEL8) //King Story
 	{
-		startingColor = Color::COLOR_GREY;
+		startingColor = Color::COLOR_YELLOW;
 	}
 	else if (current == GS_LEVEL6 || current == GS_LEVEL3)
 	{
@@ -71,7 +71,7 @@ Player::Player(int id) : GameObject{TYPE_PLAYER, id}, test{ 6 }
 	Player destructor that destroys the player object.
 */
 /**************************************************************************/
-Player::~Player() 
+Player2::~Player2()
 {
 
 }
@@ -82,7 +82,7 @@ Player::~Player()
 	A function that initializes the player object during each game state.
 */
 /**************************************************************************/
-void Player::GameObjectInitialize()
+void Player2::GameObjectInitialize()
 {
 	if (GetType() == NULL)
 	{
@@ -114,11 +114,11 @@ void Player::GameObjectInitialize()
 /***************************************************************************/
 /*!
 \brief
-	A function that handles updates on user input on the player object 
+	A function that handles updates on user input on the player object
 	during each game state.
 */
 /**************************************************************************/
-void Player::GameObjectUpdate() 
+void Player2::GameObjectUpdate()
 {
 	// Trigger game fullscreen
 	if (AEInputCheckTriggered(AEVK_O))
@@ -143,14 +143,14 @@ void Player::GameObjectUpdate()
 	}
 
 	// Movement left and right of Player
-	if (AEInputCheckCurr(AEVK_A))
+	if (AEInputCheckCurr(AEVK_LEFT))
 	{
 		SetDirection(pi);
 		AEVec2 newvel = GetVelocity();
 		newvel.x = -playerSpeed * g_dt;
 		SetVelocity(newvel);
 	}
-	else if (AEInputCheckCurr(AEVK_D))
+	else if (AEInputCheckCurr(AEVK_RIGHT))
 	{
 		SetDirection(0.0f);
 		AEVec2 newvel = GetVelocity();
@@ -171,13 +171,13 @@ void Player::GameObjectUpdate()
 	// Player climbing up the ladder
 	if (_tm.GetTileTypeAt(GetPosition().x, GetPosition().y) == TileType::TILE_LADDER)
 	{
-		if (AEInputCheckCurr(AEVK_W))
+		if (AEInputCheckCurr(AEVK_UP))
 		{
 			AEVec2 newvel = GetVelocity();
 			newvel.y = 5.0f;
 			SetVelocity(newvel);
 		}
-		else if (AEInputCheckReleased(AEVK_W))
+		else if (AEInputCheckReleased(AEVK_UP))
 		{
 			SetHasGravity(false);
 			AEVec2 newvel = GetVelocity();
@@ -189,13 +189,13 @@ void Player::GameObjectUpdate()
 	// Player climbing down the ladder
 	if (_tm.GetTileTypeAt(GetPosition().x, GetPosition().y - GetScale() * 0.5f) == TileType::TILE_LADDER)
 	{
-		if (AEInputCheckCurr(AEVK_S))
+		if (AEInputCheckCurr(AEVK_DOWN))
 		{
 			AEVec2 newvel = GetVelocity();
 			newvel.y = -5.0f;
 			SetVelocity(newvel);
 		}
-		else if (AEInputCheckReleased(AEVK_S))
+		else if (AEInputCheckReleased(AEVK_DOWN))
 		{
 			SetHasGravity(false);
 			AEVec2 newvel = GetVelocity();
@@ -205,7 +205,7 @@ void Player::GameObjectUpdate()
 	}
 
 	// Player jump
-	if (AEInputCheckTriggered(AEVK_SPACE) && ((GetCollisionFlag() & COLLISION_BOTTOM) || isStanding ||
+	if (AEInputCheckTriggered(AEVK_RALT) && ((GetCollisionFlag() & COLLISION_BOTTOM) || isStanding ||
 		_tm.GetTileTypeAt(GetPosition().x, GetPosition().y - GetScale() * 0.5f) == TileType::TILE_LADDER))
 	{
 		AEVec2 vel = GetVelocity();
@@ -215,11 +215,11 @@ void Player::GameObjectUpdate()
 	}
 
 	// Direction player is facing when pulling the box
-	if (AEInputCheckCurr(AEVK_LCTRL) && AEInputCheckCurr(AEVK_A))
+	if (AEInputCheckCurr(AEVK_LSHIFT) && AEInputCheckCurr(AEVK_LEFT))
 	{
 		SetDirection(0.0f);
 	}
-	else if (AEInputCheckCurr(AEVK_LCTRL) && AEInputCheckCurr(AEVK_D))
+	else if (AEInputCheckCurr(AEVK_LSHIFT) && AEInputCheckCurr(AEVK_RIGHT))
 	{
 		SetDirection(pi);
 	}
@@ -238,7 +238,7 @@ void Player::GameObjectUpdate()
 			// Red color
 			if (((found = line.find("A")) != std::string::npos))
 			{
-				if (AEInputCheckTriggered(AEVK_1) &&
+				if (AEInputCheckTriggered(AEVK_U) &&
 					(_bm.GetCounter() <= 0.0f))
 				{
 					SetColor(Color::COLOR_RED);
@@ -265,7 +265,7 @@ void Player::GameObjectUpdate()
 			// Blue color
 			if (((found = line.find("B")) != std::string::npos))
 			{
-				if (AEInputCheckTriggered(AEVK_2) &&
+				if (AEInputCheckTriggered(AEVK_I) &&
 					(_bm.GetCounter() <= 0.0f))
 				{
 					SetColor(Color::COLOR_BLUE);
@@ -292,7 +292,7 @@ void Player::GameObjectUpdate()
 			// Green color
 			if (((found = line.find("C")) != std::string::npos))
 			{
-				if (AEInputCheckTriggered(AEVK_3) &&
+				if (AEInputCheckTriggered(AEVK_O) &&
 					(_bm.GetCounter() <= 0.0f))
 				{
 					SetColor(Color::COLOR_GREEN);
@@ -319,7 +319,7 @@ void Player::GameObjectUpdate()
 			// Yellow color
 			if (((found = line.find("D")) != std::string::npos))
 			{
-				if (AEInputCheckTriggered(AEVK_4) &&
+				if (AEInputCheckTriggered(AEVK_P) &&
 					(_bm.GetCounter() <= 0.0f))
 				{
 					SetColor(Color::COLOR_YELLOW);
@@ -370,7 +370,7 @@ void Player::GameObjectUpdate()
 	A function that draws the player object during each game state.
 */
 /**************************************************************************/
-void Player::GameObjectDraw()
+void Player2::GameObjectDraw()
 {
 	// Setting matrix for render.
 	AEMtx33 mScale;
@@ -405,7 +405,7 @@ void Player::GameObjectDraw()
 	The boolean that is set to change the variable isStanding.
 */
 /**************************************************************************/
-void Player::SetisStanding(bool standing)
+void Player2::SetisStanding(bool standing)
 {
 	isStanding = standing;
 }
@@ -417,7 +417,7 @@ void Player::SetisStanding(bool standing)
 	if player can pull.
 */
 /**************************************************************************/
-bool Player::GetPull() const
+bool Player2::GetPull() const
 {
 	return pull;
 }
@@ -432,7 +432,7 @@ bool Player::GetPull() const
 	The boolean that is set to change the variable pull.
 */
 /**************************************************************************/
-void Player::SetPull(bool able)
+void Player2::SetPull(bool able)
 {
 	pull = able;
 }

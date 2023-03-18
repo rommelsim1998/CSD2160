@@ -181,6 +181,7 @@
     <ClCompile Include="PauseMenuManager.cpp" />
     <ClCompile Include="PhysicsManager.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Player2.cpp" />
     <ClCompile Include="RenderData.cpp" />
     <ClCompile Include="RenderManager.cpp" />
     <ClCompile Include="Spikes.cpp" />
@@ -248,6 +249,7 @@
     <ClInclude Include="PauseMenuManager.h" />
     <ClInclude Include="PhysicsManager.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Player2.h" />
     <ClInclude Include="RenderData.h" />
     <ClInclude Include="RenderManager.h" />
     <ClInclude Include="Spikes.h" />

@@ -53,6 +53,50 @@ namespace Network
 		//! Clean up WSA
 		std::cout << "Clean up WSA" << std::endl;
 		WSACleanup();
+		//! Create listening socket
+		recvSocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+		if (recvSocket == INVALID_SOCKET)
+		{
+			std::cerr << "socket() error: " << WSAGetLastError() << std::endl;
+			closesocket(recvSocket);
+			WSACleanup();
+			std::exit(EXIT_FAILURE);
+		}
+
+		//! Create hint structure for this server
+		serverAddr.sin_family = AF_INET; //IPv4
+		serverAddr.sin_port = htons(54000); // Port number
+		serverAddr.sin_addr.S_un.S_addr = ADDR_ANY; // Use any IP avail on machine
+
+		//! Bind socket to IP and port
+		if (bind(recvSocket, reinterpret_cast<SOCKADDR*>(&serverAddr), sizeof(serverAddr)) == SOCKET_ERROR)
+		{
+			std::cout << "bind() error: " << WSAGetLastError() << std::endl;
+			closesocket(recvSocket);
+			WSACleanup();
+			std::exit(EXIT_FAILURE);
+		}
+
+		//! Set socket to Non-blocking so we do not need to use Multi threading
+		unsigned long mode{ 1 };
+		ioctlsocket(recvSocket, FIONBIO, &mode);
+
+		std::cout << "Server successfully created.\n";
+
+		//player1Object = _em->CreateEntity(TYPE_PLAYER);
+		//player2Object = _em->CreateEntity(TYPE_PLAYER);
+
+	}
+
+	void CreateNewClientMessage(char* _buffer, int _bufferSize, int _playerID, bool _gameStart)
+	{
+		// Clear buffer
+		std::memset(_buffer, 0, _bufferSize);
+
+		// Set PlayerID
+		std::memcpy(_buffer, &_playerID, sizeof(_playerID));
+		// Set gameStart
+		std::memcpy(_buffer + sizeof(_playerID), &_gameStart, sizeof(_gameStart));
 	}
 
 
