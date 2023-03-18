@@ -2,6 +2,9 @@
 
 namespace Connectionmanager {
 
+	// Game Variables
+	static int playerID{ -1 };
+
 	void Connect(const std::string& _ipAddress, unsigned short _portNum)
 	{
 
@@ -71,7 +74,27 @@ namespace Connectionmanager {
 
 	void ConnectionStageUpdate()
 	{
-		// 
+		// Receive message from server
+		std::memset(buffer, 0, MTU);
+
+		int bytesRecv{ recvfrom(sendSocket, buffer, MTU, 0, nullptr, nullptr) };
+		// Error checking
+		if (bytesRecv == SOCKET_ERROR)
+		{
+			int wsaError{ WSAGetLastError() };
+			if (wsaError != WSAEWOULDBLOCK)
+				std::cerr << "Error recvfrom: " << WSAGetLastError() << std::endl;
+		}
+		else
+		{
+			// Set Player ID from message
+			std::memcpy(&playerID, buffer, sizeof(int));
+			std::cout << "[DEBUG] I am player " << playerID << std::endl;
+			// Set Logic Handle for this player
+			//playerLogic = playerID ? GOM::GetComponent<Player>(player2Object) : GOM::GetComponent<Player>(player1Object);
+			//// Set if game should start in GameManager
+			//std::memcpy(&gameManager->is2PlayersConnected, buffer + sizeof(playerID), sizeof(gameManager->is2PlayersConnected));
+		}
 	}
 
 	void GameLoopStageUpdate()

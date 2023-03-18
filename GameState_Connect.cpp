@@ -10,8 +10,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <WS2tcpip.h>
 #include <winsock.h>
 #include "GameState_Connect.h"
-//#include "ConnectionManager.h"
-#include "Network.h"
+#include "ConnectionManager.h"
+//#include "Network.h"
 #include "Main.h"
 #include <iostream>
 
@@ -82,11 +82,12 @@ void GameStateLevelconnectInit(void)
 	pTex3 = AEGfxTextureLoad("Resources/player_waiting.png");
 	AE_ASSERT_MESG(pTex3, "fail!!");
 	cy = 0.0f;
-	std::string ipAddr{ "192.168.232.97" };
+	std::string ipAddr{ "192.168.88.56" };
 	unsigned short port{ 54000 };
 
 
-	Network::Initialize(ipAddr, port);
+	//Network::Initialize(ipAddr, port);
+	Connectionmanager::Connect(ipAddr, port);
 	std::cout << "Client Side Initialized\n";
 	std::cout << "Client connecting to IP: "<<ipAddr<<"\n";
 	std::cout << "Client connecting to PORT: "<<port<<"\n";
@@ -104,8 +105,8 @@ void GameStateLevelconnectUpdate(void)
 	//	Connectionmanager::ConnectionStageUpdate();
 	//else
 	//	Connectionmanager::GameLoopStageUpdate();
-	Network::ConnectionStageUpdate();
-
+	//Network::ConnectionStageUpdate();
+	Connectionmanager::ConnectionStageUpdate();
 
 	if (current == GS_CONNECTION)
 	{
