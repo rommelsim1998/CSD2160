@@ -31,12 +31,12 @@ Player2::Player2(int id) : GameObject{ TYPE_PLAYER2, id }, test{ 14 }
 {
 	//Checks if a color.txt file is available, else create one.
 	std::ifstream colorfile;
-	colorfile.open("Resources/color.txt");
+	colorfile.open("Resources/color2.txt");
 	if (colorfile.peek() == std::ifstream::traits_type::eof())
 	{
 		colorfile.close();
 		std::ofstream colorfile2;
-		colorfile2.open("Resources/color.txt");
+		colorfile2.open("Resources/color2.txt");
 		colorfile2 << "a" << "\n" << "b" << "\n" << "c" << "\n" << "d";
 		colorfile2.close();
 	}
@@ -49,7 +49,7 @@ Player2::Player2(int id) : GameObject{ TYPE_PLAYER2, id }, test{ 14 }
 	if (current == GS_LEVEL1 || current == GS_MAINMENU || current == GS_LEVEL2 || current == GS_TESTLEVEL ||
 		current == GS_LEVEL4 || current == GS_LEVEL7 || current == GS_LEVEL8) //King Story
 	{
-		startingColor = Color::COLOR_YELLOW;
+		startingColor = Color::COLOR_GREY;
 	}
 	else if (current == GS_LEVEL6 || current == GS_LEVEL3)
 	{
