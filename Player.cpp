@@ -143,14 +143,14 @@ void Player::GameObjectUpdate()
 	}
 
 	// Movement left and right of Player
-	if (AEInputCheckCurr(AEVK_LEFT))
+	if (AEInputCheckCurr(AEVK_A))
 	{
 		SetDirection(pi);
 		AEVec2 newvel = GetVelocity();
 		newvel.x = -playerSpeed * g_dt;
 		SetVelocity(newvel);
 	}
-	else if (AEInputCheckCurr(AEVK_RIGHT))
+	else if (AEInputCheckCurr(AEVK_D))
 	{
 		SetDirection(0.0f);
 		AEVec2 newvel = GetVelocity();
@@ -171,13 +171,13 @@ void Player::GameObjectUpdate()
 	// Player climbing up the ladder
 	if (_tm.GetTileTypeAt(GetPosition().x, GetPosition().y) == TileType::TILE_LADDER)
 	{
-		if (AEInputCheckCurr(AEVK_UP))
+		if (AEInputCheckCurr(AEVK_W))
 		{
 			AEVec2 newvel = GetVelocity();
 			newvel.y = 5.0f;
 			SetVelocity(newvel);
 		}
-		else if (AEInputCheckReleased(AEVK_UP))
+		else if (AEInputCheckReleased(AEVK_W))
 		{
 			SetHasGravity(false);
 			AEVec2 newvel = GetVelocity();
@@ -189,13 +189,13 @@ void Player::GameObjectUpdate()
 	// Player climbing down the ladder
 	if (_tm.GetTileTypeAt(GetPosition().x, GetPosition().y - GetScale() * 0.5f) == TileType::TILE_LADDER)
 	{
-		if (AEInputCheckCurr(AEVK_DOWN))
+		if (AEInputCheckCurr(AEVK_S))
 		{
 			AEVec2 newvel = GetVelocity();
 			newvel.y = -5.0f;
 			SetVelocity(newvel);
 		}
-		else if (AEInputCheckReleased(AEVK_DOWN))
+		else if (AEInputCheckReleased(AEVK_S))
 		{
 			SetHasGravity(false);
 			AEVec2 newvel = GetVelocity();
@@ -215,11 +215,11 @@ void Player::GameObjectUpdate()
 	}
 
 	// Direction player is facing when pulling the box
-	if (AEInputCheckCurr(AEVK_LSHIFT) && AEInputCheckCurr(AEVK_LEFT))
+	if (AEInputCheckCurr(AEVK_LCTRL) && AEInputCheckCurr(AEVK_A))
 	{
 		SetDirection(0.0f);
 	}
-	else if (AEInputCheckCurr(AEVK_LSHIFT) && AEInputCheckCurr(AEVK_RIGHT))
+	else if (AEInputCheckCurr(AEVK_LCTRL) && AEInputCheckCurr(AEVK_D))
 	{
 		SetDirection(pi);
 	}
@@ -238,7 +238,7 @@ void Player::GameObjectUpdate()
 			// Red color
 			if (((found = line.find("A")) != std::string::npos))
 			{
-				if (AEInputCheckTriggered(AEVK_A) &&
+				if (AEInputCheckTriggered(AEVK_1) &&
 					(_bm.GetCounter() <= 0.0f))
 				{
 					SetColor(Color::COLOR_RED);
@@ -265,7 +265,7 @@ void Player::GameObjectUpdate()
 			// Blue color
 			if (((found = line.find("B")) != std::string::npos))
 			{
-				if (AEInputCheckTriggered(AEVK_S) &&
+				if (AEInputCheckTriggered(AEVK_2) &&
 					(_bm.GetCounter() <= 0.0f))
 				{
 					SetColor(Color::COLOR_BLUE);
@@ -292,7 +292,7 @@ void Player::GameObjectUpdate()
 			// Green color
 			if (((found = line.find("C")) != std::string::npos))
 			{
-				if (AEInputCheckTriggered(AEVK_D) &&
+				if (AEInputCheckTriggered(AEVK_3) &&
 					(_bm.GetCounter() <= 0.0f))
 				{
 					SetColor(Color::COLOR_GREEN);
@@ -319,7 +319,7 @@ void Player::GameObjectUpdate()
 			// Yellow color
 			if (((found = line.find("D")) != std::string::npos))
 			{
-				if (AEInputCheckTriggered(AEVK_F) &&
+				if (AEInputCheckTriggered(AEVK_4) &&
 					(_bm.GetCounter() <= 0.0f))
 				{
 					SetColor(Color::COLOR_YELLOW);

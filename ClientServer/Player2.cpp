@@ -238,7 +238,7 @@ void Player2::GameObjectUpdate()
 			// Red color
 			if (((found = line.find("A")) != std::string::npos))
 			{
-				if (AEInputCheckTriggered(AEVK_A) &&
+				if (AEInputCheckTriggered(AEVK_U) &&
 					(_bm.GetCounter() <= 0.0f))
 				{
 					SetColor(Color::COLOR_RED);
@@ -265,7 +265,7 @@ void Player2::GameObjectUpdate()
 			// Blue color
 			if (((found = line.find("B")) != std::string::npos))
 			{
-				if (AEInputCheckTriggered(AEVK_S) &&
+				if (AEInputCheckTriggered(AEVK_I) &&
 					(_bm.GetCounter() <= 0.0f))
 				{
 					SetColor(Color::COLOR_BLUE);
@@ -292,7 +292,7 @@ void Player2::GameObjectUpdate()
 			// Green color
 			if (((found = line.find("C")) != std::string::npos))
 			{
-				if (AEInputCheckTriggered(AEVK_D) &&
+				if (AEInputCheckTriggered(AEVK_O) &&
 					(_bm.GetCounter() <= 0.0f))
 				{
 					SetColor(Color::COLOR_GREEN);
@@ -319,7 +319,7 @@ void Player2::GameObjectUpdate()
 			// Yellow color
 			if (((found = line.find("D")) != std::string::npos))
 			{
-				if (AEInputCheckTriggered(AEVK_F) &&
+				if (AEInputCheckTriggered(AEVK_P) &&
 					(_bm.GetCounter() <= 0.0f))
 				{
 					SetColor(Color::COLOR_YELLOW);
