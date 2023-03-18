@@ -63,6 +63,15 @@ void EntityManager::EntityManagerLoad()
 			obj->SetPosition(pos);
 			obj->SetRestartPos(pos);
 		}
+		else if (tile.getTileType() == TileType::TILE_PLAYER2)
+		{
+			obj = CreateEntity(TYPE_PLAYER2);
+			pos = tile.getPosition();
+			pos.x = (pos.x + 0.5f) * TILE_WIDTH;
+			pos.y = (pos.y + 0.5f) * TILE_HEIGHT;
+			obj->SetPosition(pos);
+			obj->SetRestartPos(pos);
+		}
 		else if (tile.getTileType() == TileType::TILE_ENEMY)
 		{
 			obj = CreateEntity(TYPE_ENEMY);
@@ -561,6 +570,14 @@ GameObject* EntityManager::CreateEntity(int type)
 		Player* player{ new Player(++idCounter) };
 		gameObjList.emplace(idCounter, player);
 		gameObject = player;
+		gameObject->SetRenderOrder(2);
+		break;
+	}
+	case TYPE_PLAYER2:
+	{
+		Player2* player2{ new Player2(++idCounter) };
+		gameObjList.emplace(idCounter, player2);
+		gameObject = player2;
 		gameObject->SetRenderOrder(2);
 		break;
 	}

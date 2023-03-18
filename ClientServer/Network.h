@@ -25,6 +25,7 @@ namespace Network
 		
 		//static GameObject* player1Object{ nullptr };
 		//static GameObject* player2Object{ nullptr };
+		//static EntityManager& _em = EntityManager::GetInstance();
 
 	// Definitions
 	inline void Init(const std::string& ip_addr, const unsigned short& portNum)
@@ -71,6 +72,10 @@ namespace Network
 		ioctlsocket(recvSocket, FIONBIO, &mode);
 
 		std::cout << "Server successfully created.\n";
+
+		//player1Object = _em->CreateEntity(TYPE_PLAYER);
+		//player2Object = _em->CreateEntity(TYPE_PLAYER);
+
 	}
 
 	void CreateNewClientMessage(char* _buffer, int _bufferSize, int _playerID, bool _gameStart)

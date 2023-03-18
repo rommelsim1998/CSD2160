@@ -262,6 +262,10 @@ void RenderManager::AssignTexture(int id, int type, RenderData* rendData)
 	{
 		rendData->SetRendTexture(AEGfxTextureLoad("Resources/Idle Player.png"));
 	}
+	else if (type == TYPE_PLAYER2)
+	{
+		rendData->SetRendTexture(AEGfxTextureLoad("Resources/Idle Player.png"));
+	}
 	else if (type == TYPE_ENEMY)
 	{
 		rendData->SetRendTexture(AEGfxTextureLoad("Resources/Enemy.png"));

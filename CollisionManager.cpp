@@ -1263,6 +1263,1129 @@ void CollisionManager::CollisionManagerUpdate()
 		}
 		
 		/*===================================*
+				Player2 Object Check
+		*====================================*/
+
+		if (it->second->GetType() == TYPE_PLAYER2)
+		{
+			Player2* player2 = dynamic_cast<Player2*>(it->second);
+			for (auto it2 = list.begin(); it2 != list.end(); ++it2)
+			{
+				// Skip checks if it's the same ID
+				if (it->second->GetID() == it2->second->GetID())
+					continue;
+				GameObject* obj2 = it2->second;
+				/*===================================*
+						Player2 - Box Collision
+				*====================================*/
+				if (it2->second->GetType() == TYPE_BOX)
+				{
+					Box* objectBox = dynamic_cast<Box*>(it2->second);
+					AABB box1 = it->second->GetBoundingBox();
+					AABB box2 = it2->second->GetBoundingBox();
+
+					AEVec2 vel1 = it->second->GetVelocity();
+					AEVec2 vel2 = it2->second->GetVelocity();
+					/*===================================*
+							Player Stand on Box
+					*====================================*/
+					if ((it->second->GetColor() != it2->second->GetColor()) && ObjectBottomBinaryCollision(it->second->GetPosition(), it->second->GetScale(), vel1, box2, vel2))
+					{
+						bool standing = true;
+						player2->SetisStanding(standing);
+
+						AEVec2 vel = it->second->GetVelocity();
+						vel.y = 0.0f;
+						it->second->SetVelocity(vel);
+						AEVec2 boxPos = it2->second->GetPosition();
+						float boxScale = it->second->GetScale();
+
+						// Then get that hot spot's y value. And shift object by that hotspot's
+						// tile location and + tile_widthscale/2 and + object_scale/2
+						AEVec2 playerPos = it->second->GetPosition();
+						playerPos.y = (boxPos.y) + (boxScale * 0.38f) + (it->second->GetScale() * 0.5f);
+						it->second->SetPosition(playerPos);
+					}
+					/*===================================*
+					  Player Pushing and Pulling Box Left
+					*====================================*/
+					else if ((it->second->GetColor() != it2->second->GetColor()) && ObjectLeftBinaryCollision(it->second->GetPosition(), it->second->GetScale(), vel1, box2, vel2))
+					{
+						player2->SetPull(true);
+
+						if (player2->GetCollisionFlag() & COLLISION_RIGHT)
+						{
+							player2->SetPull(false);
+						}
+						if ((AEInputCheckCurr(AEVK_LEFT) || (AEInputCheckCurr(AEVK_LSHIFT) && AEInputCheckCurr(AEVK_RIGHT))) && player2->GetPull())
+						{
+							bool jump = false;
+							player2->SetisStanding(jump);
+
+							AEVec2 vel = player2->GetVelocity();
+
+							vel.y = 0.0f;
+							objectBox->SetVelocity(vel);
+							AEVec2 boxPos = it2->second->GetPosition();
+							float boxScale = it->second->GetScale();
+
+							AEVec2 playerPos = it->second->GetPosition();
+							AEVec2Add(&boxPos, &boxPos, &vel);
+							objectBox->SetPosition(boxPos);
+
+							float playerScale = player2->GetScale();
+							playerPos.x = boxPos.x + (boxScale * 0.22f) + (playerScale * 0.5f);
+							player2->SetPosition(playerPos);
+						}
+					}
+					/*===================================*
+					 Player2 Pushing and Pulling Box Right
+					*====================================*/
+					else if ((it->second->GetColor() != it2->second->GetColor()) && ObjectRightBinaryCollision(it->second->GetPosition(), it->second->GetScale(), vel1, box2, vel2))
+					{
+						player2->SetPull(true);
+
+						if (player2->GetCollisionFlag() & COLLISION_LEFT)
+						{
+							player2->SetPull(false);
+						}
+						if ((AEInputCheckCurr(AEVK_RIGHT) || (AEInputCheckCurr(AEVK_LSHIFT) && AEInputCheckCurr(AEVK_LEFT))) && player2->GetPull())
+						{
+							bool jump = false;
+							player2->SetisStanding(jump);
+
+							AEVec2 vel = player2->GetVelocity();
+
+							vel.y = 0.0f;
+							objectBox->SetVelocity(vel);
+							AEVec2 boxPos = it2->second->GetPosition();
+							float boxScale = it->second->GetScale();
+
+							AEVec2 playerPos = it->second->GetPosition();
+							AEVec2Add(&boxPos, &boxPos, &vel);
+							objectBox->SetPosition(boxPos);
+
+							float playerScale = player2->GetScale();
+							playerPos.x = boxPos.x - (boxScale * 0.22f) - (playerScale * 0.5f);
+							player2->SetPosition(playerPos);
+						}
+					}
+
+					/*===================================*
+								Player2 Snap
+					*====================================*/
+					bool Colide = CollisionIntersection_RectRect(box1, vel1, box2, vel2);
+					if ((it->second->GetColor() != it2->second->GetColor()) && (Colide == true))
+					{
+						AEVec2 playerPos = player2->GetPosition();
+						AEVec2 boxPos = objectBox->GetPosition();
+						float playerScale = player2->GetScale();
+						float boxScale = objectBox->GetScale();
+						// Check if box collided against wall to the right.
+						// Don't allow push right
+						// Only allow pull left
+						// Player must be pushed back against box.
+
+						if (objectBox->GetCollisionFlag() & COLLISION_RIGHT)
+						{
+							playerPos.x = boxPos.x - (boxScale * 0.22f) - (playerScale * 0.5f);
+							player2->SetPosition(playerPos);
+						}
+						if (objectBox->GetCollisionFlag() & COLLISION_LEFT)
+						{
+							playerPos.x = boxPos.x + (boxScale * 0.22f) + (playerScale * 0.5f);
+							player2->SetPosition(playerPos);
+						}
+					}
+				}
+				/*===================================*
+					Blue Wall - Player2 Collision
+				*====================================*/
+				else if (it2->second->GetType() == TYPE_WALL_BLUE)
+				{
+					Wall_Blue* bluewall = dynamic_cast<Wall_Blue*>(it2->second);
+					AABB aabbplayer = player2->GetBoundingBox();
+					AABB aabbwall = bluewall->GetBoundingBox();
+					AEVec2 vel1 = player2->GetVelocity();
+					AEVec2 vel2 = bluewall->GetVelocity();
+					AEVec2 playerPos = player2->GetPosition();
+					AEVec2 wallPos = bluewall->GetPosition();
+					float wallScale = bluewall->GetScale();
+					float playerScale = player2->GetScale();
+
+					bool resultbtm = ObjectBottomBinaryCollision(player2->GetPosition(), player2->GetScale(), vel1, aabbwall, vel2);
+					bool resultright = ObjectRightBinaryCollision(player2->GetPosition(), player2->GetScale(), vel1, aabbwall, vel2);
+					bool resultleft = ObjectLeftBinaryCollision(player2->GetPosition(), player2->GetScale(), vel1, aabbwall, vel2);
+					bool resulttop = ObjectTopBinaryCollision(player2->GetPosition(), player2->GetScale(), vel1, aabbwall, vel2);
+					if (resultright && (it->second->GetColor() != it2->second->GetColor()))
+					{
+						playerPos.x = wallPos.x - (wallScale * 0.5f) - (playerScale * 0.5f);
+						player2->SetPosition(playerPos);
+					}
+					else if (resultleft && (it->second->GetColor() != it2->second->GetColor()))
+					{
+						playerPos.x = wallPos.x + (wallScale * 0.5f) + (playerScale * 0.5f);
+						player2->SetPosition(playerPos);
+					}
+					else if (resultbtm && (it->second->GetColor() != it2->second->GetColor()))
+					{
+						bool standing = true;
+						player2->SetisStanding(standing);
+						vel1.y = 0.0f;
+						player2->SetVelocity(vel1);
+						playerPos.y = (wallPos.y) + (wallScale * 0.5f) + (playerScale * 0.5f);
+						player2->SetPosition(playerPos);
+					}
+					else if (resulttop && (it->second->GetColor() != it2->second->GetColor()))
+					{
+						vel1.y = 0.0f;
+						player2->SetVelocity(vel1);
+						playerPos.y = (wallPos.y) - (wallScale * 0.5f) - (playerScale * 0.5f);
+						player2->SetPosition(playerPos);
+					}
+
+				}
+				/*===================================*
+					Green Wall - Player2 Collision
+				*====================================*/
+				else if (it2->second->GetType() == TYPE_WALL_GREEN)
+				{
+					Wall_Green* greenwall = dynamic_cast<Wall_Green*>(it2->second);
+					AABB aabbplayer = player2->GetBoundingBox();
+					AABB aabbwall = greenwall->GetBoundingBox();
+					AEVec2 vel1 = player2->GetVelocity();
+					AEVec2 vel2 = greenwall->GetVelocity();
+					AEVec2 playerPos = player2->GetPosition();
+					AEVec2 wallPos = greenwall->GetPosition();
+					float wallScale = greenwall->GetScale();
+					float playerScale = player2->GetScale();
+
+					bool resultbtm = ObjectBottomBinaryCollision(player2->GetPosition(), player2->GetScale(), vel1, aabbwall, vel2);
+					bool resultright = ObjectRightBinaryCollision(player2->GetPosition(), player2->GetScale(), vel1, aabbwall, vel2);
+					bool resultleft = ObjectLeftBinaryCollision(player2->GetPosition(), player2->GetScale(), vel1, aabbwall, vel2);
+					bool resulttop = ObjectTopBinaryCollision(player2->GetPosition(), player2->GetScale(), vel1, aabbwall, vel2);
+					if (resultright && (it->second->GetColor() != it2->second->GetColor()))
+					{
+						playerPos.x = wallPos.x - (wallScale * 0.5f) - (playerScale * 0.5f);
+						player2->SetPosition(playerPos);
+					}
+					else if (resultleft && (it->second->GetColor() != it2->second->GetColor()))
+					{
+						playerPos.x = wallPos.x + (wallScale * 0.5f) + (playerScale * 0.5f);
+						player2->SetPosition(playerPos);
+					}
+					else if (resultbtm && (it->second->GetColor() != it2->second->GetColor()))
+					{
+						bool standing = true;
+						player2->SetisStanding(standing);
+						vel1.y = 0.0f;
+						player2->SetVelocity(vel1);
+						playerPos.y = (wallPos.y) + (wallScale * 0.5f) + (playerScale * 0.5f);
+						player2->SetPosition(playerPos);
+					}
+					else if (resulttop && (it->second->GetColor() != it2->second->GetColor()))
+					{
+						vel1.y = 0.0f;
+						player2->SetVelocity(vel1);
+						playerPos.y = (wallPos.y) - (wallScale * 0.5f) - (playerScale * 0.5f);
+						player2->SetPosition(playerPos);
+					}
+				}
+				/*===================================*
+					Red Wall - Player2 Collision
+				*====================================*/
+				else if (it2->second->GetType() == TYPE_WALL_RED)
+				{
+					Wall_Red* redwall = dynamic_cast<Wall_Red*>(it2->second);
+					AABB aabbplayer = player2->GetBoundingBox();
+					AABB aabbwall = redwall->GetBoundingBox();
+					AEVec2 vel1 = player2->GetVelocity();
+					AEVec2 vel2 = redwall->GetVelocity();
+					AEVec2 playerPos = player2->GetPosition();
+					AEVec2 wallPos = redwall->GetPosition();
+					float wallScale = redwall->GetScale();
+					float playerScale = player2->GetScale();
+
+					bool resultbtm = ObjectBottomBinaryCollision(player2->GetPosition(), player2->GetScale(), vel1, aabbwall, vel2);
+					bool resultright = ObjectRightBinaryCollision(player2->GetPosition(), player2->GetScale(), vel1, aabbwall, vel2);
+					bool resultleft = ObjectLeftBinaryCollision(player2->GetPosition(), player2->GetScale(), vel1, aabbwall, vel2);
+					bool resulttop = ObjectTopBinaryCollision(player2->GetPosition(), player2->GetScale(), vel1, aabbwall, vel2);
+					if (resultright && (it->second->GetColor() != it2->second->GetColor()))
+					{
+						playerPos.x = wallPos.x - (wallScale * 0.5f) - (playerScale * 0.5f);
+						player2->SetPosition(playerPos);
+					}
+					else if (resultleft && (it->second->GetColor() != it2->second->GetColor()))
+					{
+						playerPos.x = wallPos.x + (wallScale * 0.5f) + (playerScale * 0.5f);
+						player2->SetPosition(playerPos);
+					}
+					else if (resultbtm && (it->second->GetColor() != it2->second->GetColor()))
+					{
+						bool standing = true;
+						player2->SetisStanding(standing);
+						vel1.y = 0.0f;
+						player2->SetVelocity(vel1);
+						playerPos.y = (wallPos.y) + (wallScale * 0.5f) + (playerScale * 0.5f);
+						player2->SetPosition(playerPos);
+					}
+					else if (resulttop && (it->second->GetColor() != it2->second->GetColor()))
+					{
+						vel1.y = 0.0f;
+						player2->SetVelocity(vel1);
+						playerPos.y = (wallPos.y) - (wallScale * 0.5f) - (playerScale * 0.5f);
+						player2->SetPosition(playerPos);
+					}
+				}
+				/*===================================*
+					Yellow Wall - Player2 Collision
+				*====================================*/
+				else if (it2->second->GetType() == TYPE_WALL_YELLOW)
+				{
+					Wall_Yellow* yellowwall = dynamic_cast<Wall_Yellow*>(it2->second);
+					AABB aabbplayer = player2->GetBoundingBox();
+					AABB aabbwall = yellowwall->GetBoundingBox();
+					AEVec2 vel1 = player2->GetVelocity();
+					AEVec2 vel2 = yellowwall->GetVelocity();
+					AEVec2 playerPos = player2->GetPosition();
+					AEVec2 wallPos = yellowwall->GetPosition();
+					float wallScale = yellowwall->GetScale();
+					float playerScale = player2->GetScale();
+
+					bool resultbtm = ObjectBottomBinaryCollision(player2->GetPosition(), player2->GetScale(), vel1, aabbwall, vel2);
+					bool resultright = ObjectRightBinaryCollision(player2->GetPosition(), player2->GetScale(), vel1, aabbwall, vel2);
+					bool resultleft = ObjectLeftBinaryCollision(player2->GetPosition(), player2->GetScale(), vel1, aabbwall, vel2);
+					bool resulttop = ObjectTopBinaryCollision(player2->GetPosition(), player2->GetScale(), vel1, aabbwall, vel2);
+					if (resultright && (it->second->GetColor() != it2->second->GetColor()))
+					{
+						playerPos.x = wallPos.x - (wallScale * 0.5f) - (playerScale * 0.5f);
+						player2->SetPosition(playerPos);
+					}
+					else if (resultleft && (it->second->GetColor() != it2->second->GetColor()))
+					{
+						playerPos.x = wallPos.x + (wallScale * 0.5f) + (playerScale * 0.5f);
+						player2->SetPosition(playerPos);
+					}
+					else if (resultbtm && (it->second->GetColor() != it2->second->GetColor()))
+					{
+						bool standing = true;
+						player2->SetisStanding(standing);
+						vel1.y = 0.0f;
+						player2->SetVelocity(vel1);
+						playerPos.y = (wallPos.y) + (wallScale * 0.5f) + (playerScale * 0.5f);
+						player2->SetPosition(playerPos);
+					}
+					else if (resulttop && (it->second->GetColor() != it2->second->GetColor()))
+					{
+						vel1.y = 0.0f;
+						player2->SetVelocity(vel1);
+						playerPos.y = (wallPos.y) - (wallScale * 0.5f) - (playerScale * 0.5f);
+						player2->SetPosition(playerPos);
+					}
+				}
+				/*==============================================================*
+						Player2 - Lever Collision  | for TriggerGate(Gate)
+				*===============================================================*/
+
+				else if (it2->second->GetType() == TYPE_LEVER)
+				{
+					Lever* lever = dynamic_cast<Lever*>(it2->second);
+					AABB playerlever = it->second->GetBoundingBox(); // player
+					AABB lever1 = it2->second->GetBoundingBox();// lever
+
+					AEVec2 vel1 = it->second->GetVelocity();
+					AEVec2 vel2 = it2->second->GetVelocity();
+
+					if (CollisionIntersection_RectRect(playerlever, vel1, lever1, vel2))
+					{
+						lever->ActivateGate();
+
+					}
+				}
+				/*==============================================================*
+						Player2 - Lever Collision  | for TimerGate(Gate2)
+				*===============================================================*/
+
+				else if (it2->second->GetType() == TYPE_LEVER1)
+				{
+					Lever1* lever = dynamic_cast<Lever1*>(it2->second);
+					AABB playerlever = it->second->GetBoundingBox(); // player
+					AABB timerlever = it2->second->GetBoundingBox();// lever
+
+					AEVec2 vel1 = it->second->GetVelocity();
+					AEVec2 vel2 = it2->second->GetVelocity();
+
+					if (CollisionIntersection_RectRect(playerlever, vel1, timerlever, vel2))
+					{
+						lever->ActivateGate();
+					}
+				}
+				/*==============================================================*
+						Player2 - Button Collision
+				*===============================================================*/
+
+				else if (it2->second->GetType() == TYPE_BUTTON || it2->second->GetType() == TYPE_BUTTON1 ||
+					it2->second->GetType() == TYPE_BUTTON2 || it2->second->GetType() == TYPE_BUTTON3)
+				{
+					Button* btn = dynamic_cast<Button*>(it2->second);
+					AABB playerbtn = it->second->GetBoundingBox(); // player
+					AABB btncol = it2->second->GetBoundingBox();// lever
+
+					AEVec2 vel1 = it->second->GetVelocity();
+					AEVec2 vel2 = it2->second->GetVelocity();
+
+					if (CollisionIntersection_RectRect(playerbtn, vel1, btncol, vel2))
+					{
+						btn->AddObject(it->second);
+					}
+					else
+					{
+						btn->RemoveObj(it->second);
+					}
+
+					if (btn->GetObjects().size() && btn->GetIsActivated() == false)
+						btn->ActivateGate();
+					else if ((btn->GetObjects().size() == 0) && (btn->GetIsActivated() == true))
+					{
+						btn->DeActivateGate();
+					}
+				}
+				/*===============================================================*
+						Player2 - Gate3/4 Collision | aka pressure gate
+				*================================================================*/
+				if (it2->second->GetType() == TYPE_BUTTON_GATE || it2->second->GetType() == TYPE_BUTTON_GATE1 ||
+					it2->second->GetType() == TYPE_BUTTON_GATE2 || it2->second->GetType() == TYPE_BUTTON_GATE3)
+				{
+					Gate3* gate = dynamic_cast<Gate3*>(obj2);
+					if (gate->GetIsCollidable())
+					{
+						AEVec2 playerPos, playerVel, gatePos, gateVel;
+						AABB gateBoundingBox;
+						float playerScale, gateScale;
+						playerScale = player2->GetScale();
+						gateScale = gate->GetScale();
+						playerPos = player2->GetPosition();
+						playerVel = player2->GetVelocity();
+						gatePos = gate->GetPosition();
+						gateVel = gate->GetVelocity();
+						gateBoundingBox = gate->GetBoundingBox();
+
+						if (ObjectRightBinaryCollision(playerPos, playerScale, playerVel, gateBoundingBox, gateVel))
+						{
+							playerPos.x = (f32)(gatePos.x - (gateScale * 0.5f) - (playerScale * 0.5));
+						}
+						else if (ObjectLeftBinaryCollision(playerPos, playerScale, playerVel, gateBoundingBox, gateVel))
+						{
+							playerPos.x = (f32)(gatePos.x + (gateScale * 0.5f) + (playerScale * 0.5));
+						}
+						player2->SetPosition(playerPos);
+					}
+				}
+				/*===============================================================*
+						Player2 - Gate2 Collision | aka timer gate
+				*================================================================*/
+
+				if (it2->second->GetType() == TYPE_LEVER_GATE1)
+				{
+					Gate2* gate = dynamic_cast<Gate2*>(obj2);
+					if (gate->GetIsCollidable())
+					{
+						AEVec2 playerPos, playerVel, gatePos, gateVel;
+						AABB gateBoundingBox;
+						float playerScale, gateScale;
+						playerScale = player2->GetScale();
+						gateScale = gate->GetScale();
+						playerPos = player2->GetPosition();
+						playerVel = player2->GetVelocity();
+						gatePos = gate->GetPosition();
+						gateVel = gate->GetVelocity();
+						gateBoundingBox = gate->GetBoundingBox();
+
+						if (ObjectRightBinaryCollision(playerPos, playerScale, playerVel, gateBoundingBox, gateVel))
+						{
+							playerPos.x = (f32)(gatePos.x - (gateScale * 0.5f) - (playerScale * 0.5));
+						}
+						else if (ObjectLeftBinaryCollision(playerPos, playerScale, playerVel, gateBoundingBox, gateVel))
+						{
+							playerPos.x = (f32)(gatePos.x + (gateScale * 0.5f) + (playerScale * 0.5));
+						}
+						player2->SetPosition(playerPos);
+					}
+				}
+
+				else if (it2->second->GetType() == TYPE_SPIKE)
+				{
+					AABB box1 = it->second->GetBoundingBox();
+					AABB box2 = it2->second->GetBoundingBox();
+
+					AEVec2 vel1 = it->second->GetVelocity();
+					AEVec2 vel2 = it2->second->GetVelocity();
+					bool Colide = CollisionIntersection_RectRect(box1, vel1, box2, vel2);
+					if (Colide == true)
+					{
+						next = GS_RESTART;
+					}
+				}
+				/*===================================*
+						Player2 - Door Collision - Main Menu
+				*====================================*/
+				// set bounding box for cave
+				AABB box1 = it->second->GetBoundingBox();
+				AABB box2 = it2->second->GetBoundingBox();
+
+				AEVec2 vel1 = it->second->GetVelocity();
+				AEVec2 vel2 = it2->second->GetVelocity();
+
+				bool Colide = CollisionIntersection_RectRect(box1, vel1, box2, vel2);
+				// if current game state is main menu
+				if (current == GS_MAINMENU)
+				{
+					// for entering cave1
+					if (it2->second->GetType() == TYPE_CAVE1 && AEInputCheckTriggered(AEVK_UP) && (Colide == true))
+					{
+						next = GS_LS;
+					}
+					if (it2->second->GetType() == TYPE_CAVE2 && AEInputCheckTriggered(AEVK_UP) && (Colide == true))
+					{
+						next = GS_CREDITS;
+					}
+					if (it2->second->GetType() == TYPE_CAVE3 && AEInputCheckTriggered(AEVK_UP) && (Colide == true))
+					{
+						next = GS_QUIT;
+						//current = GS_QUIT;
+					}
+					if (it2->second->GetType() == TYPE_CAVE4 && AEInputCheckTriggered(AEVK_UP) && (Colide == true))
+					{
+						isOptionsEnabled = true;
+						//current = GS_QUIT;
+					}
+					if (it2->second->GetType() == TYPE_CAVE7 && AEInputCheckTriggered(AEVK_UP) && (Colide == true))
+					{
+						next = GS_CONNECTION;
+					}
+
+				}
+				if (current == GS_LS)
+				{
+					if (it2->second->GetType() == TYPE_CAVE1 && AEInputCheckTriggered(AEVK_UP) && (Colide == true))
+					{
+						next = GS_MAINMENU;
+					}
+					if (it2->second->GetType() == TYPE_CAVE2 && AEInputCheckTriggered(AEVK_UP) && (Colide == true))
+					{
+						next = GS_LEVEL1;
+					}
+					if (it2->second->GetType() == TYPE_CAVE3 && AEInputCheckTriggered(AEVK_UP) && (Colide == true))
+					{
+						next = GS_LEVEL3;
+					}
+					if (it2->second->GetType() == TYPE_CAVE4 && AEInputCheckTriggered(AEVK_UP) && (Colide == true))
+					{
+						next = GS_LEVEL5;
+					}
+					if (it2->second->GetType() == TYPE_CAVE5 && AEInputCheckTriggered(AEVK_UP) && (Colide == true))
+					{
+						next = GS_LEVEL7;
+					}
+					if (it2->second->GetType() == TYPE_CAVE6 && AEInputCheckTriggered(AEVK_UP) && (Colide == true))
+					{
+						next = GS_EXTRA;
+					}
+				}
+				// if gamestate is testlevel set the door to do this 
+				if (current == GS_TESTLEVEL)
+				{
+					if (it2->second->GetType() == TYPE_CAVE1 && AEInputCheckTriggered(AEVK_UP) && (Colide == true))
+					{
+						next = GS_QUIT;
+					}
+				}
+
+				if (current == GS_LEVEL1)
+				{
+					if (it2->second->GetType() == TYPE_CAVE1 && AEInputCheckTriggered(AEVK_UP) && (Colide == true))
+					{
+						std::fstream levelfile;
+						std::string line;
+						int count = 0;
+						levelfile.open("Resources/levels.txt");
+						if (levelfile.is_open())
+						{
+							while (!levelfile.eof())
+							{
+								if (levelfile.get() == '1')
+								{
+									++count;
+								}
+							}
+							levelfile.close();
+						}
+						levelfile.open("Resources/levels.txt");
+						if (levelfile.is_open())
+						{
+							while (!levelfile.eof())
+							{
+								if ((levelfile.get() == ' ') && count < 1)
+								{
+									levelfile.seekp((levelfile.tellp() - static_cast<std::streampos>(1)));
+									levelfile.put('1');
+									levelfile.seekp(levelfile.tellp());
+									levelfile.put(',');
+									levelfile.seekp(levelfile.tellp());
+									levelfile.put(' ');
+									levelfile.seekp(levelfile.tellp());
+								}
+							}
+							levelfile.close();
+						}
+						next = GS_LEVEL2;
+					}
+				}
+
+				if (current == GS_LEVEL2)
+				{
+					if (it2->second->GetType() == TYPE_CAVE1 && AEInputCheckTriggered(AEVK_UP) && (Colide == true))
+					{
+						std::fstream levelfile;
+						std::string line;
+						int count = 0;
+						levelfile.open("Resources/levels.txt");
+						if (levelfile.is_open())
+						{
+							while (!levelfile.eof())
+							{
+								if (levelfile.get() == '1')
+								{
+									++count;
+								}
+							}
+							levelfile.close();
+						}
+						levelfile.open("Resources/levels.txt");
+						if (levelfile.is_open())
+						{
+							while (!levelfile.eof())
+							{
+								if ((levelfile.get() == ' ') && count < 2)
+								{
+									levelfile.seekp((levelfile.tellp() - static_cast<std::streampos>(1)));
+									levelfile.put('1');
+									levelfile.seekp(levelfile.tellp());
+									levelfile.put(',');
+									levelfile.seekp(levelfile.tellp());
+									levelfile.put(' ');
+									levelfile.seekp(levelfile.tellp());
+								}
+							}
+							levelfile.close();
+						}
+						next = GS_LS;
+					}
+				}
+
+				if (current == GS_LEVEL3)
+				{
+					if (it2->second->GetType() == TYPE_CAVE1 && AEInputCheckTriggered(AEVK_UP) && (Colide == true))
+					{
+						std::fstream levelfile;
+						std::string line;
+						int count = 0;
+						levelfile.open("Resources/levels.txt");
+						if (levelfile.is_open())
+						{
+							while (!levelfile.eof())
+							{
+								if (levelfile.get() == '1')
+								{
+									++count;
+								}
+							}
+							levelfile.close();
+						}
+						levelfile.open("Resources/levels.txt");
+						if (levelfile.is_open())
+						{
+							while (!levelfile.eof())
+							{
+								if ((levelfile.get() == ' ') && count < 3)
+								{
+									levelfile.seekp((levelfile.tellp() - static_cast<std::streampos>(1)));
+									levelfile.put('1');
+									levelfile.seekp(levelfile.tellp());
+									levelfile.put(',');
+									levelfile.seekp(levelfile.tellp());
+									levelfile.put(' ');
+									levelfile.seekp(levelfile.tellp());
+								}
+							}
+							levelfile.close();
+						}
+						next = GS_LEVEL4;
+					}
+				}
+				if (current == GS_LEVEL4)
+				{
+					if (it2->second->GetType() == TYPE_CAVE1 && AEInputCheckTriggered(AEVK_UP) && (Colide == true))
+					{
+						std::fstream levelfile;
+						std::string line;
+						int count = 0;
+						levelfile.open("Resources/levels.txt");
+						if (levelfile.is_open())
+						{
+							while (!levelfile.eof())
+							{
+								if (levelfile.get() == '1')
+								{
+									++count;
+								}
+							}
+							levelfile.close();
+						}
+						levelfile.open("Resources/levels.txt");
+						if (levelfile.is_open())
+						{
+							while (!levelfile.eof())
+							{
+								if ((levelfile.get() == ' ') && count < 4)
+								{
+									levelfile.seekp((levelfile.tellp() - static_cast<std::streampos>(1)));
+									levelfile.put('1');
+									levelfile.seekp(levelfile.tellp());
+									levelfile.put(',');
+									levelfile.seekp(levelfile.tellp());
+									levelfile.put(' ');
+									levelfile.seekp(levelfile.tellp());
+								}
+							}
+							levelfile.close();
+						}
+						next = GS_LS;
+					}
+				}
+				if (current == GS_LEVEL5)
+				{
+					if (it2->second->GetType() == TYPE_CAVE1 && AEInputCheckTriggered(AEVK_UP) && (Colide == true))
+					{
+						std::fstream levelfile;
+						std::string line;
+						int count = 0;
+						levelfile.open("Resources/levels.txt");
+						if (levelfile.is_open())
+						{
+							while (!levelfile.eof())
+							{
+								if (levelfile.get() == '1')
+								{
+									++count;
+								}
+							}
+							levelfile.close();
+						}
+						levelfile.open("Resources/levels.txt");
+						if (levelfile.is_open())
+						{
+							while (!levelfile.eof())
+							{
+								if ((levelfile.get() == ' ') && count < 5)
+								{
+									levelfile.seekp((levelfile.tellp() - static_cast<std::streampos>(1)));
+									levelfile.put('1');
+									levelfile.seekp(levelfile.tellp());
+									levelfile.put(',');
+									levelfile.seekp(levelfile.tellp());
+									levelfile.put(' ');
+									levelfile.seekp(levelfile.tellp());
+								}
+							}
+							levelfile.close();
+						}
+						next = GS_LEVEL6;
+					}
+				}
+				if (current == GS_LEVEL6)
+				{
+					if (it2->second->GetType() == TYPE_CAVE1 && AEInputCheckTriggered(AEVK_UP) && (Colide == true))
+					{
+						std::fstream levelfile;
+						std::string line;
+						int count = 0;
+						levelfile.open("Resources/levels.txt");
+						if (levelfile.is_open())
+						{
+							while (!levelfile.eof())
+							{
+								if (levelfile.get() == '1')
+								{
+									++count;
+								}
+							}
+							levelfile.close();
+						}
+						levelfile.open("Resources/levels.txt");
+						if (levelfile.is_open())
+						{
+							while (!levelfile.eof())
+							{
+								if ((levelfile.get() == ' ') && count < 6)
+								{
+									levelfile.seekp((levelfile.tellp() - static_cast<std::streampos>(1)));
+									levelfile.put('1');
+									levelfile.seekp(levelfile.tellp());
+									levelfile.put(',');
+									levelfile.seekp(levelfile.tellp());
+									levelfile.put(' ');
+									levelfile.seekp(levelfile.tellp());
+								}
+							}
+							levelfile.close();
+						}
+						next = GS_LS;
+					}
+				}
+				if (current == GS_LEVEL7)
+				{
+					if (it2->second->GetType() == TYPE_CAVE1 && AEInputCheckTriggered(AEVK_UP) && (Colide == true))
+					{
+						std::fstream levelfile;
+						std::string line;
+						int count = 0;
+						levelfile.open("Resources/levels.txt");
+						if (levelfile.is_open())
+						{
+							while (!levelfile.eof())
+							{
+								if (levelfile.get() == '1')
+								{
+									++count;
+								}
+							}
+							levelfile.close();
+						}
+						levelfile.open("Resources/levels.txt");
+						if (levelfile.is_open())
+						{
+							while (!levelfile.eof())
+							{
+								if ((levelfile.get() == ' ') && count < 7)
+								{
+									levelfile.seekp((levelfile.tellp() - static_cast<std::streampos>(1)));
+									levelfile.put('1');
+									levelfile.seekp(levelfile.tellp());
+									levelfile.put(',');
+									levelfile.seekp(levelfile.tellp());
+									levelfile.put(' ');
+									levelfile.seekp(levelfile.tellp());
+								}
+							}
+							levelfile.close();
+						}
+						next = GS_LEVEL8;
+					}
+				}
+				if (current == GS_LEVEL8)
+				{
+					if (it2->second->GetType() == TYPE_CAVE1 && AEInputCheckTriggered(AEVK_UP) && (Colide == true))
+					{
+						std::fstream levelfile;
+						std::string line;
+						int count = 0;
+						levelfile.open("Resources/levels.txt");
+						if (levelfile.is_open())
+						{
+							while (!levelfile.eof())
+							{
+								if (levelfile.get() == '1')
+								{
+									++count;
+								}
+							}
+							levelfile.close();
+						}
+						levelfile.open("Resources/levels.txt");
+						if (levelfile.is_open())
+						{
+							while (!levelfile.eof())
+							{
+								if ((levelfile.get() == ' ') && count < 8)
+								{
+									levelfile.seekp((levelfile.tellp() - static_cast<std::streampos>(1)));
+									levelfile.put('1');
+									levelfile.seekp(levelfile.tellp());
+									levelfile.put(',');
+									levelfile.seekp(levelfile.tellp());
+									levelfile.put(' ');
+									levelfile.seekp(levelfile.tellp());
+								}
+							}
+							levelfile.close();
+						}
+						next = GS_LS;
+					}
+				}
+				if (current == GS_EXTRA)
+				{
+					if (it2->second->GetType() == TYPE_CAVE1 && AEInputCheckTriggered(AEVK_UP) && (Colide == true))
+					{
+						next = GS_END;
+					}
+				}
+				if (current == GS_END)
+				{
+					if (it2->second->GetType() == TYPE_CAVE1 && AEInputCheckTriggered(AEVK_UP) && (Colide == true))
+					{
+						next = GS_MAINMENU; // To credits then main menu
+					}
+				}
+
+				/*===================================*
+						Player2 - Enemy Collision
+				*====================================*/
+				if (it2->second->GetType() == TYPE_ENEMY)
+				{
+					Enemy* enemy = dynamic_cast<Enemy*>(obj2);
+					/*===================================*
+							Enemy Detect Player
+					*====================================*/
+					if (enemy->GetState() == ENEMY_STATE::STATE_ENEMY_DEATH)
+						continue;
+					if ((enemy->GetState() != ENEMY_STATE::STATE_CHASE_PLAYER) ||
+						((enemy->GetState() == ENEMY_STATE::STATE_CHASE_PLAYER) &&
+							(enemy->GetInnerState() == ENEMY_INNER_STATE::INNER_STATE_ON_EXIT)))
+					{
+						if (CollisionIntersection_RectRect(obj1->GetBoundingBox(), obj1->GetVelocity(),
+							enemy->GetDetectionBox(), enemy->GetVelocity()))
+						{
+							if (enemy->GetState() == ENEMY_STATE::STATE_MOVE_LEFT)
+								enemy->SetPreviousState(ENEMY_STATE::STATE_MOVE_LEFT);
+							else if (enemy->GetState() == ENEMY_STATE::STATE_MOVE_RIGHT)
+								enemy->SetPreviousState(ENEMY_STATE::STATE_MOVE_RIGHT);
+							// If player is detected, change state to chase player.
+							enemy->SetState(ENEMY_STATE::STATE_CHASE_PLAYER);
+							enemy->SetInnerState(ENEMY_INNER_STATE::INNER_STATE_ON_ENTER);
+						}
+					}
+					else if (enemy->GetState() == ENEMY_STATE::STATE_CHASE_PLAYER)
+					{
+						// If the player is not detected by enemy.
+						if (!CollisionIntersection_RectRect(obj1->GetBoundingBox(), obj1->GetVelocity(),
+							enemy->GetDetectionBox(), enemy->GetVelocity()))
+						{
+
+							//load audio manager and play sound
+							//_am.AudioManagerLoad();
+							_am.playeffect("Resources/enemyfoundu.wav", _am.sound, _am.soundeffect, _am.bgm_paused, &_am.test);
+							// Exit out of the Chase Player State.
+							enemy->SetInnerState(ENEMY_INNER_STATE::INNER_STATE_ON_EXIT);
+						}
+					}
+
+					// Check last for enemy hitting player.
+					if (CollisionIntersection_CircCirc(obj1->GetPosition(), obj1->GetScale(),
+						enemy->GetPosition(), enemy->GetScale() * 0.35f))
+					{
+						// Player gets hit.
+						// Change gamestate to restart.
+						next = GS_RESTART;
+					}
+				}
+
+				/*===================================*
+						Player2 - Spike Collision
+				*====================================*/
+				if (it2->second->GetType() == TYPE_SPIKE)
+				{
+					Spikes* spikes = dynamic_cast<Spikes*>(obj2);
+					if (CollisionIntersection_RectRect(obj1->GetBoundingBox(), obj1->GetVelocity(),
+						spikes->GetBoundingBox(), spikes->GetVelocity()))
+					{
+						next = GS_RESTART;
+					}
+				}
+
+				/*===================================*
+						Player2 - Gate Collision
+				*====================================*/
+				if (it2->second->GetType() == TYPE_LEVER_GATE)
+				{
+					Gate* gate = dynamic_cast<Gate*>(obj2);
+					if (gate->GetIsCollidable())
+					{
+						AEVec2 playerPos;
+						AEVec2 playerVel;
+						AEVec2 gatePos;
+						AEVec2 gateVel;
+						AABB gateBoundingBox;
+						float playerScale;
+						float gateScale;
+						playerScale = player2->GetScale();
+						gateScale = gate->GetScale();
+						playerPos = player2->GetPosition();
+						playerVel = player2->GetVelocity();
+						gatePos = gate->GetPosition();
+						gateVel = gate->GetVelocity();
+						gateBoundingBox = gate->GetBoundingBox();
+
+						if (ObjectRightBinaryCollision(playerPos, playerScale, playerVel, gateBoundingBox, gateVel))
+						{
+							playerPos.x = (f32)(gatePos.x - (gateScale * 0.5f) - (playerScale * 0.5));
+						}
+						else if (ObjectLeftBinaryCollision(playerPos, playerScale, playerVel, gateBoundingBox, gateVel))
+						{
+							playerPos.x = (f32)(gatePos.x + (gateScale * 0.5f) + (playerScale * 0.5));
+						}
+						player2->SetPosition(playerPos);
+					}
+				}
+
+				/*===================================*
+						Player2 - ColorObj Collision
+				*====================================*/
+				if (it2->second->GetType() == TYPE_COLOROBJ)
+				{
+					ColorObj* colorobj = dynamic_cast<ColorObj*>(obj2);
+
+					if (CollisionIntersection_RectRect(obj1->GetBoundingBox(), obj1->GetVelocity(),
+						colorobj->GetBoundingBox(), colorobj->GetVelocity()))
+					{
+						if (_tm.GetTileTypeAt(obj1->GetPosition().x, obj1->GetPosition().y) == TileType::TILE_COLOROBJ_RED)
+						{
+							colorobj->SetFlag(false);
+
+							std::fstream colorfile;
+
+							colorfile.open("Resources/color.txt");
+							if (colorfile.is_open())
+							{
+								while (!colorfile.eof())
+								{
+									if (colorfile.get() == 'a')
+									{
+										colorfile.seekp((colorfile.tellp() - static_cast<std::streampos>(1)));
+										colorfile.put('A');
+										colorfile.seekp(colorfile.tellp());
+									}
+								}
+								colorfile.close();
+							}
+						}
+						if (_tm.GetTileTypeAt(obj1->GetPosition().x, obj1->GetPosition().y) == TileType::TILE_COLOROBJ_BLUE)
+						{
+							colorobj->SetFlag(false);
+
+							std::fstream colorfile;
+
+							colorfile.open("Resources/color.txt");
+							if (colorfile.is_open())
+							{
+								while (!colorfile.eof())
+								{
+									if (colorfile.get() == 'b')
+									{
+										colorfile.seekp((colorfile.tellp() - static_cast<std::streampos>(1)));
+										colorfile.put('B');
+										colorfile.seekp(colorfile.tellp());
+									}
+								}
+								colorfile.close();
+							}
+						}
+						if (_tm.GetTileTypeAt(obj1->GetPosition().x, obj1->GetPosition().y) == TileType::TILE_COLOROBJ_GREEN)
+						{
+							colorobj->SetFlag(false);
+
+							std::fstream colorfile;
+
+							colorfile.open("Resources/color.txt");
+							if (colorfile.is_open())
+							{
+								while (!colorfile.eof())
+								{
+									if (colorfile.get() == 'c')
+									{
+										colorfile.seekp((colorfile.tellp() - static_cast<std::streampos>(1)));
+										colorfile.put('C');
+										colorfile.seekp(colorfile.tellp());
+									}
+								}
+								colorfile.close();
+							}
+						}
+						if (_tm.GetTileTypeAt(obj1->GetPosition().x, obj1->GetPosition().y) == TileType::TILE_COLOROBJ_YELLOW)
+						{
+							colorobj->SetFlag(false);
+
+							std::fstream colorfile;
+
+							colorfile.open("Resources/color.txt");
+							if (colorfile.is_open())
+							{
+								while (!colorfile.eof())
+								{
+									if (colorfile.get() == 'd')
+									{
+										colorfile.seekp((colorfile.tellp() - static_cast<std::streampos>(1)));
+										colorfile.put('D');
+										colorfile.seekp(colorfile.tellp());
+									}
+								}
+								colorfile.close();
+							}
+						}
+						if (_tm.GetTileTypeAt(obj1->GetPosition().x, obj1->GetPosition().y) == TileType::TILE_CHECKPOINT)
+						{
+							colorobj->SetFlag(false);
+							AEVec2 resPos = colorobj->GetPosition();
+							player2->SetRestartPos(resPos);
+						}
+					}
+				}
+				/*===================================*
+					Player2 - ImageBox Collision
+				*====================================*/
+				if (it2->second->GetType() == TYPE_IMAGEBOX1 || it2->second->GetType() == TYPE_IMAGEBOX2 || it2->second->GetType() == TYPE_IMAGEBOX3 ||
+					it2->second->GetType() == TYPE_IMAGEBOX4 || it2->second->GetType() == TYPE_IMAGEBOX5 || it2->second->GetType() == TYPE_IMAGEBOX6)
+				{
+					ImageBox* imgBox1 = dynamic_cast<ImageBox*>(it2->second);
+					if (imgBox1->GetShowOnNearEffect())
+					{
+						// When Detected
+						if (CollisionIntersection_RectRect(player2->GetBoundingBox(), player2->GetVelocity(),
+							imgBox1->GetDetectionBox(), imgBox1->GetVelocity()))
+						{
+							imgBox1->SetFlag(true);
+						}
+						// When Not Detected.
+						else if (!CollisionIntersection_RectRect(player2->GetBoundingBox(), player2->GetVelocity(),
+							imgBox1->GetDetectionBox(), imgBox1->GetVelocity()))
+						{
+							imgBox1->SetFlag(false);
+						}
+					}
+				}
+
+				/*===================================*
+						Player2 - ColorObj Collision
+				*====================================*/
+				if (it2->second->GetType() == TYPE_CHCKPT)
+				{
+					Checkpoint* checkpoint = dynamic_cast<Checkpoint*>(obj2);
+
+					if (CollisionIntersection_RectRect(obj1->GetBoundingBox(), obj1->GetVelocity(),
+						checkpoint->GetBoundingBox(), checkpoint->GetVelocity()))
+					{
+						if (_tm.GetTileTypeAt(obj1->GetPosition().x, obj1->GetPosition().y) == TileType::TILE_CHECKPOINT)
+						{
+							checkpoint->SetFlag(false);
+							AEVec2 resPos = checkpoint->GetPosition();
+							player2->SetRestartPos(resPos);
+						}
+					}
+				}
+			}
+		}
+
+		/*===================================*
 				Enemy Object Check
 		*====================================*/
 		if (obj1->GetType() == TYPE_ENEMY)

@@ -23,6 +23,7 @@ private:
 	bool isStanding = false;
 	bool pull = false;
 	Color startingColor = Color::COLOR_GREY;
+	int playerid = -1;
 
 public:
 	/*===================================*
