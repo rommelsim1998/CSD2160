@@ -7,6 +7,9 @@ FP fpLoad = nullptr, fpInitialize = nullptr,
 fpUpdate = nullptr, fpDraw = nullptr, fpFree = nullptr,
 fpUnload = nullptr;
 
+// Variables
+static int connectedClientCount{ 0 };
+
 // See if want to implement the managers into a class instead.
 
 // With a defined constructor that has member initialisation list for current, etc..

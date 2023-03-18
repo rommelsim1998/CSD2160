@@ -122,11 +122,12 @@ void GameStateLevelconnectInit(void)
 void GameStateLevelconnectUpdate(void)
 {
 
+	/*
 	if (AEInputCheckTriggered(AEVK_ESCAPE))
 	{
 		next = GS_MAINMENU; // To main menu
 	}
-
+	*/
 
 
 	Network::ClientConnectionStageUpdate();
@@ -135,7 +136,7 @@ void GameStateLevelconnectUpdate(void)
 	if (!isPaused)
 	{
 		_em.EntityManagerUpdate();      // Logic
-		_pm.PhysicsManagerUpdate();     // Physics
+		_pm.PhysicsManagerUpdate(5);     // Physics
 		_cm.CollisionManagerUpdate();   // Collision (And Collision Response)
 		_bm.BackgroundManagerUpdate();
 		_um.UIManagerUpdate();

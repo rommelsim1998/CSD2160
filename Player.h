@@ -11,6 +11,9 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#include <array>
+#include "AEVec2.h"
+ 
 #include "Constants.h"
 
 class Player : public GameObject{
@@ -25,6 +28,14 @@ private:
 	Color startingColor = Color::COLOR_GREY;
 
 public:
+
+
+	std::array<int, 4> pressedDurations{ 0 }; // Store held durations of each axis. Indices: XHeld = 0, XReleased = 1, YHeld = 2, YReleased = 3
+	std::array<int, 4> applyDuration{ 0 };
+	bool isCatcher{ false };
+	int score{};
+	int roundScore{};
+
 	/*===================================*
 				Constructors
 	*====================================*/

@@ -27,6 +27,8 @@ void GameStateLevelconnectFree();
 
 void GameStateLevelconnectUnload();
 
+
+
 // ---------------------------------------------------------------------------
 
 #endif // CS230_GAME_STATE_LEVEL_CONNECT_H_
