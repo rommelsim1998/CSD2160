@@ -71,6 +71,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include "Player2.h"
 // ==== MANAGERS ====
 
+
 #include "TileManager.h"
 #include "EntityManager.h"
 #include "PhysicsManager.h"
@@ -83,10 +84,12 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include "OptionsMenuManager.h"
 
 
+
 // ==== OTHERS ====
 
 #include "Main.h"
 #include "GameStateManager.h"
+
 
 // ==== VALUES ====
 

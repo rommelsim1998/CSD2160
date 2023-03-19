@@ -8,8 +8,11 @@ Copyright (C) 2021 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the
 prior written consent of DigiPen Institute of Technology is prohibited.
 ******************************************************************************/
-#include "../ConnectionManager.h"
+
+
 #include "Constants.h"
+
+
 
 using _em = EntityManager;
 static TileManager& _tm = TileManager::GetInstance();
@@ -49,7 +52,7 @@ Player2::Player2(int id) : GameObject{ TYPE_PLAYER2, id }, test{ 6 }
 	if (current == GS_LEVEL1 || current == GS_MAINMENU || current == GS_LEVEL2 || current == GS_TESTLEVEL ||
 		current == GS_LEVEL4 || current == GS_LEVEL7 || current == GS_LEVEL8) //King Story
 	{
-		startingColor = Color::COLOR_YELLOW;
+		startingColor = Color::COLOR_GREY;
 	}
 	else if (current == GS_LEVEL6 || current == GS_LEVEL3)
 	{

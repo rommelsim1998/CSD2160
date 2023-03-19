@@ -8,7 +8,7 @@ Copyright (C) 2021 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the
 prior written consent of DigiPen Institute of Technology is prohibited.
 ******************************************************************************/
-#include "../ConnectionManager.h"
+
 #include "Constants.h"
 
 
@@ -266,12 +266,14 @@ void Player::GameObjectUpdate()
 			// Blue color
 			if (((found = line.find("B")) != std::string::npos))
 			{
+				/*
 				if (Connectionmanager::isMultiplayer == true)
 				{
 					//  do nothing
 				}
 				else
 				{
+				*/
 					if (AEInputCheckTriggered(AEVK_2) &&
 						(_bm.GetCounter() <= 0.0f))
 					{
@@ -295,7 +297,7 @@ void Player::GameObjectUpdate()
 							}
 						}
 					}
-				}
+				//}
 			}
 			// Green color
 			if (((found = line.find("C")) != std::string::npos))
@@ -327,13 +329,14 @@ void Player::GameObjectUpdate()
 			// Yellow color
 			if (((found = line.find("D")) != std::string::npos))
 			{
-
+				/*
 				if (Connectionmanager::isMultiplayer == true)
 				{
 					//  do nothing
 				}
 				else
 				{
+				*/
 				
 					if (AEInputCheckTriggered(AEVK_4) &&
 						(_bm.GetCounter() <= 0.0f))
@@ -358,7 +361,7 @@ void Player::GameObjectUpdate()
 							}
 						}
 					}
-				}
+				//}
 			
 			}
 		}
