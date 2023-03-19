@@ -64,12 +64,17 @@ namespace Connectionmanager {
 
 	void Update()
 	{
-
+		//! 2 Players not connected yet. Continue listening for go ahead from server
+		if (!Connectionmanager::is2PlayersConnected)
+			ConnectionStageUpdate();
+		else
+			GameLoopStageUpdate();
 	}
 
 	void PreUpdate()
 	{
-
+		if (Connectionmanager::is2PlayersConnected)
+			GameLoopStagePostUpdate();
 	}
 
 

@@ -131,6 +131,16 @@ void GameStateLevelconnectUpdate(void)
 
 
 	Network::ClientConnectionStageUpdate();
+
+	//
+	if (Network::connectedClientCount == 2)
+	{
+		std::cout<<"2 clients connected \n";
+
+		next = GS_MLEVEL1;
+	}
+
+
 	//if its in pause state
 	/*
 	if (!isPaused)

@@ -82,7 +82,7 @@ void GameStateLevelconnectInit(void)
 	pTex3 = AEGfxTextureLoad("Resources/player_waiting.png");
 	AE_ASSERT_MESG(pTex3, "fail!!");
 	cy = 0.0f;
-	std::string ipAddr{ "192.168.1.125" };
+	std::string ipAddr{ "192.168.29.56" };
 	unsigned short port{ 54000 };
 
 
