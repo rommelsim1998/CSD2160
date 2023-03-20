@@ -8,6 +8,7 @@
 static unsigned char connectClients;
 static std::array<sockaddr_in, 2> clientAddresses;
 const int MTU = 1000;
+static bool is2PlayersConnected;
 
 class System
 {

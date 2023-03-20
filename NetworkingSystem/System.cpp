@@ -52,7 +52,7 @@ void Server::Init(const std::string& _ipAddress, unsigned short _portNumber)
 
 void Server::Update()
 {
-	std::cout << "[Server]: Server updating\n";
+	//std::cout << "[Server]: " << connectClients << std::endl;
 	std::memset(&m_buffer, 0, MTU);
 	sockaddr_in newClientAddress;
 	int newClientAddress_size = sizeof(newClientAddress);
@@ -60,12 +60,12 @@ void Server::Update()
 
 	int BytesRecieved = recvfrom(m_recvSocket, m_buffer, MTU, 0, reinterpret_cast<SOCKADDR*>(&newClientAddress), &newClientAddress_size);
 	std::cout << BytesRecieved << std::endl;
-
 	if (BytesRecieved == SOCKET_ERROR)
 	{
 		int wsaError{ WSAGetLastError() };
 		if (wsaError != WSAEWOULDBLOCK)
 			std::cerr << "Error recvfrom: " << WSAGetLastError() << std::endl;
+		std::cout << wsaError << std::endl;
 	}
 	else
 	{
@@ -97,11 +97,14 @@ void Server::Update()
 
 	char clientIP[256];
 	inet_ntop(AF_INET, &newClientAddress.sin_addr, clientIP, 256);
+	if (connectClients >= 2)
+		is2PlayersConnected = true;
+	
 }
 
 void Client::Init(const std::string& _ipAddress, unsigned short _portNumber)
 {
-	std::cout << "[Client]: Initializing WSA and server information" << std::endl;
+	std::cout << "[Client]: Initializing WSA and server informationdddd" << std::endl;
 	//! Initialize WSA
 	WSADATA wsaData{};
 	int wsaErr{ WSAStartup(MAKEWORD(2, 2), &wsaData) };
