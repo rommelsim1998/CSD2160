@@ -16,8 +16,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 // Networking Components
 #include "../NetworkingSystem/System.h"
-std::unique_ptr<System> ServerHandle;
-const std::string ip = "192.168.232.44";
+std::unique_ptr<Server> ServerHandle;
+const std::string ip = "172.20.10.2";
 const short unsigned port = 5050;
 
 /*
@@ -93,8 +93,10 @@ void GameStateLevelconnectInit(void)
 	cy = 0.0f;
 
 	// Server Init
-	ServerHandle = std::make_unique<System>();
-	ServerHandle->Init(ip, port, System::SERVER);
+	ServerHandle = std::make_unique<Server>();
+	ServerHandle->Init(ip, port);
+	/*ServerHandle = std::make_unique<System>();
+	ServerHandle->Init(ip, port, System::SERVER);*/
 	//Network::Init(ip, port);
 
 	//// gets host name and ip address of the host automatically, no need to key in manually

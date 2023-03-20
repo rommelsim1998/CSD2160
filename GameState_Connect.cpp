@@ -17,8 +17,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 // Networking Components
 #include "NetworkingSystem/System.h"
-std::unique_ptr<System> ClientHandle;
-const std::string ip = "192.168.232.44";
+std::unique_ptr<Client> ClientHandle;
+const std::string ip = "172.20.10.2";
 const short unsigned port = 5050;
 
 #pragma comment(lib, "Ws2_32.lib")
@@ -102,8 +102,8 @@ void GameStateLevelconnectInit(void)
 	//	next = GS_STATES::GS_LEVEL1;
 	//	std::cout << "Going to Level 1 now\n";
 	//}
-	ClientHandle = std::make_unique<System>();
-	ClientHandle->Init(ip, port, System::CLIENT);
+	ClientHandle = std::make_unique<Client>();
+	ClientHandle->Init(ip, port);
 
 }
 
@@ -120,6 +120,10 @@ void GameStateLevelconnectUpdate(void)
 	//	Connectionmanager::GameLoopStageUpdate();
 	//Network::ConnectionStageUpdate();
 	//Connectionmanager::ConnectionStageUpdate();
+
+
+	/*char buffer[1000] = "HEHE\n";
+	ClientHandle->Send(buffer, 1000, ip, port);*/
 	ClientHandle->Update();
 	if (current == GS_CONNECTION)
 	{

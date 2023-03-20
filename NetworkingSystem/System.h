@@ -17,13 +17,27 @@ public:
 		SERVER = 0,
 		CLIENT
 	};
-	SOCKET m_sendSocket;
-	SOCKET m_recvSocket;
-	sockaddr_in m_serverAddr;
-	char m_buffer[MTU];
+	static SOCKET m_sendSocket;
+	static SOCKET m_recvSocket;
+	static sockaddr_in m_serverAddr;
+	static char m_buffer[MTU];
 	TYPE m_type;
-	void Init(const std::string& _ipAddress, unsigned short _portNumber, TYPE _type);
-	void Send(void* buffer, size_t len, const std::string& ip, unsigned short port);
-	void Recieve(void* buffer, size_t len, const std::string& ip, unsigned short port);
+	virtual void Init(const std::string& _ipAddress, unsigned short _portNumber) {}
+	virtual void Send(void* buffer, size_t len, const std::string& ip, unsigned short port) {}
+	virtual void Recieve(void* buffer, size_t len, const std::string& ip, unsigned short port) {}
+	virtual void Update() {}
+};
+
+class Server : public System
+{
+public:
+	void Init(const std::string& _ipAddress, unsigned short _portNumber);
+	void Update();
+};
+
+class Client : public System
+{
+public:
+	void Init(const std::string& _ipAddress, unsigned short _portNumber);
 	void Update();
 };
