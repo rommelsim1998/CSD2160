@@ -18,7 +18,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 // Networking Components
 #include "NetworkingSystem/System.h"
 std::unique_ptr<Client> ClientHandle;
-const std::string ip = "192.168.232.44";
+const std::string ip = "192.168.50.119";
 const short unsigned port = 54000;
 
 #pragma comment(lib, "Ws2_32.lib")
@@ -125,11 +125,18 @@ void GameStateLevelconnectUpdate(void)
 	/*char buffer[1000] = "HEHE\n";
 	ClientHandle->Send(buffer, 1000, ip, port);*/
 	ClientHandle->Update();
+
+
 	if (current == GS_CONNECTION)
 	{
 		if (AEInputCheckTriggered(AEVK_ESCAPE))
 		{
 			next = GS_MAINMENU; // To main menu
+		}
+		if(AEInputCheckTriggered(AEVK_SPACE))
+		{
+			char tmp[100] = "hello\n";
+			ClientHandle->Send(tmp, 100);
 		}
 	}
 	

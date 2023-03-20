@@ -34,6 +34,7 @@ class Server : public System
 public:
 	void Init(const std::string& _ipAddress, unsigned short _portNumber);
 	void Update();
+	void Send(void* buffer, int len);
 };
 
 class Client : public System
@@ -41,4 +42,5 @@ class Client : public System
 public:
 	void Init(const std::string& _ipAddress, unsigned short _portNumber);
 	void Update();
+	void Send(void* buffer, int len);
 };

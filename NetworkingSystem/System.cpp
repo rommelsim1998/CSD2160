@@ -59,16 +59,15 @@ void Server::Update()
 	std::memset(&newClientAddress, 0, newClientAddress_size);
 
 	int BytesRecieved = recvfrom(m_recvSocket, m_buffer, MTU, 0, reinterpret_cast<SOCKADDR*>(&newClientAddress), &newClientAddress_size);
-	std::cout << BytesRecieved << std::endl;
 	if (BytesRecieved == SOCKET_ERROR)
 	{
 		int wsaError{ WSAGetLastError() };
 		if (wsaError != WSAEWOULDBLOCK)
 			std::cerr << "Error recvfrom: " << WSAGetLastError() << std::endl;
-		std::cout << wsaError << std::endl;
 	}
 	else
 	{
+		std::cout << BytesRecieved << " bytes received\n";
 		for (auto& clients : clientAddresses)
 		{
 			if (clients.sin_addr.S_un.S_addr == newClientAddress.sin_addr.S_un.S_addr) return;
@@ -100,6 +99,12 @@ void Server::Update()
 	if (connectClients >= 2)
 		is2PlayersConnected = true;
 	
+}
+
+void Server::Send(void* buffer, int len)
+{
+	sendto(m_sendSocket, (const char*)buffer, len, 0, reinterpret_cast<SOCKADDR*>(&m_serverAddr), sizeof(m_serverAddr));
+	std::cout << "[Server]: Sending " << len << " bytes of data\n";
 }
 
 void Client::Init(const std::string& _ipAddress, unsigned short _portNumber)
@@ -157,6 +162,13 @@ void Client::Update()
 	}
 	else
 	{
-		std::cout << "[Client]: Sending\n";
+		std::cout << "[Client]: Receiving " << bytes << " of data\n";
 	}
+}
+
+void Client::Send(void* buffer, int len)
+{
+	sendto(m_sendSocket, (const char*)buffer, len, 0, reinterpret_cast<SOCKADDR*>(&m_serverAddr), sizeof(m_serverAddr));
+	std::cout << "[Client]: Sending " << len << " bytes of data\n";
+
 }
