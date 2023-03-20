@@ -28,7 +28,7 @@ const short unsigned port = 54000;
 #include "External Libs/AlphaEngine_V3.08/include/AEEngine.h"
 static bool isConnected = false;
 
-
+GameObject* go1;
 AEMtx33 Connectscale, ConnectPosition, Connectfinish;
 AEVec2 Connectpos{ 0.0f, 0.0f };
 AEGfxVertexList* pMesh3 = 0;
@@ -102,6 +102,9 @@ void GameStateLevelconnectInit(void)
 	//	next = GS_STATES::GS_LEVEL1;
 	//	std::cout << "Going to Level 1 now\n";
 	//}
+
+	auto& entities = EntityManager::GetInstance();
+
 	ClientHandle = std::make_unique<Client>();
 	ClientHandle->Init(ip, port);
 
@@ -124,6 +127,9 @@ void GameStateLevelconnectUpdate(void)
 
 	/*char buffer[1000] = "HEHE\n";
 	ClientHandle->Send(buffer, 1000, ip, port);*/
+
+	std::cout << System::connectClients << std::endl;			// wtf?
+
 	ClientHandle->Update();
 
 
@@ -133,13 +139,12 @@ void GameStateLevelconnectUpdate(void)
 		{
 			next = GS_MAINMENU; // To main menu
 		}
-		if(AEInputCheckTriggered(AEVK_SPACE))
+		if (AEInputCheckTriggered(AEVK_SPACE))
 		{
 			char tmp[100] = "hello\n";
 			ClientHandle->Send(tmp, 100);
 		}
 	}
-	
 
 	// get IP address and try connect here
 

@@ -4,7 +4,10 @@
 SOCKET System::m_sendSocket;
 SOCKET System::m_recvSocket;
 sockaddr_in System::m_serverAddr;
+int System::connectClients;
+bool System::playersConnected2;
 char System::m_buffer[MTU];
+
 
 void Server::Init(const std::string& _ipAddress, unsigned short _portNumber)
 {
@@ -67,7 +70,7 @@ void Server::Update()
 	}
 	else
 	{
-		std::cout << "[Server]: " << BytesRecieved << " bytes received\n";
+		std::cout << "[Server]: " << BytesRecieved << " bytes received. Message is: " << m_buffer << std::endl;
 		for (auto& clients : clientAddresses)
 		{
 			if (clients.sin_addr.S_un.S_addr == newClientAddress.sin_addr.S_un.S_addr) return;
@@ -89,15 +92,17 @@ void Server::Update()
 			if (clientAddresses[i].sin_addr.S_un.S_addr == 0)
 				continue;
 
-			char clientMsg[MTU] = "[Server]: HEHE\n";
+			char clientMsg[MTU] = "[Server]: Welcome new player!\n";
 			sendto(m_recvSocket, clientMsg, MTU, 0, reinterpret_cast<SOCKADDR*>(&clientAddresses[i]), sizeof(clientAddresses[i]));
 		}
 	}
 
 	char clientIP[256];
 	inet_ntop(AF_INET, &newClientAddress.sin_addr, clientIP, 256);
-	if (connectClients >= 2)
-		is2PlayersConnected = true;
+	if (connectClients >= 0)
+	{
+		playersConnected2 = true;
+	}
 	
 }
 

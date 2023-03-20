@@ -144,6 +144,9 @@ void GameStateLevelconnectUpdate(void)
 		char tmp[MTU] = "hello\n";
 		ServerHandle->Send(tmp, MTU);
 	}
+	//std::cout << System::connectClients << std::endl;
+
+
 	//Network::ClientConnectionStageUpdate();
 
 	//
