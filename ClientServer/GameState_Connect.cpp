@@ -88,7 +88,7 @@ void GameStateLevelconnectInit(void)
 	cy = 0.0f;
 
 	// Server Init
-	const std::string ip = "192.168.232.97";
+	const std::string ip = "172.20.10.2";
 	const short unsigned port = 5050;
 	Network::Init(ip, port);
 
@@ -137,7 +137,7 @@ void GameStateLevelconnectUpdate(void)
 	{
 		std::cout<<"2 clients connected \n";
 
-		next = GS_MLEVEL1;
+		//next = GS_MLEVEL1;
 	}
 
 
