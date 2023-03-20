@@ -116,7 +116,8 @@ void GameStateLevelconnectInit(void)
 
 
 
-	//std::cout << "Server Side initialized \n";
+	//std::cout << "Server Side initialized \n";>	Chroma.exe!Client::Update() Line 157	C++
+
 	//std::cout << "Server Ip Address: "<<ip <<"\n";
 	//std::cout << "Server Port is "<<port<<"\n";
 }
@@ -137,6 +138,12 @@ void GameStateLevelconnectUpdate(void)
 	*/
 
 	ServerHandle->Update();
+
+	if (AEInputCheckTriggered(AEVK_SPACE))
+	{
+		char tmp[MTU] = "hello\n";
+		ServerHandle->Send(tmp, MTU);
+	}
 	//Network::ClientConnectionStageUpdate();
 
 	//

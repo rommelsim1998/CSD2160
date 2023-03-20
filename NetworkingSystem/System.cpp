@@ -63,11 +63,11 @@ void Server::Update()
 	{
 		int wsaError{ WSAGetLastError() };
 		if (wsaError != WSAEWOULDBLOCK)
-			std::cerr << "Error recvfrom: " << WSAGetLastError() << std::endl;
+			std::cerr << "[Server]: Error recvfrom: " << WSAGetLastError() << std::endl;
 	}
 	else
 	{
-		std::cout << BytesRecieved << " bytes received\n";
+		std::cout << "[Server]: " << BytesRecieved << " bytes received\n";
 		for (auto& clients : clientAddresses)
 		{
 			if (clients.sin_addr.S_un.S_addr == newClientAddress.sin_addr.S_un.S_addr) return;
@@ -78,7 +78,7 @@ void Server::Update()
 			if (client.sin_addr.S_un.S_addr == 0)
 			{
 				client = newClientAddress;
-				std::cout << "New client added\n";
+				std::cout << "[Server]: New client added\n";
 				++connectClients;
 				break;
 			}
@@ -89,7 +89,7 @@ void Server::Update()
 			if (clientAddresses[i].sin_addr.S_un.S_addr == 0)
 				continue;
 
-			char clientMsg[MTU] = "HEHE\n";
+			char clientMsg[MTU] = "[Server]: HEHE\n";
 			sendto(m_recvSocket, clientMsg, MTU, 0, reinterpret_cast<SOCKADDR*>(&clientAddresses[i]), sizeof(clientAddresses[i]));
 		}
 	}
@@ -103,8 +103,16 @@ void Server::Update()
 
 void Server::Send(void* buffer, int len)
 {
-	sendto(m_sendSocket, (const char*)buffer, len, 0, reinterpret_cast<SOCKADDR*>(&m_serverAddr), sizeof(m_serverAddr));
-	std::cout << "[Server]: Sending " << len << " bytes of data\n";
+
+	for (int i = 0; i < clientAddresses.size(); ++i)
+	{
+		if (clientAddresses[i].sin_addr.S_un.S_addr == 0)
+			continue;
+
+		sendto(m_recvSocket, (const char*)buffer, MTU, 0, reinterpret_cast<SOCKADDR*>(&clientAddresses[i]), sizeof(clientAddresses[i]));
+		std::cout << "[Server]: Sending " << len << " bytes of data to " << clientAddresses[i].sin_addr.S_un.S_addr << std::endl;
+	}
+	//sendto(m_sendSocket, (const char*)buffer, len, 0, reinterpret_cast<SOCKADDR*>(&m_serverAddr), sizeof(m_serverAddr));
 }
 
 void Client::Init(const std::string& _ipAddress, unsigned short _portNumber)
@@ -143,7 +151,7 @@ void Client::Init(const std::string& _ipAddress, unsigned short _portNumber)
 	int sendresult{ sendto(m_sendSocket, m_buffer, MTU, 0, reinterpret_cast<SOCKADDR*>(&m_serverAddr), sizeof(m_serverAddr)) };
 	if (sendresult == SOCKET_ERROR)
 	{
-		std::cerr << "Sendto() error: " << WSAGetLastError() << std::endl;
+		std::cerr << "[Client]: Sendto() error: " << WSAGetLastError() << std::endl;
 		closesocket(m_sendSocket);
 		WSACleanup();
 		std::exit(EXIT_FAILURE);
