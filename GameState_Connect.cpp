@@ -20,7 +20,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 
 #include "External Libs/AlphaEngine_V3.08/include/AEEngine.h"
-
+static bool isConnected = false;
 
 
 AEMtx33 Connectscale, ConnectPosition, Connectfinish;
@@ -82,15 +82,20 @@ void GameStateLevelconnectInit(void)
 	pTex3 = AEGfxTextureLoad("Resources/player_waiting.png");
 	AE_ASSERT_MESG(pTex3, "fail!!");
 	cy = 0.0f;
-	std::string ipAddr{ "192.168.29.56" };
+	std::string ipAddr{ "172.20.10.2" };
 	unsigned short port{ 54000 };
 
 
 	//Network::Initialize(ipAddr, port);
-	Connectionmanager::Connect(ipAddr, port);
 	std::cout << "Client Side Initialized\n";
 	std::cout << "Client connecting to IP: "<<ipAddr<<"\n";
 	std::cout << "Client connecting to PORT: "<<port<<"\n";
+	Connectionmanager::Connect(ipAddr, port, isConnected);
+	if (isConnected)
+	{
+		next = GS_STATES::GS_LEVEL1;
+		std::cout << "Going to Level 1 now\n";
+	}
 
 }
 
@@ -114,15 +119,10 @@ void GameStateLevelconnectUpdate(void)
 		{
 			next = GS_MAINMENU; // To main menu
 		}
-
-
-
-
 	}
 	
 
 	// get IP address and try connect here
-
 
 
 	/*

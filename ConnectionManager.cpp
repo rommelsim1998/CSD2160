@@ -2,7 +2,7 @@
 
 namespace Connectionmanager {
 
-
+	
 
 	//void CreateGameMessage(char* _buffer, int _bufferSize, int _playerID, const std::array<int, 4>& _playerInputData, uint32_t _seq);
 
@@ -10,9 +10,7 @@ namespace Connectionmanager {
 	void HandleAuthoritativePosition(const char* _buffer);
 
 
-
-
-	void Connect(const std::string& _ipAddress, unsigned short _portNum)
+	void Connect(const std::string& _ipAddress, unsigned short _portNum, bool& isConnected)
 	{
 
 		std::cout << "Initializing WSA and server information" << std::endl;
@@ -48,6 +46,7 @@ namespace Connectionmanager {
 		//! TESTING OF SENDING MESSAGE TO SERVER
 		std::cout << "Sending message to server..." << std::endl;
 		sprintf_s(buffer, "Hello from Client!"); // Write to buffer
+		isConnected = true;
 
 		//! Send datagram to server
 		int sendResult{ sendto(sendSocket, buffer, MTU, 0, reinterpret_cast<SOCKADDR*>(&serverAddr), sizeof(serverAddr)) };

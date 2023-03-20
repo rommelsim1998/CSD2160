@@ -53,7 +53,7 @@ namespace Connectionmanager
 	static bool isMultiplayer = true;
 
 
-	void Connect(const std::string& _ipAddress, unsigned short _portNum);
+	void Connect(const std::string& _ipAddress, unsigned short _portNum, bool& isConnected);
 
 	void PreUpdate();
 
