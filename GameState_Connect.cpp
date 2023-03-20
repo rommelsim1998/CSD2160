@@ -15,6 +15,12 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include "Main.h"
 #include <iostream>
 
+// Networking Components
+#include "NetworkingSystem/System.h"
+std::unique_ptr<System> ClientHandle;
+const std::string ip = "192.168.232.44";
+const short unsigned port = 5050;
+
 #pragma comment(lib, "Ws2_32.lib")
 
 
@@ -82,20 +88,22 @@ void GameStateLevelconnectInit(void)
 	pTex3 = AEGfxTextureLoad("Resources/player_waiting.png");
 	AE_ASSERT_MESG(pTex3, "fail!!");
 	cy = 0.0f;
-	std::string ipAddr{ "172.20.10.2" };
-	unsigned short port{ 54000 };
+	//std::string ipAddr{ "172.20.10.2" };
+	//unsigned short port{ 54000 };
 
 
-	//Network::Initialize(ipAddr, port);
-	std::cout << "Client Side Initialized\n";
-	std::cout << "Client connecting to IP: "<<ipAddr<<"\n";
-	std::cout << "Client connecting to PORT: "<<port<<"\n";
-	Connectionmanager::Connect(ipAddr, port, isConnected);
-	if (isConnected)
-	{
-		next = GS_STATES::GS_LEVEL1;
-		std::cout << "Going to Level 1 now\n";
-	}
+	////Network::Initialize(ipAddr, port);
+	//std::cout << "Client Side Initialized\n";
+	//std::cout << "Client connecting to IP: "<<ipAddr<<"\n";
+	//std::cout << "Client connecting to PORT: "<<port<<"\n";
+	//Connectionmanager::Connect(ipAddr, port, isConnected);
+	//if (isConnected)
+	//{
+	//	next = GS_STATES::GS_LEVEL1;
+	//	std::cout << "Going to Level 1 now\n";
+	//}
+	ClientHandle = std::make_unique<System>();
+	ClientHandle->Init(ip, port, System::CLIENT);
 
 }
 
@@ -111,8 +119,8 @@ void GameStateLevelconnectUpdate(void)
 	//else
 	//	Connectionmanager::GameLoopStageUpdate();
 	//Network::ConnectionStageUpdate();
-	Connectionmanager::ConnectionStageUpdate();
-
+	//Connectionmanager::ConnectionStageUpdate();
+	ClientHandle->Update();
 	if (current == GS_CONNECTION)
 	{
 		if (AEInputCheckTriggered(AEVK_ESCAPE))

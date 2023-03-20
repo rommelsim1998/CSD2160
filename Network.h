@@ -1,6 +1,6 @@
 #pragma once
 
-#include <WS2tcpip.h>
+//#include <WS2tcpip.h>
 #include <string>
 #include <queue>
 #include <chrono>
@@ -40,7 +40,7 @@ namespace Network
 	//static AEVec2 player2PrevPosition{ 0.f };
 	static uint_least32_t sequenceNumber{ 0 };
 
-	inline void Initialize(const std::string& _ipAddress, unsigned short _portNumber)
+	inline void Initialize(		)
 	{
 		std::cout << "Initializing WSA and server information" << std::endl;
 		//! Initialize WSA

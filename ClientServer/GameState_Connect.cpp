@@ -14,6 +14,11 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include "Main.h"
 #include "GameState_Connect.h"
 
+// Networking Components
+#include "../NetworkingSystem/System.h"
+std::unique_ptr<System> ServerHandle;
+const std::string ip = "192.168.232.44";
+const short unsigned port = 5050;
 
 /*
 // Create manager instances. (Make them static)
@@ -88,30 +93,30 @@ void GameStateLevelconnectInit(void)
 	cy = 0.0f;
 
 	// Server Init
-	const std::string ip = "172.20.10.2";
-	const short unsigned port = 5050;
-	Network::Init(ip, port);
+	ServerHandle = std::make_unique<System>();
+	ServerHandle->Init(ip, port, System::SERVER);
+	//Network::Init(ip, port);
 
-	// gets host name and ip address of the host automatically, no need to key in manually
-	char hostname[1024];
-	gethostname(hostname, 1024);
+	//// gets host name and ip address of the host automatically, no need to key in manually
+	//char hostname[1024];
+	//gethostname(hostname, 1024);
 
-	struct addrinfo hints, * addr;
-	ZeroMemory(&hints, sizeof(hints));
-	hints.ai_family = AF_INET;
+	//struct addrinfo hints, * addr;
+	//ZeroMemory(&hints, sizeof(hints));
+	//hints.ai_family = AF_INET;
 
-	getaddrinfo(hostname, NULL, &hints, &addr);
+	//getaddrinfo(hostname, NULL, &hints, &addr);
 
-	char ipstr[INET_ADDRSTRLEN];
-	inet_ntop(addr->ai_family, &(((struct sockaddr_in*)addr->ai_addr)->sin_addr), ipstr, sizeof(ipstr));
-	std::cout << "IP address: " << ipstr << std::endl;
-
-
+	//char ipstr[INET_ADDRSTRLEN];
+	//inet_ntop(addr->ai_family, &(((struct sockaddr_in*)addr->ai_addr)->sin_addr), ipstr, sizeof(ipstr));
+	//std::cout << "IP address: " << ipstr << std::endl;
 
 
-	std::cout << "Server Side initialized \n";
-	std::cout << "Server Ip Address: "<<ip <<"\n";
-	std::cout << "Server Port is "<<port<<"\n";
+
+
+	//std::cout << "Server Side initialized \n";
+	//std::cout << "Server Ip Address: "<<ip <<"\n";
+	//std::cout << "Server Port is "<<port<<"\n";
 }
 
 /**************************************************************************/
@@ -129,16 +134,16 @@ void GameStateLevelconnectUpdate(void)
 	}
 	*/
 
-
-	Network::ClientConnectionStageUpdate();
+	ServerHandle->Update();
+	//Network::ClientConnectionStageUpdate();
 
 	//
-	if (Network::connectedClientCount == 2)
-	{
-		std::cout<<"2 clients connected \n";
+	//if (Network::connectedClientCount == 2)
+	//{
+	//	std::cout<<"2 clients connected \n";
 
-		//next = GS_MLEVEL1;
-	}
+	//	//next = GS_MLEVEL1;
+	//}
 
 
 	//if its in pause state
