@@ -136,6 +136,7 @@ void GSM_Update()
 		fpFree = GameStateLevelconnectFree;
 		fpUnload = GameStateLevelconnectUnload;
 		break;
+		/*
 	case GS_MLEVEL1:
 		fpLoad = GameStateMLevel1Load;
 		fpInitialize = GameStateMLevel1Init;
@@ -144,6 +145,7 @@ void GSM_Update()
 		fpFree = GameStateMLevel1Free;
 		fpUnload = GameStateMLevel1Unload;
 		break;
+		*/
 		/*
 	case GS_MLEVEL2:
 		fpLoad = GameStateMLevel2Load;
