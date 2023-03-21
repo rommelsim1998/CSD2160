@@ -81,26 +81,36 @@ void Server::Update()
 		}
 
 		// Append new client IP into my list
-		for (auto& client : clientAddresses)
+		if(newClientAddress.sin_addr.S_un.S_addr != 0)
 		{
-			if (client.sin_addr.S_un.S_addr == 0)
-			{
-				client = newClientAddress;
-				std::cout << "[Server]: New client added\n";
-				++connectedClient;
-				break;
-			}
+			clientAddresses.push_back(newClientAddress);
+			++connectedClient;
+			Send(&connectedClient, MTU);
+			return;
 		}
+		//else
+		//{
+		//	for (auto& client : clientAddresses)
+		//	{
+		//		if (client.sin_addr.S_un.S_addr == 0)
+		//		{
+		//			//client = newClientAddress;
+		//			clientAddresses.push_back(newClientAddress);
+		//			std::cout << "[Server]: New client added\n";
+		//			++connectedClient;
+		//			break;
+		//		}
+		//	}
+		//}
 
 		//for (int i = 0; i < clientAddresses.size(); ++i)
 		//{
 		//	if (clientAddresses[i].sin_addr.S_un.S_addr == 0)
 		//		continue;
-
 		//	//std::string clientMsg = std::to_string(connectedClient);
 		//	//sendto(m_recvSocket, clientMsg.c_str(), MTU, 0, reinterpret_cast<SOCKADDR*>(&clientAddresses[i]), sizeof(clientAddresses[i]));
 		//}
-		Send(&connectedClient, MTU);
+		
 	}
 
 	char clientIP[256];

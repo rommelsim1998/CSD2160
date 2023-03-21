@@ -4,9 +4,11 @@
 #include <stdio.h>
 #include <iostream>
 #include <array>
+#include <vector>
 #include <WS2tcpip.h>
 
-static std::array<sockaddr_in, 2> clientAddresses;
+//static std::array<sockaddr_in, 2> clientAddresses;
+static std::vector<sockaddr_in> clientAddresses;
 const int MTU = 1000;
 static int connectedClient;
 static bool playersConnected2;
