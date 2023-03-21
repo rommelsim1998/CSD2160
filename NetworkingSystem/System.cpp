@@ -177,6 +177,7 @@ void Client::Update()
 	else
 	{
 		std::cout << "[Client]: Receiving " << bytes << " of data. Message is: " << *(int*)(m_buffer) << std::endl;
+		connectedClient = *(int*)(m_buffer);
 		
 	}
 }

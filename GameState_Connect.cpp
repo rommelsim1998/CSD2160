@@ -149,6 +149,7 @@ void GameStateLevelconnectUpdate(void)
 	ClientHandle->Update();
 	if (connectedClient >= 2)
 		next = GS_LEVEL1;
+	
 	/*
 	//if its in pause state
 	if (!isPaused)
