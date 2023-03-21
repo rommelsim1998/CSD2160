@@ -7,7 +7,8 @@
 
 static std::array<sockaddr_in, 2> clientAddresses;
 const int MTU = 1000;
-
+static int connectedClient = 1;
+static bool playersConnected2 = false;
 
 class System
 {
@@ -20,8 +21,6 @@ public:
 	static SOCKET m_sendSocket;
 	static SOCKET m_recvSocket;
 	static sockaddr_in m_serverAddr;
-	static int connectClients;
-	static bool playersConnected2;
 	static char m_buffer[MTU];
 	TYPE m_type;
 	virtual void Init(const std::string& _ipAddress, unsigned short _portNumber) {}

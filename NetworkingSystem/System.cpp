@@ -4,8 +4,8 @@
 SOCKET System::m_sendSocket;
 SOCKET System::m_recvSocket;
 sockaddr_in System::m_serverAddr;
-int System::connectClients;
-bool System::playersConnected2;
+//int connectClients = 1;
+//bool playersConnected2 = false;
 char System::m_buffer[MTU];
 
 
@@ -80,9 +80,10 @@ void Server::Update()
 		{
 			if (client.sin_addr.S_un.S_addr == 0)
 			{
+				++connectedClient;
+
 				client = newClientAddress;
 				std::cout << "[Server]: New client added\n";
-				++connectClients;
 				break;
 			}
 		}
@@ -99,11 +100,6 @@ void Server::Update()
 
 	char clientIP[256];
 	inet_ntop(AF_INET, &newClientAddress.sin_addr, clientIP, 256);
-	if (connectClients >= 0)
-	{
-		playersConnected2 = true;
-	}
-	
 }
 
 void Server::Send(void* buffer, int len)
@@ -185,3 +181,4 @@ void Client::Send(void* buffer, int len)
 	std::cout << "[Client]: Sending " << len << " bytes of data\n";
 
 }
+

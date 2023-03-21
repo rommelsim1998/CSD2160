@@ -18,11 +18,10 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 // Networking Components
 #include "NetworkingSystem/System.h"
 std::unique_ptr<Client> ClientHandle;
-const std::string ip = "192.168.50.119";
+const std::string ip = "192.168.128.173";
 const short unsigned port = 54000;
 
 #pragma comment(lib, "Ws2_32.lib")
-
 
 
 #include "External Libs/AlphaEngine_V3.08/include/AEEngine.h"
@@ -44,6 +43,16 @@ f32 cy, cx;
 	"Load" function of this state
 	*/
 	/**************************************************************************/
+
+static UIManager& _um = UIManager::GetInstance();
+static EntityManager& _em = EntityManager::GetInstance();
+static RenderManager& _rm = RenderManager::GetInstance();
+static PhysicsManager& _pm = PhysicsManager::GetInstance();
+static TileManager& _tm = TileManager::GetInstance();
+static CollisionManager& _cm = CollisionManager::GetInstance();
+static BackgroundManager& _bm = BackgroundManager::GetInstance();
+static AudioManager& _am = AudioManager::GetInstance();
+static PauseMenuManager& _pmm = PauseMenuManager::GetInstance();
 void GameStateLevelconnectLoad(void)
 {
 	/*
@@ -55,6 +64,14 @@ void GameStateLevelconnectLoad(void)
 	_pmm.PauseMenuManagerLoad();
 	_am.AudioManagerLoad();
 	*/
+
+	_tm.TileManagerLoad("Resources/Level 1.txt");
+	_em.EntityManagerLoad();        // Makes the objects from map info.
+	_rm.RenderManagerLoad();
+	_um.UIManagerLoad();
+	_bm.BackgroundManagerLoad();
+	_pmm.PauseMenuManagerLoad();
+	_am.AudioManagerLoad();
 
 	AEGfxMeshStart();
 	AEGfxTriAdd(
@@ -103,7 +120,7 @@ void GameStateLevelconnectInit(void)
 	//	std::cout << "Going to Level 1 now\n";
 	//}
 
-	auto& entities = EntityManager::GetInstance();
+	auto& entities = EntityManager::GetInstance();		// check current stage entities
 
 	ClientHandle = std::make_unique<Client>();
 	ClientHandle->Init(ip, port);
@@ -128,7 +145,6 @@ void GameStateLevelconnectUpdate(void)
 	/*char buffer[1000] = "HEHE\n";
 	ClientHandle->Send(buffer, 1000, ip, port);*/
 
-	std::cout << System::connectClients << std::endl;			// wtf?
 
 	ClientHandle->Update();
 
@@ -145,9 +161,11 @@ void GameStateLevelconnectUpdate(void)
 			ClientHandle->Send(tmp, 100);
 		}
 	}
-
-	// get IP address and try connect here
-
+	if (connectedClient >= 2)
+	{
+		std::cout << "[Client]: " << "Going to lvl 1\n";
+		next = GS_LEVEL1;
+;	}
 
 	/*
 	//if its in pause state
