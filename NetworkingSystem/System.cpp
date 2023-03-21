@@ -92,7 +92,6 @@ void Server::Update()
 			if (clientAddresses[i].sin_addr.S_un.S_addr == 0)
 				continue;
 
-			
 			Send(&connectedClient, MTU);
 
 			//std::string clientMsg = std::to_string(connectedClient);

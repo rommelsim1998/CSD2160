@@ -149,24 +149,6 @@ void GameStateLevelconnectUpdate(void)
 	ClientHandle->Update();
 
 
-	//if (current == GS_CONNECTION)
-	//{
-	//	if (AEInputCheckTriggered(AEVK_ESCAPE))
-	//	{
-	//		next = GS_MAINMENU; // To main menu
-	//	}
-	//	if (AEInputCheckTriggered(AEVK_SPACE))
-	//	{
-	//		char tmp[100] = "hello\n";
-	//		ClientHandle->Send(tmp, 100);
-	//	}
-	//}
-	if (playersConnected2)
-	{
-		std::cout << "[Client]: " << "Going to lvl 1\n";
-		next = GS_LEVEL1;
-;	}
-
 	/*
 	//if its in pause state
 	if (!isPaused)
