@@ -17,7 +17,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 // Networking Components
 #include "../NetworkingSystem/System.h"
 std::unique_ptr<Server> ServerHandle;
-const std::string ip = "192.168.50.119";
+const std::string ip = "192.168.128.173";
 const short unsigned port = 54000;
 
 /*
@@ -141,11 +141,9 @@ void GameStateLevelconnectUpdate(void)
 
 	if (AEInputCheckTriggered(AEVK_SPACE))
 	{
-		char tmp[MTU] = "hello\n";
-		ServerHandle->Send(tmp, MTU);
+		int x = 555;
+		ServerHandle->Send(&x, sizeof(x));
 	}
-	//std::cout << System::connectClients << std::endl;
-
 
 	//Network::ClientConnectionStageUpdate();
 
