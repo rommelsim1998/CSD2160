@@ -77,16 +77,24 @@ void GameStateLevel1Update(void)
 		ClientHandle.Update();
 
 		static float x, y;
-		ServerHandle.Update();
+		//erverHandle.Update();
 
-		struct pos {
-			float x, y;
-		};
-		pos tmp{ 100,100 };
-		ServerHandle.Send(&tmp, sizeof(pos));
+		//struct pos {
+		//	float x, y;
+		//};
+		//pos tmp{ 100,100 };
+		//ServerHandle.Send(&tmp, sizeof(pos));
 
-		ClientHandle.Read(x, y);
-		std::cout << "(" << x << ", " << y << ")\n";		// client should read back 100,100
+		//ClientHandle.Read(x, y);
+		//std::cout << "(" << x << ", " << y << ")\n";		// client should read back 100,100
+	
+		static float send_x = 100, send_y = 100;
+		ServerHandle.Send(&send_x, sizeof(float));
+
+		static float recieve_x, recieve_y;
+		ClientHandle.Read(recieve_x, recieve_y);
+
+		std::cout << "Recieving: (" << recieve_x << ", " << recieve_x << ")\n";		// client should read back 100,100
 	}
 
 
