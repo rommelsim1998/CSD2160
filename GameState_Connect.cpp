@@ -145,7 +145,6 @@ void GameStateLevelconnectUpdate(void)
 	ClientHandle->Send(buffer, 1000, ip, port);*/
 	static int count = 0;
 	ClientHandle.Update();
-	std::cout << "connect update\n";
 	ClientHandle.Read(count);
 	if (count >= 2)
 	{

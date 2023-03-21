@@ -141,7 +141,8 @@ void GameStateLevelconnectUpdate(void)
 	*/
 
 	ServerHandle.Update();
-	
+	if (connectedClient >= 2)
+		next = GS_LEVEL1;
 	//Network::ClientConnectionStageUpdate();
 
 	//

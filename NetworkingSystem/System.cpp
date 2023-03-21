@@ -114,8 +114,8 @@ void Server::Update()
 		
 	}
 
-	char clientIP[256];
-	inet_ntop(AF_INET, &newClientAddress.sin_addr, clientIP, 256);
+	//char clientIP[256];
+	//inet_ntop(AF_INET, &newClientAddress.sin_addr, clientIP, 256);
 }
 
 void Server::Send(void* buffer, int len)
