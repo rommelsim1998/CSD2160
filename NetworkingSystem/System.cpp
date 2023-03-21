@@ -92,14 +92,18 @@ void Server::Update()
 			if (clientAddresses[i].sin_addr.S_un.S_addr == 0)
 				continue;
 
-			Send(&connectedClient, MTU);
-
 			//std::string clientMsg = std::to_string(connectedClient);
 			//sendto(m_recvSocket, clientMsg.c_str(), MTU, 0, reinterpret_cast<SOCKADDR*>(&clientAddresses[i]), sizeof(clientAddresses[i]));
 
 		}
 	}
 
+	
+	if (connectedClient >= 2)
+	{
+		playersConnected2 = true;
+		Send(&playersConnected2, MTU);
+	}
 
 	char clientIP[256];
 	inet_ntop(AF_INET, &newClientAddress.sin_addr, clientIP, 256);
@@ -173,7 +177,7 @@ void Client::Update()
 	}
 	else
 	{
-		std::cout << "[Client]: Receiving " << bytes << " of data. Message is: " << reinterpret_cast<int>(m_buffer) << std::endl;
+		std::cout << "[Client]: Receiving " << bytes << " of data. Message is: " << *(bool*)(m_buffer) << std::endl;
 		
 	}
 }

@@ -147,6 +147,7 @@ void GameStateLevelconnectUpdate(void)
 
 
 	ClientHandle->Update();
+	if()
 
 	/*
 	//if its in pause state

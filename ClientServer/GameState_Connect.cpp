@@ -138,6 +138,8 @@ void GameStateLevelconnectUpdate(void)
 	*/
 
 	ServerHandle->Update();
+	if (playersConnected2)
+		next = GS_LEVEL1;
 	//Network::ClientConnectionStageUpdate();
 
 	//
