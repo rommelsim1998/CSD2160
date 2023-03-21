@@ -8,8 +8,8 @@
 
 static std::array<sockaddr_in, 2> clientAddresses;
 const int MTU = 1000;
-static int connectedClient = 0;
-static bool playersConnected2 = false;
+static int connectedClient;
+static bool playersConnected2;
 
 class System
 {
@@ -44,5 +44,6 @@ public:
 	void Init(const std::string& _ipAddress, unsigned short _portNumber);
 	void Update();
 	void Send(void* buffer, int len);
+	void Read(void* buffer);				// read bool
 };
 

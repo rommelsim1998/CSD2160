@@ -177,8 +177,6 @@ void Client::Update()
 	else
 	{
 		std::cout << "[Client]: Receiving " << bytes << " of data. Message is: " << *(int*)(m_buffer) << std::endl;
-		connectedClient = *(int*)(m_buffer);
-		
 	}
 }
 
@@ -187,6 +185,12 @@ void Client::Send(void* buffer, int len)
 	sendto(m_sendSocket, (const char*)buffer, len, 0, reinterpret_cast<SOCKADDR*>(&m_serverAddr), sizeof(m_serverAddr));
 	std::cout << "[Client]: Sending " << len << " bytes of data\n";
 
+}
+
+void Client::Read(void* buffer)
+{
+	int bytes = recvfrom(m_sendSocket, m_buffer, MTU, 0, nullptr, nullptr);
+	std::memcpy(buffer, m_buffer, bytes);
 }
 
 //template <typename T>

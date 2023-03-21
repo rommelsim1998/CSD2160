@@ -147,9 +147,8 @@ void GameStateLevelconnectUpdate(void)
 
 
 	ClientHandle->Update();
-	if (connectedClient >= 2)
-		next = GS_LEVEL1;
-	
+	ClientHandle->Read(&connectedClient);
+	std::cout << connectedClient << std::endl;
 	/*
 	//if its in pause state
 	if (!isPaused)
