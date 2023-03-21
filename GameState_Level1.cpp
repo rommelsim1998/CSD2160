@@ -74,8 +74,8 @@ void GameStateLevel1Update(void)
 		_cm.CollisionManagerUpdate();   // Collision (And Collision Response)
 		_bm.BackgroundManagerUpdate();
 		_um.UIManagerUpdate();
-		ClientHandle.Update();
-		ServerHandle.Update();
+		/*ClientHandle.Update();
+		ServerHandle.Update();*/
 		static float x, y;
 		//erverHandle.Update();
 

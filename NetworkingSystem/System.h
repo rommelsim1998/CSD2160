@@ -8,7 +8,6 @@
 #include <WS2tcpip.h>
 
 //static std::array<sockaddr_in, 2> clientAddresses;
-static std::vector<sockaddr_in> clientAddresses;
 const int MTU = 1000;
 static int connectedClient;
 static bool playersConnected2;
@@ -26,6 +25,7 @@ public:
 	static sockaddr_in m_serverAddr;
 	static char m_buffer[MTU];
 	static char m_buffer_game[MTU];
+	static std::vector<sockaddr_in> clientAddresses;
 	TYPE m_type;
 	virtual void Init(const std::string& _ipAddress, unsigned short _portNumber) {}
 	virtual void Send(void* buffer, size_t len, const std::string& ip, unsigned short port) {}

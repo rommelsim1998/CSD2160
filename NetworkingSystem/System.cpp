@@ -10,6 +10,7 @@ sockaddr_in System::m_serverAddr;
 //bool playersConnected2 = false;
 char System::m_buffer[MTU];
 char System::m_buffer_game[MTU];
+std::vector<sockaddr_in> System::clientAddresses{};
 
 
 void Server::Init(const std::string& _ipAddress, unsigned short _portNumber)
@@ -75,7 +76,7 @@ void Server::Update()
 		std::cout << "[Server]: " << BytesRecieved << " bytes received. Message is: " << m_buffer << std::endl;
 
 		// skip if current list of IP contains new one
-		for (auto& clients : clientAddresses)
+		for (auto& clients : System::clientAddresses)
 		{
 			if (clients.sin_addr.S_un.S_addr == newClientAddress.sin_addr.S_un.S_addr) return;
 		}
@@ -83,7 +84,7 @@ void Server::Update()
 		// Append new client IP into my list
 		if(newClientAddress.sin_addr.S_un.S_addr != 0)
 		{
-			clientAddresses.push_back(newClientAddress);
+			System::clientAddresses.push_back(newClientAddress);
 			++connectedClient;
 			Send(&connectedClient, MTU);
 			return;
@@ -121,13 +122,13 @@ void Server::Send(void* buffer, int len)
 {
 	std::memset(m_buffer, 0, MTU);
 	std::memcpy(m_buffer, buffer, len);
-	for (int i = 0; i < clientAddresses.size(); ++i)
+	for (int i = 0; i < System::clientAddresses.size(); ++i)
 	{
-		if (clientAddresses[i].sin_addr.S_un.S_addr == 0)
+		if (System::clientAddresses[i].sin_addr.S_un.S_addr == 0)
 			continue;
 
-		sendto(m_recvSocket, reinterpret_cast<const char*>(m_buffer), len, 0, reinterpret_cast<SOCKADDR*>(&clientAddresses[i]), sizeof(clientAddresses[i]));
-		std::cout << "[Server]: Sending " << len << " bytes of data to " << clientAddresses[i].sin_addr.S_un.S_addr << std::endl;
+		sendto(m_recvSocket, reinterpret_cast<const char*>(m_buffer), len, 0, reinterpret_cast<SOCKADDR*>(&System::clientAddresses[i]), sizeof(System::clientAddresses[i]));
+		std::cout << "[Server]: Sending " << len << " bytes of data to " << System::clientAddresses[i].sin_addr.S_un.S_addr << std::endl;
 	}
 	//sendto(m_sendSocket, (const char*)buffer, len, 0, reinterpret_cast<SOCKADDR*>(&m_serverAddr), sizeof(m_serverAddr));
 }
@@ -138,14 +139,19 @@ void Server::Send(int x, int y)
 	std::memcpy(m_buffer_game, &x, sizeof(x));
 	std::memcpy(m_buffer_game + sizeof(x), &y, sizeof(y));
 	int len = sizeof(float) * 2;
-	for (int i = 0; i < clientAddresses.size(); ++i)
+	for(auto& clients : System::clientAddresses)
+	{
+		sendto(m_recvSocket, reinterpret_cast<const char*>(m_buffer_game), len, 0, reinterpret_cast<SOCKADDR*>(&clients), sizeof(clients));
+		std::cout << "[Server]: Sending " << len << " bytes of data to " << clients.sin_addr.S_un.S_addr << std::endl;
+	}
+	/*for (int i = 0; i < clientAddresses.size(); ++i)
 	{
 		if (clientAddresses[i].sin_addr.S_un.S_addr == 0)
 			continue;
 
 		sendto(m_recvSocket, reinterpret_cast<const char*>(m_buffer_game), len, 0, reinterpret_cast<SOCKADDR*>(&clientAddresses[i]), sizeof(clientAddresses[i]));
 		std::cout << "[Server]: Sending " << len << " bytes of data to " << clientAddresses[i].sin_addr.S_un.S_addr << std::endl;
-	}
+	}*/
 }
 
 void Client::Init(const std::string& _ipAddress, unsigned short _portNumber)
