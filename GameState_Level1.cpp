@@ -9,6 +9,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 ******************************************************************************/
 
 #include "Constants.h"
+#include "NetworkingSystem/System.h"
 
 // Create manager instances. (Make them static)
 static UIManager& _um = UIManager::GetInstance();
@@ -67,8 +68,23 @@ void GameStateLevel1Update(void)
 		_cm.CollisionManagerUpdate();   // Collision (And Collision Response)
 		_bm.BackgroundManagerUpdate();
 		_um.UIManagerUpdate();
-		
+		ClientHandle->Update();
+
+		static float x, y;
+		ServerHandle->Update();
+
+		struct pos {
+			float x, y;
+		};
+		pos tmp{ 100,100 };
+		ServerHandle->Send(&tmp, sizeof(pos));
+
+		ClientHandle->Read(x, y);
+		std::cout << "(" << x << ", " << y << ")\n";		// client should read back 100,100
 	}
+
+
+
 	_am.AudioManagerUpdate();
 	_pmm.PauseMenuManagerUpdate();
 }

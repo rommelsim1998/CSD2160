@@ -45,6 +45,7 @@ public:
 	void Update();
 	void Send(void* buffer, int len);
 	void Read(int& value);				// read bool
+	void Read(float& x, float& y);
 };
 
 static std::unique_ptr<Client> ClientHandle;

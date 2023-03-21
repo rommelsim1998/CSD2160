@@ -68,6 +68,7 @@ void GameStateLevel1Update(void)
 		_um.UIManagerUpdate();
 		
 	}
+
 	_am.AudioManagerUpdate();
 	_pmm.PauseMenuManagerUpdate();
 }
