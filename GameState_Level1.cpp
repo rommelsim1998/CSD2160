@@ -89,7 +89,7 @@ void GameStateLevel1Update(void)
 		//std::cout << "(" << x << ", " << y << ")\n";		// client should read back 100,100
 	
 		static float send_x = 100, send_y = 100;
-		ServerHandle.Send(&send_x, sizeof(float));
+		ServerHandle.Send(send_x, send_y);
 
 		static float recieve_x, recieve_y;
 		ClientHandle.Read(recieve_x, recieve_y);

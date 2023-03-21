@@ -109,15 +109,38 @@ void Server::Update()
 
 void Server::Send(void* buffer, int len)
 {
+	std::memset(m_buffer, 0, MTU);
+	std::memcpy(m_buffer, buffer, len);
+	std::cout << *(float*)m_buffer << std::endl;
 	for (int i = 0; i < clientAddresses.size(); ++i)
 	{
 		if (clientAddresses[i].sin_addr.S_un.S_addr == 0)
 			continue;
 
-		sendto(m_recvSocket, reinterpret_cast<const char*>(buffer), MTU, 0, reinterpret_cast<SOCKADDR*>(&clientAddresses[i]), sizeof(clientAddresses[i]));
+		sendto(m_recvSocket, reinterpret_cast<const char*>(m_buffer), len, 0, reinterpret_cast<SOCKADDR*>(&clientAddresses[i]), sizeof(clientAddresses[i]));
 		std::cout << "[Server]: Sending " << len << " bytes of data to " << clientAddresses[i].sin_addr.S_un.S_addr << std::endl;
 	}
 	//sendto(m_sendSocket, (const char*)buffer, len, 0, reinterpret_cast<SOCKADDR*>(&m_serverAddr), sizeof(m_serverAddr));
+}
+void Server::Send(int x, int y)
+{
+	std::memset(m_buffer, 0, MTU);
+	std::memcpy(m_buffer, &x, sizeof(x));
+	std::memcpy(m_buffer + sizeof(x), &y, sizeof(y));
+
+	float _x, _y;
+	std::memcpy(&_x, m_buffer, 4);
+	std::memcpy(&_y, m_buffer + 4, 4);
+	std::cout << "Checking: " << _x << ", " << _y << std::endl;			// result of _x and _y shold ne the same as x and y
+
+	for (int i = 0; i < clientAddresses.size(); ++i)
+	{
+		if (clientAddresses[i].sin_addr.S_un.S_addr == 0)
+			continue;
+
+		sendto(m_recvSocket, reinterpret_cast<const char*>(m_buffer), MTU, 0, reinterpret_cast<SOCKADDR*>(&clientAddresses[i]), sizeof(clientAddresses[i]));
+		std::cout << "[Server]: Sending " << MTU << " bytes of data to " << clientAddresses[i].sin_addr.S_un.S_addr << std::endl;
+	}
 }
 
 void Client::Init(const std::string& _ipAddress, unsigned short _portNumber)
@@ -195,7 +218,6 @@ void Client::Read(int& value)
 
 void Client::Read(float& x, float& y)
 {
-	std::memset(m_buffer, 0, MTU);
 	int bytes = recvfrom(m_sendSocket, m_buffer, MTU, 0, nullptr, nullptr);
 	if (bytes == SOCKET_ERROR)
 	{
@@ -206,8 +228,8 @@ void Client::Read(float& x, float& y)
 	else
 	{
 		//std::cout << "[Client]: Receiving " << bytes << " of data. Message is: " << *(float*)(m_buffer) << std::endl;
-		std::memcpy((float*)&x, (float*)m_buffer, 4);
-		std::memcpy((float*)&y, (float*)(m_buffer + 4), 4);
+		std::memcpy((float*)&x, m_buffer, 4);
+		std::memcpy((float*)&y, m_buffer + 4, 4);
 		std::cout << "[Client]: Receiving " << bytes << " of data. Message is: " << x << ", " << y << std::endl;
 	}
 	//std::cout << "[Client]: Bytes read: " << bytes << std::endl;
