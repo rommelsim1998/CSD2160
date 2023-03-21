@@ -9,6 +9,7 @@ sockaddr_in System::m_serverAddr;
 //int connectClients = 1;
 //bool playersConnected2 = false;
 char System::m_buffer[MTU];
+char System::m_buffer_game[MTU];
 
 
 void Server::Init(const std::string& _ipAddress, unsigned short _portNumber)
@@ -125,16 +126,16 @@ void Server::Send(void* buffer, int len)
 void Server::Send(int x, int y)
 {
 	// Way to read!
-	std::memset(m_buffer, 0, MTU);
-	std::memcpy(m_buffer, &x, sizeof(x));
-	std::memcpy(m_buffer + sizeof(x), &y, sizeof(y));
+	std::memset(m_buffer_game, 0, MTU);
+	std::memcpy(m_buffer_game, &x, sizeof(x));
+	std::memcpy(m_buffer_game + sizeof(x), &y, sizeof(y));
 	int len = sizeof(float) * 2;
 	for (int i = 0; i < clientAddresses.size(); ++i)
 	{
 		if (clientAddresses[i].sin_addr.S_un.S_addr == 0)
 			continue;
 
-		sendto(m_recvSocket, reinterpret_cast<const char*>(m_buffer), len, 0, reinterpret_cast<SOCKADDR*>(&clientAddresses[i]), sizeof(clientAddresses[i]));
+		sendto(m_recvSocket, reinterpret_cast<const char*>(m_buffer_game), len, 0, reinterpret_cast<SOCKADDR*>(&clientAddresses[i]), sizeof(clientAddresses[i]));
 		std::cout << "[Server]: Sending " << len << " bytes of data to " << clientAddresses[i].sin_addr.S_un.S_addr << std::endl;
 	}
 }
@@ -217,8 +218,7 @@ void Client::Read(int& value)
 
 void Client::Read(float& x, float& y)
 {
-	std::memset(m_buffer, 0, MTU);
-	int bytes = recvfrom(m_sendSocket, m_buffer, MTU, 0, nullptr, nullptr);
+	int bytes = recvfrom(m_sendSocket, m_buffer_game, MTU, 0, nullptr, nullptr);
 	if (bytes == SOCKET_ERROR)
 	{
 		int wsaErr{ WSAGetLastError() };
@@ -228,9 +228,9 @@ void Client::Read(float& x, float& y)
 	else
 	{
 		
-		std::cout << "[Client]: " << static_cast<float>(*m_buffer) << ", " << static_cast<float>(*(m_buffer + 4)) << std::endl;
-		x = static_cast<float>(*m_buffer);
-		y = static_cast<float>(*(m_buffer + 4));
+		std::cout << "[Client]: " << static_cast<float>(*m_buffer_game) << ", " << static_cast<float>(*(m_buffer_game + 4)) << std::endl;
+		x = static_cast<float>(*m_buffer_game);
+		y = static_cast<float>(*(m_buffer_game + 4));
 		/*std::memcpy((float*)&x, m_buffer, 4);
 		std::memcpy((float*)&y, m_buffer + 4, 4);
 		std::cout << "[Client]: Receiving " << bytes << " of data. Message is: " << x << ", " << y << std::endl;*/
