@@ -55,9 +55,9 @@ void Server::Init(const std::string& _ipAddress, unsigned short _portNumber)
 	ioctlsocket(m_recvSocket, FIONBIO, &mode);
 }
 
+static bool isSending = true;
 void Server::Update()
 {
-	//std::cout << "[Server]: " << connectClients << std::endl;
 	std::memset(&m_buffer, 0, MTU);
 	sockaddr_in newClientAddress;
 	int newClientAddress_size = sizeof(newClientAddress);
@@ -92,17 +92,16 @@ void Server::Update()
 			}
 		}
 
-		for (int i = 0; i < clientAddresses.size(); ++i)
-		{
-			if (clientAddresses[i].sin_addr.S_un.S_addr == 0)
-				continue;
+		//for (int i = 0; i < clientAddresses.size(); ++i)
+		//{
+		//	if (clientAddresses[i].sin_addr.S_un.S_addr == 0)
+		//		continue;
 
-			//std::string clientMsg = std::to_string(connectedClient);
-			//sendto(m_recvSocket, clientMsg.c_str(), MTU, 0, reinterpret_cast<SOCKADDR*>(&clientAddresses[i]), sizeof(clientAddresses[i]));
-		}
+		//	//std::string clientMsg = std::to_string(connectedClient);
+		//	//sendto(m_recvSocket, clientMsg.c_str(), MTU, 0, reinterpret_cast<SOCKADDR*>(&clientAddresses[i]), sizeof(clientAddresses[i]));
+		//}
+		Send(&connectedClient, MTU);
 	}
-
-	Send(&connectedClient, MTU);
 
 	char clientIP[256];
 	inet_ntop(AF_INET, &newClientAddress.sin_addr, clientIP, 256);
@@ -112,7 +111,6 @@ void Server::Send(void* buffer, int len)
 {
 	std::memset(m_buffer, 0, MTU);
 	std::memcpy(m_buffer, buffer, len);
-	std::cout << *(float*)m_buffer << std::endl;
 	for (int i = 0; i < clientAddresses.size(); ++i)
 	{
 		if (clientAddresses[i].sin_addr.S_un.S_addr == 0)
@@ -209,7 +207,6 @@ void Client::Send(void* buffer, int len)
 
 void Client::Read(int& value)
 {
-	std::memset(m_buffer, 0, MTU);
 	int bytes = recvfrom(m_sendSocket, m_buffer, MTU, 0, nullptr, nullptr);
 	value = *(int*)(m_buffer);
 	
