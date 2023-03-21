@@ -205,7 +205,10 @@ void Client::Read(float& x, float& y)
 	}
 	else
 	{
-		std::cout << "[Client]: Receiving " << bytes << " of data. Message is: " << *(float*)(m_buffer) << std::endl;
+		//std::cout << "[Client]: Receiving " << bytes << " of data. Message is: " << *(float*)(m_buffer) << std::endl;
+		std::memcpy((float*)&x, (float*)m_buffer, 4);
+		std::memcpy((float*)&y, (float*)(m_buffer + 4), 4);
+		std::cout << "[Client]: Receiving " << bytes << " of data. Message is: " << x << ", " << y << std::endl;
 	}
 	//std::cout << "[Client]: Bytes read: " << bytes << std::endl;
 	//std::memcpy(&x, m_buffer, 4);		// x 
