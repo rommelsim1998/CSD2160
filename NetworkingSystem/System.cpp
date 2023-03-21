@@ -80,19 +80,17 @@ void Server::Update()
 		{
 			if (client.sin_addr.S_un.S_addr == 0)
 			{
-				++connectedClient;
-
 				client = newClientAddress;
 				std::cout << "[Server]: New client added\n";
+				++connectedClient;
 				break;
 			}
 		}
 
 		for (int i = 0; i < clientAddresses.size(); ++i)
 		{
-			std::cout << "HEHE\n";
-			/*if (clientAddresses[i].sin_addr.S_un.S_addr == 0)
-				continue;*/
+			if (clientAddresses[i].sin_addr.S_un.S_addr == 0)
+				continue;
 
 			char clientMsg[MTU] = "[Server]: Welcome new player!\n";
 			sendto(m_recvSocket, clientMsg, MTU, 0, reinterpret_cast<SOCKADDR*>(&clientAddresses[i]), sizeof(clientAddresses[i]));
