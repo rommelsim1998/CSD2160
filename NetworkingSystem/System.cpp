@@ -90,8 +90,9 @@ void Server::Update()
 
 		for (int i = 0; i < clientAddresses.size(); ++i)
 		{
-			if (clientAddresses[i].sin_addr.S_un.S_addr == 0)
-				continue;
+			std::cout << "HEHE\n";
+			/*if (clientAddresses[i].sin_addr.S_un.S_addr == 0)
+				continue;*/
 
 			char clientMsg[MTU] = "[Server]: Welcome new player!\n";
 			sendto(m_recvSocket, clientMsg, MTU, 0, reinterpret_cast<SOCKADDR*>(&clientAddresses[i]), sizeof(clientAddresses[i]));
