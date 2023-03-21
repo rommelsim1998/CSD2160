@@ -7,7 +7,7 @@
 
 static std::array<sockaddr_in, 2> clientAddresses;
 const int MTU = 1000;
-static int connectedClient = 1;
+static int connectedClient = 0;
 static bool playersConnected2 = false;
 
 class System

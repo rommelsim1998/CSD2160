@@ -161,7 +161,7 @@ void GameStateLevelconnectUpdate(void)
 			ClientHandle->Send(tmp, 100);
 		}
 	}
-	if (connectedClient >= 2)
+	if (playersConnected2)
 	{
 		std::cout << "[Client]: " << "Going to lvl 1\n";
 		next = GS_LEVEL1;
