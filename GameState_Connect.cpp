@@ -17,7 +17,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 // Networking Components
 #include "NetworkingSystem/System.h"
-std::unique_ptr<Client> ClientHandle;
+//std::unique_ptr<Client> ClientHandle;
 const std::string ip = "192.168.128.173";
 const short unsigned port = 54000;
 

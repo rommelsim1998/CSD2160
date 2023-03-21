@@ -47,3 +47,5 @@ public:
 	void Read(int& value);				// read bool
 };
 
+static std::unique_ptr<Client> ClientHandle;
+static std::unique_ptr<Server> ServerHandle;
