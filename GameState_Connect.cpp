@@ -145,10 +145,10 @@ void GameStateLevelconnectUpdate(void)
 	/*char buffer[1000] = "HEHE\n";
 	ClientHandle->Send(buffer, 1000, ip, port);*/
 
-
+	static int count = 0;
 	ClientHandle->Update();
-	ClientHandle->Read(&connectedClient);
-	std::cout << connectedClient << std::endl;
+	ClientHandle->Read(count);
+	std::cout << count << std::endl;
 	/*
 	//if its in pause state
 	if (!isPaused)

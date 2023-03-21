@@ -94,15 +94,10 @@ void Server::Update()
 
 			//std::string clientMsg = std::to_string(connectedClient);
 			//sendto(m_recvSocket, clientMsg.c_str(), MTU, 0, reinterpret_cast<SOCKADDR*>(&clientAddresses[i]), sizeof(clientAddresses[i]));
-
 		}
 	}
 
-	
-	if (connectedClient >= 2)
-	{
-		Send(&connectedClient, MTU);
-	}
+	Send(&connectedClient, MTU);
 
 	char clientIP[256];
 	inet_ntop(AF_INET, &newClientAddress.sin_addr, clientIP, 256);
@@ -187,10 +182,10 @@ void Client::Send(void* buffer, int len)
 
 }
 
-void Client::Read(void* buffer)
+void Client::Read(int& value)
 {
 	int bytes = recvfrom(m_sendSocket, m_buffer, MTU, 0, nullptr, nullptr);
-	std::memcpy(buffer, m_buffer, bytes);
+	value = *(int*)(m_buffer);
 }
 
 //template <typename T>

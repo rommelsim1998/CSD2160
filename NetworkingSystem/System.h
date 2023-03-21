@@ -44,6 +44,6 @@ public:
 	void Init(const std::string& _ipAddress, unsigned short _portNumber);
 	void Update();
 	void Send(void* buffer, int len);
-	void Read(void* buffer);				// read bool
+	void Read(int& value);				// read bool
 };
 
