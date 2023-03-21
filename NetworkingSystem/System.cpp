@@ -195,9 +195,21 @@ void Client::Read(int& value)
 
 void Client::Read(float& x, float& y)
 {
+	std::memset(m_buffer, 0, MTU);
 	int bytes = recvfrom(m_sendSocket, m_buffer, MTU, 0, nullptr, nullptr);
-	std::memcpy(&x, m_buffer, 4);		// x 
-	std::memcpy(&y, m_buffer + 4, 4);	// y
+	if (bytes == SOCKET_ERROR)
+	{
+		int wsaErr{ WSAGetLastError() };
+		if (wsaErr != WSAEWOULDBLOCK)
+			std::cerr << "[Client]: error: " << wsaErr << std::endl;
+	}
+	else
+	{
+		std::cout << "[Client]: Receiving " << bytes << " of data. Message is: " << *(float*)(m_buffer) << std::endl;
+	}
+	//std::cout << "[Client]: Bytes read: " << bytes << std::endl;
+	//std::memcpy(&x, m_buffer, 4);		// x 
+	//std::memcpy(&y, m_buffer + 4, 4);	// y
 }
 
 
