@@ -98,19 +98,20 @@ void Server::Update()
 		}
 	}
 
+	Send(&connectedClient, MTU);
+
 	char clientIP[256];
 	inet_ntop(AF_INET, &newClientAddress.sin_addr, clientIP, 256);
 }
 
 void Server::Send(void* buffer, int len)
 {
-
 	for (int i = 0; i < clientAddresses.size(); ++i)
 	{
 		if (clientAddresses[i].sin_addr.S_un.S_addr == 0)
 			continue;
 
-		sendto(m_recvSocket, (const char*)buffer, MTU, 0, reinterpret_cast<SOCKADDR*>(&clientAddresses[i]), sizeof(clientAddresses[i]));
+		sendto(m_recvSocket, reinterpret_cast<const char*>(buffer), MTU, 0, reinterpret_cast<SOCKADDR*>(&clientAddresses[i]), sizeof(clientAddresses[i]));
 		std::cout << "[Server]: Sending " << len << " bytes of data to " << clientAddresses[i].sin_addr.S_un.S_addr << std::endl;
 	}
 	//sendto(m_sendSocket, (const char*)buffer, len, 0, reinterpret_cast<SOCKADDR*>(&m_serverAddr), sizeof(m_serverAddr));
