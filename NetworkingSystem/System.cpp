@@ -175,6 +175,8 @@ void Client::Update()
 	else
 	{
 		std::cout << "[Client]: Receiving " << bytes << " of data. Message is: " << reinterpret_cast<GameObject*>(m_buffer) << std::endl;
+		GameObject* tmp = reinterpret_cast<GameObject*>(m_buffer);
+		
 	}
 }
 
