@@ -192,6 +192,15 @@ void Client::Read(int& value)
 	value = *(int*)(m_buffer);
 }
 
+
+void Client::Read(float& x, float& y)
+{
+	int bytes = recvfrom(m_sendSocket, m_buffer, MTU, 0, nullptr, nullptr);
+	std::memcpy(&x, m_buffer, 4);		// x 
+	std::memcpy(&y, m_buffer + 4, 4);	// y
+}
+
+
 //template <typename T>
 //void Client::Read(void* buffer, int len)
 //{
