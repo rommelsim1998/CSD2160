@@ -101,8 +101,7 @@ void Server::Update()
 	
 	if (connectedClient >= 2)
 	{
-		playersConnected2 = true;
-		Send(&playersConnected2, MTU);
+		Send(&connectedClient, MTU);
 	}
 
 	char clientIP[256];
@@ -177,7 +176,7 @@ void Client::Update()
 	}
 	else
 	{
-		std::cout << "[Client]: Receiving " << bytes << " of data. Message is: " << *(bool*)(m_buffer) << std::endl;
+		std::cout << "[Client]: Receiving " << bytes << " of data. Message is: " << *(int*)(m_buffer) << std::endl;
 		
 	}
 }
