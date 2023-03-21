@@ -170,12 +170,12 @@ void Client::Update()
 		int wsaErr{ WSAGetLastError() };
 		if(wsaErr != WSAEWOULDBLOCK)
 			std::cerr << "[Client]: error: " << wsaErr << std::endl;
-	}
+	}/*
 	else
 	{
 		std::cout << "[Client]: Receiving " << bytes << " of data. Message is: " << reinterpret_cast<int>(m_buffer) << std::endl;
 		
-	}
+	}*/
 }
 
 void Client::Send(void* buffer, int len)
@@ -184,4 +184,13 @@ void Client::Send(void* buffer, int len)
 	std::cout << "[Client]: Sending " << len << " bytes of data\n";
 
 }
+
+//template <typename T>
+//void Client::Read(void* buffer, int len)
+//{
+//	std::memset(buffer, 0, MTU);
+//	int bytes = recvfrom(m_sendSocket, m_buffer, len, 0, nullptr, nullptr);
+//	std::memcpy(buffer, m_buffer, bytes);
+//	std::cout << "[Client]: Receiving " << bytes << " of data. Message is: " << *(T*)buffer << std::endl;
+//}
 
