@@ -95,6 +95,7 @@ void Server::Update()
 
 			char clientMsg[MTU] = "[Server]: Welcome new player!\n";
 			sendto(m_recvSocket, clientMsg, MTU, 0, reinterpret_cast<SOCKADDR*>(&clientAddresses[i]), sizeof(clientAddresses[i]));
+
 		}
 	}
 
@@ -171,7 +172,7 @@ void Client::Update()
 	}
 	else
 	{
-		std::cout << "[Client]: Receiving " << bytes << " of data\n";
+		std::cout << "[Client]: Receiving " << bytes << " of data. Message is: " << m_buffer << std::endl;
 	}
 }
 
