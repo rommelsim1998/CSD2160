@@ -44,16 +44,5 @@ public:
 	void Init(const std::string& _ipAddress, unsigned short _portNumber);
 	void Update();
 	void Send(void* buffer, int len);
-
-	template <typename T>
-	void Read(void* buffer, int len);
 };
 
-template<typename T>
-inline void Client::Read(void* buffer, int len)
-{
-	std::memset(buffer, 0, MTU);
-	int bytes = recvfrom(m_sendSocket, m_buffer, len, 0, nullptr, nullptr);
-	std::memcpy(buffer, m_buffer, bytes);
-	std::cout << "[Client]: Receiving " << bytes << " of data. Message is: " << *(T*)buffer << std::endl;
-}

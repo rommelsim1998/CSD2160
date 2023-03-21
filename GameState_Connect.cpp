@@ -147,8 +147,6 @@ void GameStateLevelconnectUpdate(void)
 
 
 	ClientHandle->Update();
-	int num{};
-	ClientHandle->Read<int>(&num, sizeof(int));
 
 	/*
 	//if its in pause state

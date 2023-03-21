@@ -138,13 +138,6 @@ void GameStateLevelconnectUpdate(void)
 	*/
 
 	ServerHandle->Update();
-
-	if (AEInputCheckTriggered(AEVK_SPACE))
-	{
-		int x = 555;
-		ServerHandle->Send(&x, sizeof(x));
-	}
-
 	//Network::ClientConnectionStageUpdate();
 
 	//

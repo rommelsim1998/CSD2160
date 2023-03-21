@@ -170,12 +170,12 @@ void Client::Update()
 		int wsaErr{ WSAGetLastError() };
 		if(wsaErr != WSAEWOULDBLOCK)
 			std::cerr << "[Client]: error: " << wsaErr << std::endl;
-	}/*
+	}
 	else
 	{
 		std::cout << "[Client]: Receiving " << bytes << " of data. Message is: " << reinterpret_cast<int>(m_buffer) << std::endl;
 		
-	}*/
+	}
 }
 
 void Client::Send(void* buffer, int len)
