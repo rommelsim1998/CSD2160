@@ -1,5 +1,6 @@
 #pragma once
 #include "System.h"
+class GameObject;
 
 SOCKET System::m_sendSocket;
 SOCKET System::m_recvSocket;
@@ -12,7 +13,6 @@ char System::m_buffer[MTU];
 void Server::Init(const std::string& _ipAddress, unsigned short _portNumber)
 {
 	std::cout << "[Server]: Initializing WSA and server information" << std::endl;
-
 	//! Initialize WSA
 	WSADATA wsaData{};
 	int wsaErr{ WSAStartup(MAKEWORD(2, 2), &wsaData) };
@@ -174,7 +174,7 @@ void Client::Update()
 	}
 	else
 	{
-		std::cout << "[Client]: Receiving " << bytes << " of data. Message is: " << reinterpret_cast<const char*>(m_buffer) << std::endl;
+		std::cout << "[Client]: Receiving " << bytes << " of data. Message is: " << reinterpret_cast<GameObject*>(m_buffer) << std::endl;
 	}
 }
 
