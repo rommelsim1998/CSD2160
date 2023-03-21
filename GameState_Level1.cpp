@@ -28,13 +28,7 @@ static PauseMenuManager& _pmm = PauseMenuManager::GetInstance();
 	/**************************************************************************/
 void GameStateLevel1Load(void)
 {
-	_tm.TileManagerLoad("Resources/Level 1.txt");
-	_em.EntityManagerLoad();        // Makes the objects from map info.
-	_rm.RenderManagerLoad();
-	_um.UIManagerLoad();
-	_bm.BackgroundManagerLoad();
-	_pmm.PauseMenuManagerLoad();
-	_am.AudioManagerLoad();
+	
 
 }
 
@@ -45,6 +39,13 @@ void GameStateLevel1Load(void)
 	/**************************************************************************/
 void GameStateLevel1Init(void)
 {
+	_tm.TileManagerLoad("Resources/Level 1.txt");
+	_em.EntityManagerLoad();        // Makes the objects from map info.
+	_rm.RenderManagerLoad();
+	_um.UIManagerLoad();
+	_bm.BackgroundManagerLoad();
+	_pmm.PauseMenuManagerLoad();
+	_am.AudioManagerLoad();
 	_em.EntityManagerInitialize();  // Initializes all object's init function.
 	AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
 	AEGfxSetCamPosition(0, 0);

@@ -55,23 +55,23 @@ static AudioManager& _am = AudioManager::GetInstance();
 static PauseMenuManager& _pmm = PauseMenuManager::GetInstance();
 void GameStateLevelconnectLoad(void)
 {
-	/*
-	_tm.TileManagerLoad("Resources/Level_connect.txt");
-	_em.EntityManagerLoad();        // Makes the objects from map info.
-	_rm.RenderManagerLoad();
-	_um.UIManagerLoad();
-	_bm.BackgroundManagerLoad();
-	_pmm.PauseMenuManagerLoad();
-	_am.AudioManagerLoad();
-	*/
+	
+	//_tm.TileManagerLoad("Resources/Level_connect.txt");
+	//_em.EntityManagerLoad();        // Makes the objects from map info.
+	//_rm.RenderManagerLoad();
+	//_um.UIManagerLoad();
+	//_bm.BackgroundManagerLoad();
+	//_pmm.PauseMenuManagerLoad();
+	//_am.AudioManagerLoad();
+	
 
-	_tm.TileManagerLoad("Resources/Level 1.txt");
-	_em.EntityManagerLoad();        // Makes the objects from map info.
-	_rm.RenderManagerLoad();
-	_um.UIManagerLoad();
-	_bm.BackgroundManagerLoad();
-	_pmm.PauseMenuManagerLoad();
-	_am.AudioManagerLoad();
+	//_tm.TileManagerLoad("Resources/Level 1.txt");
+	//_em.EntityManagerLoad();        // Makes the objects from map info.
+	//_rm.RenderManagerLoad();
+	//_um.UIManagerLoad();
+	//_bm.BackgroundManagerLoad();
+	//_pmm.PauseMenuManagerLoad();
+	//_am.AudioManagerLoad();
 
 	AEGfxMeshStart();
 	AEGfxTriAdd(
@@ -94,11 +94,11 @@ void GameStateLevelconnectLoad(void)
 	/**************************************************************************/
 void GameStateLevelconnectInit(void)
 {
-	/*
-	_em.EntityManagerInitialize();  // Initializes all object's init function.
-	AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
-	AEGfxSetCamPosition(0, 0);
-	*/
+	
+	//_em.EntityManagerInitialize();  // Initializes all object's init function.
+	//AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
+	//AEGfxSetCamPosition(0, 0);
+	
 
 	AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
 	AEGfxSetCamPosition(0.0f, 0.0f);
@@ -107,8 +107,6 @@ void GameStateLevelconnectInit(void)
 	cy = 0.0f;
 	//std::string ipAddr{ "172.20.10.2" };
 	//unsigned short port{ 54000 };
-
-
 	////Network::Initialize(ipAddr, port);
 	//std::cout << "Client Side Initialized\n";
 	//std::cout << "Client connecting to IP: "<<ipAddr<<"\n";
@@ -120,7 +118,6 @@ void GameStateLevelconnectInit(void)
 	//	std::cout << "Going to Level 1 now\n";
 	//}
 
-	auto& entities = EntityManager::GetInstance();		// check current stage entities
 
 	ClientHandle = std::make_unique<Client>();
 	ClientHandle->Init(ip, port);
@@ -148,7 +145,12 @@ void GameStateLevelconnectUpdate(void)
 	static int count = 0;
 	ClientHandle->Update();
 	ClientHandle->Read(count);
-	std::cout << count << std::endl;
+	if (count >= 2)
+	{
+		std::cout << "lvl 1 yes\n";
+		next = GS_LEVEL1;
+		return;
+	}
 	/*
 	//if its in pause state
 	if (!isPaused)

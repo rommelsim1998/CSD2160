@@ -125,7 +125,7 @@ void TileManager::TileManagerLoad(std::string const& filename)
 	}
 	else
 	{
-		//std::cout << "File failed to open, please check if location is correct and map name exists\n" << "Resources/map.txt\n";
+		std::cout << "File failed to open, please check if location is correct and map name exists\n" << "Resources/map.txt\n";
 	}
 
 

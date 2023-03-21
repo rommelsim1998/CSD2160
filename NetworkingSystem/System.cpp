@@ -1,3 +1,4 @@
+#include "System.h"
 #pragma once
 #include "System.h"
 class GameObject;
@@ -71,11 +72,14 @@ void Server::Update()
 	else
 	{
 		std::cout << "[Server]: " << BytesRecieved << " bytes received. Message is: " << m_buffer << std::endl;
+
+		// skip if current list of IP contains new one
 		for (auto& clients : clientAddresses)
 		{
 			if (clients.sin_addr.S_un.S_addr == newClientAddress.sin_addr.S_un.S_addr) return;
 		}
 
+		// Append new client IP into my list
 		for (auto& client : clientAddresses)
 		{
 			if (client.sin_addr.S_un.S_addr == 0)
