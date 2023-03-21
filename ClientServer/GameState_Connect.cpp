@@ -41,6 +41,9 @@ AEGfxVertexList* pMesh3 = 0;
 AEGfxTexture* pTex3;
 f32 cy, cx;
 
+static Server& ServerHandle = Server::getInstance();
+static Client& ClientHandle = Client::getInstance();
+
  /**************************************************************************/
 /*!
 	"Load" function of this state
@@ -93,8 +96,8 @@ void GameStateLevelconnectInit(void)
 	cy = 0.0f;
 
 	// Server Init
-	ServerHandle = std::make_unique<Server>();
-	ServerHandle->Init(ip, port);
+	//ServerHandle = std::make_unique<Server>();
+	ServerHandle.Init(ip, port);
 	/*ServerHandle = std::make_unique<System>();
 	ServerHandle->Init(ip, port, System::SERVER);*/
 	//Network::Init(ip, port);
@@ -137,7 +140,7 @@ void GameStateLevelconnectUpdate(void)
 	}
 	*/
 
-	ServerHandle->Update();
+	ServerHandle.Update();
 	
 	//Network::ClientConnectionStageUpdate();
 

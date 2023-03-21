@@ -26,7 +26,8 @@ static CollisionManager& _cm = CollisionManager::GetInstance();
 static BackgroundManager& _bm = BackgroundManager::GetInstance();
 static AudioManager& _am = AudioManager::GetInstance();
 static PauseMenuManager& _pmm = PauseMenuManager::GetInstance();
-
+static Server& ServerHandle = Server::getInstance();
+static Client& ClientHandle = Client::getInstance();
  /**************************************************************************/
 /*!
 	"Load" function of this state
@@ -73,18 +74,18 @@ void GameStateLevel1Update(void)
 		_cm.CollisionManagerUpdate();   // Collision (And Collision Response)
 		_bm.BackgroundManagerUpdate();
 		_um.UIManagerUpdate();
-		ClientHandle->Update();
+		ClientHandle.Update();
 
 		static float x, y;
-		ServerHandle->Update();
+		ServerHandle.Update();
 
 		struct pos {
 			float x, y;
 		};
 		pos tmp{ 100,100 };
-		ServerHandle->Send(&tmp, sizeof(pos));
+		ServerHandle.Send(&tmp, sizeof(pos));
 
-		ClientHandle->Read(x, y);
+		ClientHandle.Read(x, y);
 		std::cout << "(" << x << ", " << y << ")\n";		// client should read back 100,100
 	}
 

@@ -53,6 +53,8 @@ static CollisionManager& _cm = CollisionManager::GetInstance();
 static BackgroundManager& _bm = BackgroundManager::GetInstance();
 static AudioManager& _am = AudioManager::GetInstance();
 static PauseMenuManager& _pmm = PauseMenuManager::GetInstance();
+static Server& ServerHandle = Server::getInstance();
+static Client& ClientHandle = Client::getInstance();
 void GameStateLevelconnectLoad(void)
 {
 	
@@ -119,8 +121,8 @@ void GameStateLevelconnectInit(void)
 	//}
 
 
-	ClientHandle = std::make_unique<Client>();
-	ClientHandle->Init(ip, port);
+	//ClientHandle = std::make_unique<Client>();
+	ClientHandle.Init(ip, port);
 
 }
 
@@ -143,8 +145,8 @@ void GameStateLevelconnectUpdate(void)
 	ClientHandle->Send(buffer, 1000, ip, port);*/
 
 	static int count = 0;
-	ClientHandle->Update();
-	ClientHandle->Read(count);
+	ClientHandle.Update();
+	ClientHandle.Read(count);
 	if (count >= 2)
 	{
 		std::cout << "lvl 1 yes\n";

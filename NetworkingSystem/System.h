@@ -36,6 +36,11 @@ public:
 	void Init(const std::string& _ipAddress, unsigned short _portNumber);
 	void Update();
 	void Send(void* buffer, int len);
+	static Server& getInstance()
+	{
+		static Server _instance;
+		return _instance;
+	}
 };
 
 class Client : public System
@@ -46,8 +51,12 @@ public:
 	void Send(void* buffer, int len);
 	void Read(int& value);				// read bool
 	void Read(float& x, float& y);
+	static Client& getInstance()
+	{
+		static Client _instance;
+		return _instance;
+	}
 };
 
-static std::shared_ptr<Client> ClientHandle;
-static std::shared_ptr<Server> ServerHandle;
-
+//static std::unique_ptr<Client> ClientHandle;
+//static std::unique_ptr<Server> ServerHandle;

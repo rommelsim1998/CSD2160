@@ -1,4 +1,5 @@
 #include "System.h"
+#include "System.h"
 #pragma once
 class GameObject;
 
@@ -208,4 +209,3 @@ void Client::Read(float& x, float& y)
 //	std::memcpy(buffer, m_buffer, bytes);
 //	std::cout << "[Client]: Receiving " << bytes << " of data. Message is: " << *(T*)buffer << std::endl;
 //}
-
