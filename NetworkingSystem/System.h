@@ -48,5 +48,6 @@ public:
 	void Read(float& x, float& y);
 };
 
-static std::unique_ptr<Client> ClientHandle;
-static std::unique_ptr<Server> ServerHandle;
+static std::shared_ptr<Client> ClientHandle;
+static std::shared_ptr<Server> ServerHandle;
+
