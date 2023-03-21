@@ -14,7 +14,6 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #define CS230_GAME_STATE_LEVEL1_H_
 
 // ---------------------------------------------------------------------------
-
 void GameStateLevel1Load();
 
 void GameStateLevel1Init();

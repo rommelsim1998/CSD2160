@@ -7,10 +7,15 @@ Copyright (C) 2021 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the
 prior written consent of DigiPen Institute of Technology is prohibited.
 ******************************************************************************/
-
-#include "Constants.h"
+#pragma once
+//#include "Constants.h"
+#include <WS2tcpip.h>
+#include <winsock.h>
+#include "GameState_Connect.h"
+#include "ConnectionManager.h"
+#include "Main.h"
+#include <iostream>
 #include "NetworkingSystem/System.h"
-
 // Create manager instances. (Make them static)
 static UIManager& _um = UIManager::GetInstance();
 static EntityManager& _em = EntityManager::GetInstance();

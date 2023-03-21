@@ -1,6 +1,5 @@
 #include "System.h"
 #pragma once
-#include "System.h"
 class GameObject;
 
 SOCKET System::m_sendSocket;
