@@ -25,6 +25,10 @@ public:
 	static sockaddr_in m_serverAddr;
 	static char m_buffer[MTU];
 	static char m_buffer_game[MTU];
+
+	static char m_buffer_send[MTU];
+	static char m_buffer_recieve[MTU];
+
 	static std::vector<sockaddr_in> clientAddresses;
 	TYPE m_type;
 	virtual void Init(const std::string& _ipAddress, unsigned short _portNumber) {}
@@ -45,6 +49,10 @@ public:
 		static Server _instance;
 		return _instance;
 	}
+
+	// use this to read from client
+	int EnsureTwoPlayers();
+	void Read(int& x, int& y);
 };
 
 class Client : public System
@@ -53,6 +61,7 @@ public:
 	void Init(const std::string& _ipAddress, unsigned short _portNumber);
 	void Update();
 	void Send(void* buffer, int len);
+	
 	void Read(int& value);				// read bool
 	void Read(float& x, float& y);
 	static Client& getInstance()
@@ -60,6 +69,9 @@ public:
 		static Client _instance;
 		return _instance;
 	}
+	
+	// use this to send to server
+	void Send(int& x, int& y);
 };
 
 //static std::unique_ptr<Client> ClientHandle;
