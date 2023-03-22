@@ -22,7 +22,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <iostream>
 #include "../NetworkingSystem/System.h"
 
-const std::string ip = "192.168.128.173";
+const std::string ip = "172.28.138.181";
 const short unsigned port = 54000;
 
 // Create manager instances. (Make them static)
@@ -83,17 +83,11 @@ void GameStateLevel1Init(void)
 	AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
 	AEGfxSetCamPosition(0, 0);
 
-	// ensure that at least 1 player connects first
-	/*while (1) {
-		static int count = ServerHandle.EnsureTwoPlayers();
-		if (count >= 1)
-			break;
-	}*/
 	int count = 0;
 	while (1)
 	{
 		count = ServerHandle.EnsureTwoPlayers();
-		if (count > 0) return;
+		if (count >= 2) return;
 	}
 }
 

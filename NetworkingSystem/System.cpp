@@ -1,5 +1,6 @@
 #include "System.h"
 #include "System.h"
+#include "System.h"
 #pragma once
 class GameObject;
 
@@ -339,6 +340,25 @@ void Client::Read(int& x1, int& y1, int& x2, int& y2)
 		std::memcpy(&x2, m_buffer_recieve + 8, 4);
 		std::memcpy(&y2, m_buffer_recieve + 12, 4);
 
+	}
+}
+
+int Client::GetClientId()
+{
+	char bufferID[MTU];
+	std::memset(bufferID, 0, MTU);
+	int bytes = recvfrom(m_sendSocket, bufferID, MTU, 0, nullptr, nullptr);
+	if (bytes == SOCKET_ERROR)
+	{
+		int wsaErr{ WSAGetLastError() };
+		if (wsaErr != WSAEWOULDBLOCK)
+			std::cerr << "[Client]: error: " << wsaErr << std::endl;
+	}
+	else
+	{
+		int id{};
+		std::memcpy(&id, bufferID, 4);
+		return id;
 	}
 }
 

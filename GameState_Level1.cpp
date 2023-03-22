@@ -22,7 +22,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <iostream>
 #include "NetworkingSystem/System.h"
 
-const std::string ip = "192.168.128.173";
+const std::string ip = "172.28.138.181";
 const short unsigned port = 54000;
 
 // Create manager instances. (Make them static)
@@ -38,7 +38,7 @@ static PauseMenuManager& _pmm = PauseMenuManager::GetInstance();
 static Server& ServerHandle = Server::getInstance();
 static Client& ClientHandle = Client::getInstance();
 
-static int clientID;
+static int id;
  /**************************************************************************/
 /*!
 	"Load" function of this state
@@ -60,6 +60,11 @@ void GameStateLevel1Load(void)
 void GameStateLevel1Init(void)
 {
 	ClientHandle.Init(ip, port);
+
+	// assign when id is NULL.
+	if(id == 0)
+		id = ClientHandle.GetClientId();
+	std::cout << "Client " << id << std::endl;
 	
 	_tm.TileManagerLoad("Resources/Level 1.txt");
 	_em.EntityManagerLoad();        // Makes the objects from map info.
@@ -72,7 +77,7 @@ void GameStateLevel1Init(void)
 	AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
 	AEGfxSetCamPosition(0, 0);
 
-	
+
 
 }
 

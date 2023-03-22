@@ -9,7 +9,7 @@
 
 //static std::array<sockaddr_in, 2> clientAddresses;
 const int MTU = 1000;
-static int connectedClient;
+static int connectedClient = 0;
 static bool playersConnected2;
 
 class System
@@ -73,6 +73,7 @@ public:
 	// use this to send to server
 	void Send(int& x1, int& y1, int& x2, int& y2);
 	void Read(int& x1, int& y1, int& x2, int& y2);
+	int GetClientId();
 };
 
 //static std::unique_ptr<Client> ClientHandle;
