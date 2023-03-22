@@ -63,7 +63,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	AEGfxSetBackgroundColor(1.0f, 1.0f, 0.5f);
 	// Changing the window title
-	AESysSetWindowTitle("Chroma!");
+	AESysSetWindowTitle("Server!");
 
 	// reset the system modules
 	AESysReset();
@@ -73,7 +73,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	full_screen_me = false;
 	AEToogleFullScreen(full_screen_me);
 
-	GSM_Initialize(GS_SPLASHSCREEN);
+	GSM_Initialize(GS_LEVEL1);
 
 	// Game Loop
 	while (current != GS_QUIT)

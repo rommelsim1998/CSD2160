@@ -8,7 +8,22 @@ Reproduction or disclosure of this file or its contents without the
 prior written consent of DigiPen Institute of Technology is prohibited.
 ******************************************************************************/
 
-#include "Constants.h"
+
+/******************************************************************************
+						SERVER
+******************************************************************************/
+
+//#include "Constants.h"
+
+#include <WS2tcpip.h>
+#include <winsock.h>
+#include "GameState_Connect.h"
+#include "Main.h"
+#include <iostream>
+#include "../NetworkingSystem/System.h"
+
+const std::string ip = "172.20.10.2";
+const short unsigned port = 54000;
 
 // Create manager instances. (Make them static)
 static UIManager& _um = UIManager::GetInstance();
@@ -20,12 +35,17 @@ static CollisionManager& _cm = CollisionManager::GetInstance();
 static BackgroundManager& _bm = BackgroundManager::GetInstance();
 static AudioManager& _am = AudioManager::GetInstance();
 static PauseMenuManager& _pmm = PauseMenuManager::GetInstance();
+static Server& ServerHandle = Server::getInstance();
+static Client& ClientHandle = Client::getInstance();
 
  /**************************************************************************/
 /*!
 	"Load" function of this state
 	*/
 	/**************************************************************************/
+
+AEGfxTexture* Tex_ServerMode;
+AEGfxVertexList* pMesh = 0;
 void GameStateLevel1Load(void)
 {
 	_tm.TileManagerLoad("Resources/Level 1.txt");
@@ -36,6 +56,18 @@ void GameStateLevel1Load(void)
 	_pmm.PauseMenuManagerLoad();
 	_am.AudioManagerLoad();
 
+	Tex_ServerMode = AEGfxTextureLoad("Resources/servermode.png");
+	AEGfxMeshStart();
+	AEGfxTriAdd(
+		-0.5f, -0.5f, 0xFFFF0000, 0.0f, 1.0f,
+		0.5f, -0.5f, 0xFFFF0000, 1.0f, 1.0f,
+		-0.5f, 0.5f, 0xFFFF0000, 0.0f, 0.0f);
+	AEGfxTriAdd(
+		0.5f, -0.5f, 0xFFFF0000, 1.0f, 1.0f,
+		0.5f, 0.5f, 0xFFFF0000, 1.0f, 0.0f,
+		-0.5f, 0.5f, 0xFFFF0000, 0.0f, 0.0f);
+
+	pMesh = AEGfxMeshEnd();
 }
 
 /**************************************************************************/
@@ -45,10 +77,24 @@ void GameStateLevel1Load(void)
 	/**************************************************************************/
 void GameStateLevel1Init(void)
 {
+	ServerHandle.Init(ip, port);
+
 	_em.EntityManagerInitialize();  // Initializes all object's init function.
 	AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
 	AEGfxSetCamPosition(0, 0);
 
+	// ensure that at least 1 player connects first
+	/*while (1) {
+		static int count = ServerHandle.EnsureTwoPlayers();
+		if (count >= 1)
+			break;
+	}*/
+	int count = 0;
+	while (1)
+	{
+		count = ServerHandle.EnsureTwoPlayers();
+		if (count > 0) return;
+	}
 }
 
 /**************************************************************************/
@@ -58,32 +104,28 @@ void GameStateLevel1Init(void)
 	/**************************************************************************/
 void GameStateLevel1Update(void)
 {
-	//if its in pause state
-	if (!isPaused)
-	{
-		_em.EntityManagerUpdate();      // Logic
-		_pm.PhysicsManagerUpdate();     // Physics
-		_cm.CollisionManagerUpdate();   // Collision (And Collision Response)
-		_bm.BackgroundManagerUpdate();
-		_um.UIManagerUpdate();
-		
-	}
-
-	_am.AudioManagerUpdate();
-	_pmm.PauseMenuManagerUpdate();
+	static int x, y;
+	ServerHandle.Read(x, y);
 }
 /**************************************************************************/
 /*!
 	The "Drawing" function of this state
 	*/
 	/**************************************************************************/
+
+AEMtx33 Scale, trans, concat;
 void GameStateLevel1Draw(void)
 {
-	// Object's Draw functions called inside RenderManagerDraw();
-	_bm.BackgroundManagerDraw();
-	_rm.RenderManagerDraw();
-	_um.UIManagerDraw();
-	_pmm.PauseMenuManagerDraw();
+	AEMtx33Scale(&Scale, (f32)AEGetWindowWidth(), (f32)AEGetWindowHeight()); // not sure how it will turn out on full screen
+	AEMtx33Trans(&trans, 0, 0);
+	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
+	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
+	AEGfxSetTintColor(1.0f, 1.0f, 1.0f, 1.0f);
+	AEGfxTextureSet(Tex_ServerMode, 0.0f, 0.0f);
+	AEMtx33Concat(&concat, &Scale, &trans);
+	AEGfxSetTransparency(1.0f);
+	AEGfxSetTransform(concat.m);
+	AEGfxMeshDraw(pMesh, AE_GFX_MDM_TRIANGLES);
 }
 
 /**************************************************************************/
@@ -106,11 +148,6 @@ void GameStateLevel1Free(void)
 	/**************************************************************************/
 void GameStateLevel1Unload(void)
 {
-	_rm.RenderManagerUnload();
-	_em.EntityManagerUnload();
-	_tm.TileManagerUnload();
-	_bm.BackgroundManagerUnload();
-	_um.UIManagerUnload();
-	_pmm.PauseMenuManagerUnload();
-	_am.AudioManagerUnload();
+	AEGfxMeshFree(pMesh);
+	AEGfxTextureUnload(Tex_ServerMode);
 }

@@ -11,7 +11,8 @@ sockaddr_in System::m_serverAddr;
 char System::m_buffer[MTU];
 char System::m_buffer_game[MTU];
 std::vector<sockaddr_in> System::clientAddresses{};
-
+char System::m_buffer_send[MTU];
+char System::m_buffer_recieve[MTU];
 
 void Server::Init(const std::string& _ipAddress, unsigned short _portNumber)
 {
@@ -154,6 +155,42 @@ void Server::Send(int x, int y)
 	}*/
 }
 
+void Server::Read(int& x, int& y)
+{
+	for (auto& client : clientAddresses)
+	{
+		if (client.sin_addr.S_un.S_addr == 0)continue;
+		int lenClient = sizeof(client);
+		int bytes = recvfrom(m_recvSocket, m_buffer_recieve, MTU, 0, reinterpret_cast<SOCKADDR*>(&client), &lenClient);
+		if (bytes == SOCKET_ERROR)
+		{
+			int wsaErr{ WSAGetLastError() };
+			if (wsaErr != WSAEWOULDBLOCK)
+				std::cerr << "[Server]: error: " << wsaErr << std::endl;
+		}
+		else
+		{
+			std::memcpy(&x, reinterpret_cast<int*>(m_buffer_recieve), 4);
+			std::memcpy(&y, reinterpret_cast<int*>(m_buffer_recieve + 4), 4);
+			std::cout << "[Server]: Receiving " << bytes << " of data. (" << x << ", " << y << ")" << std::endl;
+		}
+
+	}/*
+	int bytes = recvfrom(m_sendSocket, m_buffer_recieve, MTU, 0, nullptr, nullptr);
+	if (bytes == SOCKET_ERROR)
+	{
+		int wsaErr{ WSAGetLastError() };
+		if (wsaErr != WSAEWOULDBLOCK)
+			std::cerr << "[Server]: error: " << wsaErr << std::endl;
+	}
+	else
+	{
+		std::memcpy(&x, reinterpret_cast<int*>(m_buffer_recieve), 4);
+		std::memcpy(&y, reinterpret_cast<int*>(m_buffer_recieve + 4), 4);
+		std::cout << "[Server]: Receiving " << bytes << " of data. (" << x << ", " << y << ")" << std::endl;
+	}*/
+}
+
 void Client::Init(const std::string& _ipAddress, unsigned short _portNumber)
 {
 	std::cout << "[Client]: Initializing WSA and server informationdddd" << std::endl;
@@ -218,7 +255,50 @@ void Client::Send(void* buffer, int len)
 	std::memset(m_buffer, 0, MTU);
 	sendto(m_sendSocket, (const char*)buffer, len, 0, reinterpret_cast<SOCKADDR*>(&m_serverAddr), sizeof(m_serverAddr));
 	std::cout << "[Client]: Sending " << len << " bytes of data\n";
+}
 
+int Server::EnsureTwoPlayers()
+{
+	std::memset(&m_buffer, 0, MTU);
+	sockaddr_in newClientAddress;
+	int newClientAddress_size = sizeof(newClientAddress);
+	std::memset(&newClientAddress, 0, newClientAddress_size);
+
+	int BytesRecieved = recvfrom(m_recvSocket, m_buffer, MTU, 0, reinterpret_cast<SOCKADDR*>(&newClientAddress), &newClientAddress_size);
+	if (BytesRecieved == SOCKET_ERROR)
+	{
+		int wsaError{ WSAGetLastError() };
+		if (wsaError != WSAEWOULDBLOCK)
+			std::cerr << "[Server]: Error recvfrom: " << WSAGetLastError() << std::endl;
+	}
+	else
+	{
+		std::cout << "[Server]: " << BytesRecieved << " bytes received. Message is: " << m_buffer << std::endl;
+
+		// skip if current list of IP contains new one
+		for (auto& clients : System::clientAddresses)
+		{
+			if (clients.sin_addr.S_un.S_addr == newClientAddress.sin_addr.S_un.S_addr) return -1;
+		}
+
+		// Append new client IP into my list
+		if (newClientAddress.sin_addr.S_un.S_addr != 0)
+		{
+			System::clientAddresses.push_back(newClientAddress);
+			++connectedClient;
+			Send(&connectedClient, MTU);
+		}
+	}
+	return connectedClient;
+}
+
+void Client::Send(int& x, int& y)
+{
+	std::memset(m_buffer_send, 0, MTU);
+	std::memcpy(m_buffer_send, reinterpret_cast<int*>(&x), 4);
+	std::memcpy(m_buffer_send + 4, reinterpret_cast<int*>(&y), 4);
+	size_t len = sizeof(float) + sizeof(float);
+	sendto(m_sendSocket, (const char*)m_buffer_send, MTU, 0, reinterpret_cast<SOCKADDR*>(&m_serverAddr), sizeof(m_serverAddr));
 }
 
 void Client::Read(int& value)

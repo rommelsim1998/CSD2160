@@ -7,6 +7,11 @@ Copyright (C) 2021 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the
 prior written consent of DigiPen Institute of Technology is prohibited.
 ******************************************************************************/
+
+/******************************************************************************
+						CLIENT
+******************************************************************************/
+
 #pragma once
 //#include "Constants.h"
 #include <WS2tcpip.h>
@@ -16,6 +21,10 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include "Main.h"
 #include <iostream>
 #include "NetworkingSystem/System.h"
+
+const std::string ip = "172.20.10.2";
+const short unsigned port = 54000;
+
 // Create manager instances. (Make them static)
 static UIManager& _um = UIManager::GetInstance();
 static EntityManager& _em = EntityManager::GetInstance();
@@ -33,6 +42,8 @@ static Client& ClientHandle = Client::getInstance();
 	"Load" function of this state
 	*/
 	/**************************************************************************/
+
+
 void GameStateLevel1Load(void)
 {
 	
@@ -46,6 +57,8 @@ void GameStateLevel1Load(void)
 	/**************************************************************************/
 void GameStateLevel1Init(void)
 {
+	ClientHandle.Init(ip, port);
+	
 	_tm.TileManagerLoad("Resources/Level 1.txt");
 	_em.EntityManagerLoad();        // Makes the objects from map info.
 	_rm.RenderManagerLoad();
@@ -66,6 +79,9 @@ void GameStateLevel1Init(void)
 	/**************************************************************************/
 void GameStateLevel1Update(void)
 {
+	ClientHandle.Update();
+	int x = 100, y = 100;
+	ClientHandle.Send(x, y);
 	//if its in pause state
 	if (!isPaused)
 	{
@@ -74,31 +90,8 @@ void GameStateLevel1Update(void)
 		_cm.CollisionManagerUpdate();   // Collision (And Collision Response)
 		_bm.BackgroundManagerUpdate();
 		_um.UIManagerUpdate();
-		/*ClientHandle.Update();
-		ServerHandle.Update();*/
-		static float x, y;
-		//erverHandle.Update();
-
-		//struct pos {
-		//	float x, y;
-		//};
-		//pos tmp{ 100,100 };
-		//ServerHandle.Send(&tmp, sizeof(pos));
-
-		//ClientHandle.Read(x, y);
-		//std::cout << "(" << x << ", " << y << ")\n";		// client should read back 100,100
-
-
-		static float send_x = 100, send_y = 100;
-		ServerHandle.Send(send_x, send_y);
-
-		static float recieve_x, recieve_y;
-		ClientHandle.Read(recieve_x, recieve_y);
-
-		std::cout << "Recieving: (" << recieve_x << ", " << recieve_x << ")\n";		// client should read back 100,100
 	}
-
-
+		
 
 	_am.AudioManagerUpdate();
 	_pmm.PauseMenuManagerUpdate();
