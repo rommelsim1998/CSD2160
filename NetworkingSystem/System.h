@@ -72,6 +72,7 @@ public:
 	
 	// use this to send to server
 	void Send(int& x, int& y);
+	void Read(int& x, int& y);
 };
 
 //static std::unique_ptr<Client> ClientHandle;

@@ -22,7 +22,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <iostream>
 #include "../NetworkingSystem/System.h"
 
-const std::string ip = "172.20.10.2";
+const std::string ip = "192.168.128.173";
 const short unsigned port = 54000;
 
 // Create manager instances. (Make them static)
@@ -106,6 +106,8 @@ void GameStateLevel1Update(void)
 {
 	static int x, y;
 	ServerHandle.Read(x, y);
+
+	ServerHandle.Send(x, y);
 }
 /**************************************************************************/
 /*!

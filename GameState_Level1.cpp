@@ -22,7 +22,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <iostream>
 #include "NetworkingSystem/System.h"
 
-const std::string ip = "172.20.10.2";
+const std::string ip = "192.168.128.173";
 const short unsigned port = 54000;
 
 // Create manager instances. (Make them static)
@@ -82,6 +82,9 @@ void GameStateLevel1Update(void)
 	int x = 100, y = 100;
 	ClientHandle.Send(x, y);
 
+	int rec_x, rec_y;
+	ClientHandle.Read(rec_x, rec_y);
+	std::cout << "Client reciving " << rec_x << ", " << rec_y << std::endl;
 	//if its in pause state
 	if (!isPaused)
 	{

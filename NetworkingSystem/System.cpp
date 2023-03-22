@@ -172,7 +172,7 @@ void Server::Read(int& x, int& y)
 		{
 			std::memcpy(&x, reinterpret_cast<int*>(m_buffer_recieve), 4);
 			std::memcpy(&y, reinterpret_cast<int*>(m_buffer_recieve + 4), 4);
-			std::cout << "[Server]: Receiving " << bytes << " of data. (" << x << ", " << y << ")" << std::endl;
+			//std::cout << "[Server]: Receiving " << bytes << " of data. (" << x << ", " << y << ")" << std::endl;
 		}
 
 	}/*
@@ -298,7 +298,23 @@ void Client::Send(int& x, int& y)
 	std::memcpy(m_buffer_send, reinterpret_cast<int*>(&x), 4);
 	std::memcpy(m_buffer_send + 4, reinterpret_cast<int*>(&y), 4);
 	size_t len = sizeof(float) + sizeof(float);
-	sendto(m_sendSocket, (const char*)m_buffer_send, MTU, 0, reinterpret_cast<SOCKADDR*>(&m_serverAddr), sizeof(m_serverAddr));
+	sendto(m_sendSocket, (const char*)m_buffer_send, len, 0, reinterpret_cast<SOCKADDR*>(&m_serverAddr), sizeof(m_serverAddr));
+}
+
+void Client::Read(int& x, int& y)
+{
+	int bytes = recvfrom(m_sendSocket, m_buffer_game, MTU, 0, nullptr, nullptr);
+	if (bytes == SOCKET_ERROR)
+	{
+		int wsaErr{ WSAGetLastError() };
+		if (wsaErr != WSAEWOULDBLOCK)
+			std::cerr << "[Client]: error: " << wsaErr << std::endl;
+	}
+	else
+	{
+		x = static_cast<float>(*m_buffer_game);
+		y = static_cast<float>(*(m_buffer_game + 4));
+	}
 }
 
 void Client::Read(int& value)
