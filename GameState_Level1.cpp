@@ -101,7 +101,7 @@ void GameStateLevel1Update(void)
 	int rec_x2, rec_y2;
 	ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
 	std::cout << "[Client]: " << rec_x1 << ", " << rec_y1 << ", " <<
-		rec_y1 << ", " << rec_y2 << "\n";
+		rec_x2 << ", " << rec_y2 << "\n";
 
 
 	//if its in pause state

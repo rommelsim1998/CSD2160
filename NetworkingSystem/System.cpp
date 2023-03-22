@@ -239,14 +239,14 @@ void Client::Init(const std::string& _ipAddress, unsigned short _portNumber)
 	inet_pton(AF_INET, _ipAddress.c_str(), &m_serverAddr.sin_addr); // IP Address
 
 	// must be 0!
-	int sendresult{ sendto(m_sendSocket, m_buffer, MTU, 0, reinterpret_cast<SOCKADDR*>(&m_serverAddr), sizeof(m_serverAddr)) };
+	/*int sendresult{ sendto(m_sendSocket, m_buffer, MTU, 0, reinterpret_cast<SOCKADDR*>(&m_serverAddr), sizeof(m_serverAddr)) };
 	if (sendresult == SOCKET_ERROR)
 	{
 		std::cerr << "[Client]: Sendto() error: " << WSAGetLastError() << std::endl;
 		closesocket(m_sendSocket);
 		WSACleanup();
 		std::exit(EXIT_FAILURE);
-	}
+	}*/
 }
 
 void Client::Update()
@@ -310,10 +310,10 @@ int Server::EnsureTwoPlayers()
 void Client::Send(int& x1, int& y1, int& x2, int& y2)
 {
 	std::memset(m_buffer_send, 0, MTU);
-	std::memcpy(m_buffer_send + 0, reinterpret_cast<int*>(&x1), 4);
-	std::memcpy(m_buffer_send + 4, reinterpret_cast<int*>(&y1), 4);
-	std::memcpy(m_buffer_send + 8, reinterpret_cast<int*>(&x2), 4);
-	std::memcpy(m_buffer_send + 12, reinterpret_cast<int*>(&y2), 4);
+	std::memcpy(m_buffer_send + 0,  &x1, 4);
+	std::memcpy(m_buffer_send + 4,  &y1, 4);
+	std::memcpy(m_buffer_send + 8,  &x2, 4);
+	std::memcpy(m_buffer_send + 12, &y2, 4);
 	size_t len = sizeof(int) * 4;
 	sendto(m_sendSocket, (const char*)m_buffer_send, len, 0, reinterpret_cast<SOCKADDR*>(&m_serverAddr), sizeof(m_serverAddr));
 }

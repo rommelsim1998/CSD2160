@@ -87,7 +87,7 @@ void GameStateLevel1Init(void)
 	while (1)
 	{
 		count = ServerHandle.EnsureTwoPlayers();
-		if (count >= 2) return;
+		if (count >= 1) return;
 	}
 }
 
