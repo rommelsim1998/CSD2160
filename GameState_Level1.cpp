@@ -37,6 +37,8 @@ static AudioManager& _am = AudioManager::GetInstance();
 static PauseMenuManager& _pmm = PauseMenuManager::GetInstance();
 static Server& ServerHandle = Server::getInstance();
 static Client& ClientHandle = Client::getInstance();
+
+static int clientID;
  /**************************************************************************/
 /*!
 	"Load" function of this state
@@ -70,6 +72,8 @@ void GameStateLevel1Init(void)
 	AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
 	AEGfxSetCamPosition(0, 0);
 
+	
+
 }
 
 /**************************************************************************/
@@ -79,12 +83,22 @@ void GameStateLevel1Init(void)
 	/**************************************************************************/
 void GameStateLevel1Update(void)
 {
-	int x = 100, y = 100;
-	ClientHandle.Send(x, y);
+	static GameObject* go1 = _em.GetEntityList()[7];
+	static GameObject* go2 = _em.GetEntityList()[8];
 
-	int rec_x, rec_y;
-	ClientHandle.Read(rec_x, rec_y);
-	std::cout << "Client reciving " << rec_x << ", " << rec_y << std::endl;
+	int x1 = static_cast<int>(go1->GetPosition().x);
+	int y1 = static_cast<int>(go1->GetPosition().y);
+	int x2 = static_cast<int>(go2->GetPosition().x);
+	int y2 = static_cast<int>(go2->GetPosition().y);
+	ClientHandle.Send(x1, y1, x2, y2);
+
+	int rec_x1, rec_y1;
+	int rec_x2, rec_y2;
+	ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
+	std::cout << "[Client]: " << rec_x1 << ", " << rec_y1 << ", " <<
+		rec_y1 << ", " << rec_y2 << "\n";
+
+
 	//if its in pause state
 	if (!isPaused)
 	{

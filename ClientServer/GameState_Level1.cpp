@@ -104,10 +104,10 @@ void GameStateLevel1Init(void)
 	/**************************************************************************/
 void GameStateLevel1Update(void)
 {
-	static int x, y;
-	ServerHandle.Read(x, y);
-
-	ServerHandle.Send(x, y);
+	int x1, y1, x2, y2;
+	ServerHandle.Read(x1, y1, x2, y2);
+	std::cout << "[Server]: " << x1 << ", " << y1 << ", " << x2 << ", " << y2 << "\n";
+	ServerHandle.Send(x1, y1, x2, y2);
 }
 /**************************************************************************/
 /*!

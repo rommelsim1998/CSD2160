@@ -43,7 +43,6 @@ public:
 	void Init(const std::string& _ipAddress, unsigned short _portNumber);
 	void Update();
 	void Send(void* buffer, int len);
-	void Send(int x, int y);
 	static Server& getInstance()
 	{
 		static Server _instance;
@@ -52,7 +51,8 @@ public:
 
 	// use this to read from client
 	int EnsureTwoPlayers();
-	void Read(int& x, int& y);
+	void Read(int& x1, int& y1, int& x2, int& y2);
+	void Send(int& x1, int& y1, int& x2, int& y2);
 };
 
 class Client : public System
@@ -71,8 +71,8 @@ public:
 	}
 	
 	// use this to send to server
-	void Send(int& x, int& y);
-	void Read(int& x, int& y);
+	void Send(int& x1, int& y1, int& x2, int& y2);
+	void Read(int& x1, int& y1, int& x2, int& y2);
 };
 
 //static std::unique_ptr<Client> ClientHandle;

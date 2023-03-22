@@ -129,21 +129,33 @@ void Server::Send(void* buffer, int len)
 			continue;
 
 		sendto(m_recvSocket, reinterpret_cast<const char*>(m_buffer), len, 0, reinterpret_cast<SOCKADDR*>(&System::clientAddresses[i]), sizeof(System::clientAddresses[i]));
-		std::cout << "[Server]: Sending " << len << " bytes of data to " << System::clientAddresses[i].sin_addr.S_un.S_addr << std::endl;
+		//std::cout << "[Server]: Sending " << len << " bytes of data to " << System::clientAddresses[i].sin_addr.S_un.S_addr << std::endl;
 	}
 	//sendto(m_sendSocket, (const char*)buffer, len, 0, reinterpret_cast<SOCKADDR*>(&m_serverAddr), sizeof(m_serverAddr));
 }
-void Server::Send(int x, int y)
+void Server::Send(int& x1, int& y1, int& x2, int& y2)
 {
 	// Way to read!
-	std::memset(m_buffer_game, 0, MTU);
-	std::memcpy(m_buffer_game, &x, sizeof(x));
-	std::memcpy(m_buffer_game + sizeof(x), &y, sizeof(y));
-	int len = sizeof(float) * 2;
+	char buf[MTU];
+	std::memset(buf, 0, MTU);
+	std::memcpy(buf		, &x1, 4);
+	std::memcpy(buf + 4 , &y1, 4);
+	std::memcpy(buf + 8 , &x2, 4);
+	std::memcpy(buf + 12, &y2, 4);
+
+#if 0
+	int a = 10, b = 20, c = 30, d = 40;
+	std::memcpy(buf, &a, 4);
+	std::memcpy(buf + 4, &b, 4);
+	std::memcpy(buf + 8, &c, 4);
+	std::memcpy(buf + 12, &d, 4);
+#endif
+	size_t len = sizeof(int) * 4;
 	for(auto& clients : System::clientAddresses)
 	{
-		sendto(m_recvSocket, reinterpret_cast<const char*>(m_buffer_game), len, 0, reinterpret_cast<SOCKADDR*>(&clients), sizeof(clients));
-		std::cout << "[Server]: Sending " << len << " bytes of data to " << clients.sin_addr.S_un.S_addr << std::endl;
+		if (clients.sin_addr.S_un.S_addr == 0) continue;
+		sendto(m_recvSocket, reinterpret_cast<const char*>(buf), len, 0, reinterpret_cast<SOCKADDR*>(&clients), sizeof(clients));
+		//std::cout << "[Server]: Sending " << len << " bytes of data to " << clients.sin_addr.S_un.S_addr << std::endl;
 	}
 	/*for (int i = 0; i < clientAddresses.size(); ++i)
 	{
@@ -155,7 +167,7 @@ void Server::Send(int x, int y)
 	}*/
 }
 
-void Server::Read(int& x, int& y)
+void Server::Read(int& x1, int& y1, int& x2, int& y2)
 {
 	for (auto& client : clientAddresses)
 	{
@@ -170,8 +182,10 @@ void Server::Read(int& x, int& y)
 		}
 		else
 		{
-			std::memcpy(&x, reinterpret_cast<int*>(m_buffer_recieve), 4);
-			std::memcpy(&y, reinterpret_cast<int*>(m_buffer_recieve + 4), 4);
+			std::memcpy(&x1, reinterpret_cast<int*>(m_buffer_recieve + 0), 4);
+			std::memcpy(&y1, reinterpret_cast<int*>(m_buffer_recieve + 4), 4);
+			std::memcpy(&x2, reinterpret_cast<int*>(m_buffer_recieve + 8), 4);
+			std::memcpy(&y2, reinterpret_cast<int*>(m_buffer_recieve + 12), 4);
 			//std::cout << "[Server]: Receiving " << bytes << " of data. (" << x << ", " << y << ")" << std::endl;
 		}
 
@@ -292,18 +306,21 @@ int Server::EnsureTwoPlayers()
 	return connectedClient;
 }
 
-void Client::Send(int& x, int& y)
+void Client::Send(int& x1, int& y1, int& x2, int& y2)
 {
 	std::memset(m_buffer_send, 0, MTU);
-	std::memcpy(m_buffer_send, reinterpret_cast<int*>(&x), 4);
-	std::memcpy(m_buffer_send + 4, reinterpret_cast<int*>(&y), 4);
-	size_t len = sizeof(float) + sizeof(float);
+	std::memcpy(m_buffer_send + 0, reinterpret_cast<int*>(&x1), 4);
+	std::memcpy(m_buffer_send + 4, reinterpret_cast<int*>(&y1), 4);
+	std::memcpy(m_buffer_send + 8, reinterpret_cast<int*>(&x2), 4);
+	std::memcpy(m_buffer_send + 12, reinterpret_cast<int*>(&y2), 4);
+	size_t len = sizeof(int) * 4;
 	sendto(m_sendSocket, (const char*)m_buffer_send, len, 0, reinterpret_cast<SOCKADDR*>(&m_serverAddr), sizeof(m_serverAddr));
 }
 
-void Client::Read(int& x, int& y)
+void Client::Read(int& x1, int& y1, int& x2, int& y2)
 {
-	int bytes = recvfrom(m_sendSocket, m_buffer_game, MTU, 0, nullptr, nullptr);
+	std::memset(m_buffer_recieve, 0, MTU);
+	int bytes = recvfrom(m_sendSocket, m_buffer_recieve, MTU, 0, nullptr, nullptr);
 	if (bytes == SOCKET_ERROR)
 	{
 		int wsaErr{ WSAGetLastError() };
@@ -312,8 +329,16 @@ void Client::Read(int& x, int& y)
 	}
 	else
 	{
-		x = static_cast<float>(*m_buffer_game);
-		y = static_cast<float>(*(m_buffer_game + 4));
+		/*x1 = reinterpret_cast<int>(*m_buffer_recieve + 0);
+		y1 = reinterpret_cast<int>(*(m_buffer_recieve + 4));
+		x2 = reinterpret_cast<int>(*(m_buffer_recieve + 8));
+		y2 = reinterpret_cast<int>(*(m_buffer_recieve + 12));*/
+
+		std::memcpy(&x1, m_buffer_recieve, 4);
+		std::memcpy(&y1, m_buffer_recieve + 4, 4);
+		std::memcpy(&x2, m_buffer_recieve + 8, 4);
+		std::memcpy(&y2, m_buffer_recieve + 12, 4);
+
 	}
 }
 

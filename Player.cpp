@@ -201,8 +201,10 @@ void Player::GameObjectUpdate()
 			}
 			SetVelocity(newvel);
 		}
+		
 	}
 
+	// not used
 	if (Connectionmanager::isMultiplayer == true)
 	{
 		// Player climbing up the ladder
