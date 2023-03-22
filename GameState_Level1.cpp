@@ -22,7 +22,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <iostream>
 #include "NetworkingSystem/System.h"
 
-const std::string ip = "172.28.139.114";
+const std::string ip = "172.28.138.181";
 const short unsigned port = 54000;
 
 // Create manager instances. (Make them static)
@@ -62,9 +62,7 @@ void GameStateLevel1Init(void)
 	ClientHandle.Init(ip, port);
 
 	// assign when id is NULL.
-	if(id == 0)
-		id = ClientHandle.GetClientId();
-	std::cout << "Client " << id << std::endl;
+	
 	
 	_tm.TileManagerLoad("Resources/Level 1.txt");
 	_em.EntityManagerLoad();        // Makes the objects from map info.
@@ -76,9 +74,17 @@ void GameStateLevel1Init(void)
 	_em.EntityManagerInitialize();  // Initializes all object's init function.
 	AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
 	AEGfxSetCamPosition(0, 0);
-
-
-
+	static int tmp{};
+	if (id == 0)
+	{
+		while (!(tmp == 1 || tmp == 2))
+		{
+			tmp = ClientHandle.GetClientId();
+			id = tmp;
+			break;
+		}
+	}
+	std::cout << "ID IS " << id << std::endl;
 }
 
 /**************************************************************************/
@@ -106,7 +112,7 @@ void GameStateLevel1Update(void)
 		int rec_x2{}, rec_y2{};
 
 		ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
-		if (rec_x1 > 0 || rec_y1 > 0 || rec_x2 > 0 || rec_y2 > 0)
+		if (rec_x1 > 0 && rec_y1 > 0 && rec_x2 > 0 && rec_y2 > 0)
 		{
 			g2_pos = { float(rec_x2), float(rec_y2) };
 			go2->SetPosition(g2_pos);
