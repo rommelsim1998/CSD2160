@@ -79,9 +79,9 @@ void GameStateLevel1Init(void)
 	/**************************************************************************/
 void GameStateLevel1Update(void)
 {
-	ClientHandle.Update();
 	int x = 100, y = 100;
 	ClientHandle.Send(x, y);
+
 	//if its in pause state
 	if (!isPaused)
 	{
