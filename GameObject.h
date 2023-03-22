@@ -40,7 +40,7 @@ struct AABB
 };
 
 class GameObject {
-private:
+public:
 	/*===================================*
 			Private - Data Members
 	*====================================*/

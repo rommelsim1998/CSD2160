@@ -334,12 +334,11 @@ void Client::Read(int& x1, int& y1, int& x2, int& y2)
 		y1 = reinterpret_cast<int>(*(m_buffer_recieve + 4));
 		x2 = reinterpret_cast<int>(*(m_buffer_recieve + 8));
 		y2 = reinterpret_cast<int>(*(m_buffer_recieve + 12));*/
-
 		std::memcpy(&x1, m_buffer_recieve, 4);
 		std::memcpy(&y1, m_buffer_recieve + 4, 4);
 		std::memcpy(&x2, m_buffer_recieve + 8, 4);
 		std::memcpy(&y2, m_buffer_recieve + 12, 4);
-
+		
 	}
 }
 

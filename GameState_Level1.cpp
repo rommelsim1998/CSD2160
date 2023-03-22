@@ -22,7 +22,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <iostream>
 #include "NetworkingSystem/System.h"
 
-const std::string ip = "172.28.138.181";
+const std::string ip = "172.28.139.114";
 const short unsigned port = 54000;
 
 // Create manager instances. (Make them static)
@@ -86,27 +86,36 @@ void GameStateLevel1Init(void)
 	"Update" function of this state
 	*/
 	/**************************************************************************/
+static AEVec2 g2_pos;
 void GameStateLevel1Update(void)
 {
-	static GameObject* go1 = _em.GetEntityList()[7];
-	static GameObject* go2 = _em.GetEntityList()[8];
-
-	int x1 = static_cast<int>(go1->GetPosition().x);
-	int y1 = static_cast<int>(go1->GetPosition().y);
-	int x2 = static_cast<int>(go2->GetPosition().x);
-	int y2 = static_cast<int>(go2->GetPosition().y);
-	ClientHandle.Send(x1, y1, x2, y2);
-
-	int rec_x1, rec_y1;
-	int rec_x2, rec_y2;
-	ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
-	std::cout << "[Client]: " << rec_x1 << ", " << rec_y1 << ", " <<
-		rec_x2 << ", " << rec_y2 << "\n";
-
-
 	//if its in pause state
 	if (!isPaused)
 	{
+
+		static GameObject* go1 = _em.GetEntityList()[7];
+		static GameObject* go2 = _em.GetEntityList()[8];
+
+		int x1 = static_cast<int>(go1->GetPosition().x);
+		int y1 = static_cast<int>(go1->GetPosition().y);
+		int x2 = static_cast<int>(go2->GetPosition().x);
+		int y2 = static_cast<int>(go2->GetPosition().y);
+		ClientHandle.Send(x1, y1, x2, y2);
+
+		int rec_x1, rec_y1;
+		int rec_x2{}, rec_y2{};
+
+		ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
+		if (rec_x1 > 0 || rec_y1 > 0 || rec_x2 > 0 || rec_y2 > 0)
+		{
+			g2_pos = { float(rec_x2), float(rec_y2) };
+			go2->SetPosition(g2_pos);
+		}
+		
+
+		std::cout << "[Client]: " << rec_x1 << ", " << rec_y1 << ", " <<
+			rec_x2 << ", " << rec_y2 << "\n";
+
 		_em.EntityManagerUpdate();      // Logic
 		_pm.PhysicsManagerUpdate();     // Physics
 		_cm.CollisionManagerUpdate();   // Collision (And Collision Response)
