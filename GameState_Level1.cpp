@@ -22,7 +22,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <iostream>
 #include "NetworkingSystem/System.h"
 
-const std::string ip = "192.168.50.119";
+const std::string ip = "172.20.10.3";
 const short unsigned port = 54000;
 
 // Create manager instances. (Make them static)
@@ -62,8 +62,8 @@ void GameStateLevel1Init(void)
 	ClientHandle.Init(ip, port);
 
 	// assign when id is NULL.
-	
-	
+
+
 	_tm.TileManagerLoad("Resources/Level 1.txt");
 	_em.EntityManagerLoad();        // Makes the objects from map info.
 	_rm.RenderManagerLoad();
@@ -77,7 +77,7 @@ void GameStateLevel1Init(void)
 	static int tmp{};
 	if (id == 0)
 	{
-		while(1)
+		while (1)
 		{
 			char tmp[69] = "hello\n";
 			ClientHandle.Send(tmp, 69);
@@ -96,10 +96,12 @@ void GameStateLevel1Init(void)
 	while (1)
 	{
 		is2PlayersConnected = ClientHandle.WaitFor2Players();
-		if(is2PlayersConnected == true)
-			break;
+		if (is2PlayersConnected == true)
+		{
+			std::cout << "My ID is " << id << "Connected players is 2. Moving to game state update!\n";
+			return;
+		}
 	}
-	std::cout << "My ID is " << id << "Connected players is 2. Moving to game state update!\n";
 }
 
 /**************************************************************************/
