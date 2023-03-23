@@ -91,7 +91,6 @@ void GameStateLevel1Init(void)
 			break;
 		}*/
 	}
-	std::cout << "ID IS " << id << std::endl;
 
 	static bool is2PlayersConnected = false;
 	while (1)
@@ -100,6 +99,7 @@ void GameStateLevel1Init(void)
 		if(is2PlayersConnected == true)
 			break;
 	}
+	std::cout << "My ID is " << id << "Connected players is 2. Moving to game state update!\n";
 }
 
 /**************************************************************************/
