@@ -184,6 +184,20 @@ void Server::SendClientID(int& id)
 	}
 }
 
+void Server::SendFlagFor2Players(bool& flag)
+{
+	char flagBuffer[MTU];
+	std::memset(flagBuffer, 0, MTU);
+	std::memcpy(flagBuffer, &flag, 1);
+	for (int i = 0; i < System::clientAddresses.size(); ++i)
+	{
+		if (System::clientAddresses[i].sin_addr.S_un.S_addr == 0)
+			continue;
+
+		sendto(m_recvSocket, reinterpret_cast<const char*>(flagBuffer), 1, 0, reinterpret_cast<SOCKADDR*>(&System::clientAddresses[i]), sizeof(System::clientAddresses[i]));
+	}
+}
+
 void Server::Read(int& x1, int& y1, int& x2, int& y2)
 {
 	for (auto& client : clientAddresses)
@@ -382,6 +396,20 @@ int Client::GetClientId()
 		std::memcpy(&id, bufferID, 4);
 		return id;
 	}*/
+}
+
+bool Client::WaitFor2Players()
+{
+	char tmp[MTU];
+	std::memset(tmp, 0, MTU);
+	int bytes = recvfrom(m_sendSocket, tmp, MTU, 0, nullptr, nullptr);
+	if(bytes != SOCKET_ERROR)
+	{
+		static bool readFlag = 0;
+		std::memcpy(&readFlag, tmp, 1);
+		return readFlag;
+	}
+
 }
 
 void Client::Read(int& value)

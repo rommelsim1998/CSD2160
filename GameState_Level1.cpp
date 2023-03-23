@@ -92,6 +92,14 @@ void GameStateLevel1Init(void)
 		}*/
 	}
 	std::cout << "ID IS " << id << std::endl;
+
+	static bool is2PlayersConnected = false;
+	while (1)
+	{
+		is2PlayersConnected = ClientHandle.WaitFor2Players();
+		if(is2PlayersConnected)
+			break;
+	}
 }
 
 /**************************************************************************/
