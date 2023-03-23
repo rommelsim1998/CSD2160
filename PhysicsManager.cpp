@@ -91,8 +91,8 @@ void PhysicsManager::PhysicsManagerUpdate()
 
 		int rec_x1{}, rec_y1{};
 		int rec_x2{}, rec_y2{};
-
 		ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
+
 		if (rec_x1 >= 0 && rec_y1 >= 0)
 		{
 			// player 1
