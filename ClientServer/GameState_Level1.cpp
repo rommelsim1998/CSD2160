@@ -22,7 +22,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <iostream>
 #include "../NetworkingSystem/System.h"
 
-const std::string ip = "172.28.138.181";
+const std::string ip = "192.168.50.119";
 const short unsigned port = 54000;
 
 // Create manager instances. (Make them static)
@@ -75,6 +75,8 @@ void GameStateLevel1Load(void)
 	"Initialize" function of this state
 	*/
 	/**************************************************************************/
+
+static bool flag = false;
 void GameStateLevel1Init(void)
 {
 	ServerHandle.Init(ip, port);
@@ -86,8 +88,14 @@ void GameStateLevel1Init(void)
 	int count = 0;
 	while (1)
 	{
-		count = ServerHandle.EnsureTwoPlayers();
-		if (count >= 1) return;
+		count = ServerHandle.GetPlayers();
+		ServerHandle.SendFlagFor2Players(flag);
+		if (count == 2)
+		{
+			flag = true;
+			ServerHandle.SendFlagFor2Players(flag);
+			return;
+		}
 	}
 }
 
@@ -98,10 +106,10 @@ void GameStateLevel1Init(void)
 	/**************************************************************************/
 void GameStateLevel1Update(void)
 {
-	int x1, y1, x2, y2;
+	/*int x1, y1, x2, y2;
 	ServerHandle.Read(x1, y1, x2, y2);
 	std::cout << "[Server]: " << x1 << ", " << y1 << ", " << x2 << ", " << y2 << "\n";
-	ServerHandle.Send(x1, y1, x2, y2);
+	ServerHandle.Send(x1, y1, x2, y2);*/
 }
 /**************************************************************************/
 /*!
