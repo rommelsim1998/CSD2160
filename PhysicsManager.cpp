@@ -101,7 +101,8 @@ void PhysicsManager::PhysicsManagerUpdate()
 				if (it->first == 7)
 				{
 					AEVec2 updatedPos_go1 = { (float)rec_x1, (float)rec_y1 };
-					it->second->SetPosition(updatedPos_go1);
+					it->second->SetVelocity(updatedPos_go1);
+					
 				}
 			}
 		}
@@ -113,7 +114,7 @@ void PhysicsManager::PhysicsManagerUpdate()
 				if (it->first == 8)
 				{
 					AEVec2 updatedPos_go2 = { (float)rec_x2, (float)rec_y2 };
-					//it->second->SetPosition(updatedPos_go2);
+					it->second->SetVelocity(updatedPos_go2);
 				}
 			}
 		}
