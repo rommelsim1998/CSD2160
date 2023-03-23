@@ -53,6 +53,7 @@ public:
 	int EnsureTwoPlayers();
 	void Read(int& x1, int& y1, int& x2, int& y2);
 	void Send(int& x1, int& y1, int& x2, int& y2);
+	void SendClientID(int& id);
 };
 
 class Client : public System

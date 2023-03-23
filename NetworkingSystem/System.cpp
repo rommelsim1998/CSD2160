@@ -168,6 +168,20 @@ void Server::Send(int& x1, int& y1, int& x2, int& y2)
 	}*/
 }
 
+void Server::SendClientID(int& id)
+{
+	char clientIDBuffer[MTU];
+	std::memset(clientIDBuffer, 0, MTU);
+	std::memcpy(clientIDBuffer, &id, 4);
+	for (int i = 0; i < System::clientAddresses.size(); ++i)
+	{
+		if (System::clientAddresses[i].sin_addr.S_un.S_addr == 0)
+			continue;
+
+		sendto(m_recvSocket, reinterpret_cast<const char*>(m_buffer), 4, 0, reinterpret_cast<SOCKADDR*>(&System::clientAddresses[i]), sizeof(System::clientAddresses[i]));
+	}
+}
+
 void Server::Read(int& x1, int& y1, int& x2, int& y2)
 {
 	for (auto& client : clientAddresses)
@@ -301,7 +315,8 @@ int Server::EnsureTwoPlayers()
 		{
 			System::clientAddresses.push_back(newClientAddress);
 			++connectedClient;
-			Send(&connectedClient, MTU);
+			SendClientID(connectedClient);
+			//Send(&connectedClient, MTU);
 		}
 	}
 	return connectedClient;
