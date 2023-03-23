@@ -77,9 +77,12 @@ void GameStateLevel1Init(void)
 	static int tmp{};
 	if (id == 0)
 	{
-		while (id > 0)
+		while(1)
 		{
+			char tmp[69] = "hello\n";
+			ClientHandle.Send(tmp, 69);
 			id = ClientHandle.GetClientId();
+			if (id > 0) break;
 		}
 		/*while (!(tmp == 1 || tmp == 2))
 		{

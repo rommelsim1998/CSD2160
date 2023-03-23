@@ -59,6 +59,7 @@ void Server::Init(const std::string& _ipAddress, unsigned short _portNumber)
 }
 
 static bool isSending = true;
+
 void Server::Update()
 {
 	std::memset(&m_buffer, 0, MTU);
@@ -134,6 +135,7 @@ void Server::Send(void* buffer, int len)
 	}
 	//sendto(m_sendSocket, (const char*)buffer, len, 0, reinterpret_cast<SOCKADDR*>(&m_serverAddr), sizeof(m_serverAddr));
 }
+
 void Server::Send(int& x1, int& y1, int& x2, int& y2)
 {
 	// Way to read!
@@ -178,7 +180,7 @@ void Server::SendClientID(int& id)
 		if (System::clientAddresses[i].sin_addr.S_un.S_addr == 0)
 			continue;
 
-		sendto(m_recvSocket, reinterpret_cast<const char*>(m_buffer), 4, 0, reinterpret_cast<SOCKADDR*>(&System::clientAddresses[i]), sizeof(System::clientAddresses[i]));
+		sendto(m_recvSocket, reinterpret_cast<const char*>(clientIDBuffer), 4, 0, reinterpret_cast<SOCKADDR*>(&System::clientAddresses[i]), sizeof(System::clientAddresses[i]));
 	}
 }
 
@@ -362,7 +364,13 @@ int Client::GetClientId()
 	char bufferID[MTU];
 	std::memset(bufferID, 0, MTU);
 	int bytes = recvfrom(m_sendSocket, bufferID, MTU, 0, nullptr, nullptr);
-	if (bytes == SOCKET_ERROR)
+	if(bytes != SOCKET_ERROR)
+	{
+		int id{};
+		std::memcpy(&id, bufferID, 4);
+		return id;
+	}
+	/*if (bytes == SOCKET_ERROR)
 	{
 		int wsaErr{ WSAGetLastError() };
 		if (wsaErr != WSAEWOULDBLOCK)
@@ -373,7 +381,7 @@ int Client::GetClientId()
 		int id{};
 		std::memcpy(&id, bufferID, 4);
 		return id;
-	}
+	}*/
 }
 
 void Client::Read(int& value)
