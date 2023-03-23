@@ -54,6 +54,7 @@ public:
 	void Read(int& x1, int& y1, int& x2, int& y2);
 	void Send(int& x1, int& y1, int& x2, int& y2);
 	void SendClientID(int& id);
+	void SendFlagFor2Players(bool& flag);
 };
 
 class Client : public System
@@ -75,6 +76,7 @@ public:
 	void Send(int& x1, int& y1, int& x2, int& y2);
 	void Read(int& x1, int& y1, int& x2, int& y2);
 	int GetClientId();
+	bool WaitFor2Players();
 };
 
 //static std::unique_ptr<Client> ClientHandle;
