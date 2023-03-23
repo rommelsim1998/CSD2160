@@ -302,7 +302,7 @@ void Client::Send(void* buffer, int len)
 	std::cout << "[Client]: Sending " << len << " bytes of data\n";
 }
 
-int Server::EnsureTwoPlayers()
+int Server::GetPlayers()
 {
 	std::memset(&m_buffer, 0, MTU);
 	sockaddr_in newClientAddress;
@@ -400,13 +400,14 @@ int Client::GetClientId()
 
 bool Client::WaitFor2Players()
 {
+	bool readFlag = 0;
 	char tmp[MTU];
 	std::memset(tmp, 0, MTU);
 	int bytes = recvfrom(m_sendSocket, tmp, MTU, 0, nullptr, nullptr);
 	if(bytes != SOCKET_ERROR)
 	{
-		static bool readFlag = 0;
 		std::memcpy(&readFlag, tmp, 1);
+		
 		return readFlag;
 	}
 
