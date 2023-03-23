@@ -407,7 +407,7 @@ bool Client::WaitFor2Players()
 	if(bytes != SOCKET_ERROR)
 	{
 		std::memcpy(&readFlag, tmp, 1);
-		
+		std::cout << "Flag is " << readFlag << std::endl;
 		return readFlag;
 	}
 

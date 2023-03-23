@@ -97,7 +97,7 @@ void GameStateLevel1Init(void)
 	while (1)
 	{
 		is2PlayersConnected = ClientHandle.WaitFor2Players();
-		if(is2PlayersConnected)
+		if(is2PlayersConnected == true)
 			break;
 	}
 }
