@@ -38,7 +38,6 @@ static PauseMenuManager& _pmm = PauseMenuManager::GetInstance();
 static Server& ServerHandle = Server::getInstance();
 static Client& ClientHandle = Client::getInstance();
 
-static int id;
  /**************************************************************************/
 /*!
 	"Load" function of this state
@@ -75,19 +74,19 @@ void GameStateLevel1Init(void)
 	AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
 	AEGfxSetCamPosition(0, 0);
 	static int tmp{};
-	if (id == 0)
+	if (_id == 0)
 	{
 		while (1)
 		{
 			char tmp[69] = "hello\n";
 			ClientHandle.Send(tmp, 69);
-			id = ClientHandle.GetClientId();
-			if (id > 0) break;
+			_id = ClientHandle.GetClientId();
+			if (_id > 0) break;
 		}
 		/*while (!(tmp == 1 || tmp == 2))
 		{
 			tmp = ClientHandle.GetClientId();
-			id = tmp;
+			_id = tmp;
 			break;
 		}*/
 	}
@@ -98,7 +97,7 @@ void GameStateLevel1Init(void)
 		is2PlayersConnected = ClientHandle.WaitFor2Players();
 		if (is2PlayersConnected == true)
 		{
-			std::cout << "My ID is " << id << "Connected players is 2. Moving to game state update!\n";
+			std::cout << "My ID is " << _id << "Connected players is 2. Moving to game state update!\n";
 			return;
 		}
 	}
