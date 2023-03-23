@@ -68,6 +68,7 @@ void PhysicsManager::PhysicsManagerUpdate()
 		AEVec2Add(&newpos, &oldpos, &vel);
 		it->second->SetPosition(newpos);
 
+		/*
 		static int x1, y1, x2, y2;
 		// player 1
 		if (it->first == 7)
@@ -83,7 +84,7 @@ void PhysicsManager::PhysicsManagerUpdate()
 		}
 		if (it->first == 7 || it->first == 8)
 		{
-			if(x1 > 0 || y1 > 0 || x2 > 0 || y2 > 0)
+			if(x1 >= 0 && y1 >= 0 && x2 >= 0 && y2 >= 0)
 				ClientHandle.Send(x1, y1, x2, y2);
 		}
 
@@ -109,10 +110,11 @@ void PhysicsManager::PhysicsManagerUpdate()
 				if (it->first == 8)
 				{
 					AEVec2 updatedPos_go2 = { (float)rec_x2, (float)rec_y2 };
-					it->second->SetPosition(updatedPos_go2);
+					//it->second->SetPosition(updatedPos_go2);
 				}
 			}
 		}
+		*/
 
 		// engine proof updated AABB 
 
