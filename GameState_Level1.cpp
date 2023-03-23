@@ -133,17 +133,17 @@ void GameStateLevel1Update(void)
 		// player 1
 		if (id == 1)
 		{
-			if (AEInputCheckTriggered(AEVK_RIGHT))
+			if (AEInputCheckCurr(AEVK_RIGHT))
 			{
 				x1 += 10.0f * g_dt; 
 				ClientHandle.Send(x1, y1, x2, y2);
 			}
-			if (AEInputCheckTriggered(AEVK_LEFT))
+			if (AEInputCheckCurr(AEVK_LEFT))
 			{
 				x1 -= 10.0f * g_dt;
 				ClientHandle.Send(x1, y1, x2, y2);
 			}
-			if (AEInputCheckTriggered(AEVK_UP))
+			if (AEInputCheckCurr(AEVK_UP))
 			{
 				y1 += 10.0f * g_dt;
 				ClientHandle.Send(x1, y1, x2, y2);
@@ -151,17 +151,17 @@ void GameStateLevel1Update(void)
 		}
 		else if (id == 2)
 		{
-			if (AEInputCheckTriggered(AEVK_D))
+			if (AEInputCheckCurr(AEVK_D))
 			{
 				x2 += 10.0f * g_dt;
 				ClientHandle.Send(x1, y1, x2, y2);
 			}
-			if (AEInputCheckTriggered(AEVK_A))
+			if (AEInputCheckCurr(AEVK_A))
 			{
 				x2 -= 10.0f * g_dt;
 				ClientHandle.Send(x1, y1, x2, y2);
 			}
-			if (AEInputCheckTriggered(AEVK_W))
+			if (AEInputCheckCurr(AEVK_W))
 			{
 				y2 += 10.0f * g_dt;
 				ClientHandle.Send(x1, y1, x2, y2);
@@ -187,7 +187,7 @@ void GameStateLevel1Update(void)
 			rec_x2 << ", " << rec_y2 << "\n";
 
 		_em.EntityManagerUpdate();      // Logic
-		_pm.PhysicsManagerUpdate();     // Physics
+		//_pm.PhysicsManagerUpdate();     // Physics
 		_cm.CollisionManagerUpdate();   // Collision (And Collision Response)
 		_bm.BackgroundManagerUpdate();
 		_um.UIManagerUpdate();
