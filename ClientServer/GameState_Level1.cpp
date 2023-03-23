@@ -93,6 +93,7 @@ void GameStateLevel1Init(void)
 		if (count == 2)
 		{
 			flag = true;
+			std::cout << "2 players connected. Dispatching info to all clients\n";
 			ServerHandle.SendFlagFor2Players(flag);
 			return;
 		}
