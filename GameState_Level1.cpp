@@ -115,7 +115,7 @@ void GameStateLevel1Update(void)
 	//if its in pause state
 	if (!isPaused)
 	{
-
+		/*
 		static GameObject* go1 = _em.GetEntityList()[7];
 		static GameObject* go2 = _em.GetEntityList()[8];
 
@@ -135,17 +135,17 @@ void GameStateLevel1Update(void)
 		{
 			if (AEInputCheckCurr(AEVK_RIGHT))
 			{
-				x1 += 10.0f * g_dt; 
+				x1 += 10000.0f * g_dt;
 				ClientHandle.Send(x1, y1, x2, y2);
 			}
 			if (AEInputCheckCurr(AEVK_LEFT))
 			{
-				x1 -= 10.0f * g_dt;
+				x1 -= 10000.0f * g_dt;
 				ClientHandle.Send(x1, y1, x2, y2);
 			}
 			if (AEInputCheckCurr(AEVK_UP))
 			{
-				y1 += 10.0f * g_dt;
+				y1 += 10000.0f * g_dt;
 				ClientHandle.Send(x1, y1, x2, y2);
 			}
 		}
@@ -153,17 +153,17 @@ void GameStateLevel1Update(void)
 		{
 			if (AEInputCheckCurr(AEVK_D))
 			{
-				x2 += 10.0f * g_dt;
+				x2 += 10000.0f * g_dt;
 				ClientHandle.Send(x1, y1, x2, y2);
 			}
 			if (AEInputCheckCurr(AEVK_A))
 			{
-				x2 -= 10.0f * g_dt;
+				x2 -= 10000.0f * g_dt;
 				ClientHandle.Send(x1, y1, x2, y2);
 			}
 			if (AEInputCheckCurr(AEVK_W))
 			{
-				y2 += 10.0f * g_dt;
+				y2 += 10000.0f * g_dt;
 				ClientHandle.Send(x1, y1, x2, y2);
 			}
 		}
@@ -180,14 +180,14 @@ void GameStateLevel1Update(void)
 			{
 				go1->SetPosition(g1_pos);
 			}
-		}
 		
 
 		std::cout << "[Client]: " << rec_x1 << ", " << rec_y1 << ", " <<
 			rec_x2 << ", " << rec_y2 << "\n";
 
+		}*/
 		_em.EntityManagerUpdate();      // Logic
-		//_pm.PhysicsManagerUpdate();     // Physics
+		_pm.PhysicsManagerUpdate();     // Physics
 		_cm.CollisionManagerUpdate();   // Collision (And Collision Response)
 		_bm.BackgroundManagerUpdate();
 		_um.UIManagerUpdate();

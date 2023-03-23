@@ -10,11 +10,21 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  */
  /******************************************************************************/
 
-#include "Constants.h"
+//#include "Constants.h"
 
+
+#include <WS2tcpip.h>
+#include <winsock.h>
+#include "GameState_Connect.h"
+#include "Main.h"
+#include <iostream>
+#include "NetworkingSystem/System.h"
 #define GRAVITY -10.0f;
 
 using _em = EntityManager;
+static Server& ServerHandle = Server::getInstance();
+static Client& ClientHandle = Client::getInstance();
+
 
 /*===================================*
 		Physics Man Update
@@ -55,6 +65,28 @@ void PhysicsManager::PhysicsManagerUpdate()
 		vel = it->second->GetVelocity();
 		AEVec2Add(&newpos, &oldpos, &vel);
 		it->second->SetPosition(newpos);
+
+		static int x1, y1, x2, y2;
+		if (it->first == 7)
+		{
+			x1 = it->second->GetPosition().x;
+			y1 = it->second->GetPosition().y;
+		}
+		else if (it->first == 8)
+		{
+			x2 = it->second->GetPosition().x;
+			y2 = it->second->GetPosition().y;
+		}
+		if (it->first == 7 || it->first == 8)
+		{
+			if(x1 > 0 || y1 > 0 || y1 > 0 || y2 > 0)
+				ClientHandle.Send(x1, y1, x2, y2);
+		}
+
+		int rec_x1, rec_y1;
+		int rec_x2{}, rec_y2{};
+
+		ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
 
 		// engine proof updated AABB 
 
