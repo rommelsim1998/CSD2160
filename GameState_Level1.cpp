@@ -22,7 +22,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <iostream>
 #include "NetworkingSystem/System.h"
 
-const std::string ip = "192.168.144.135";
+const std::string ip = "192.168.26.142";
 const short unsigned port = 54000;
 
 // Create manager instances. (Make them static)
@@ -109,7 +109,7 @@ void GameStateLevel1Init(void)
 	"Update" function of this state
 	*/
 	/**************************************************************************/
-static AEVec2 g2_pos;
+static AEVec2 g1_pos, g2_pos;
 void GameStateLevel1Update(void)
 {
 	//if its in pause state
@@ -131,8 +131,16 @@ void GameStateLevel1Update(void)
 		ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
 		if (rec_x1 > 0 && rec_y1 > 0 && rec_x2 > 0 && rec_y2 > 0)
 		{
+			g1_pos = { float(rec_x1), float(rec_y1) };
 			g2_pos = { float(rec_x2), float(rec_y2) };
-			go2->SetPosition(g2_pos);
+			if (id == 1)
+			{
+				go2->SetPosition(g2_pos);
+			}
+			else if (id == 2)
+			{
+				go1->SetPosition(g1_pos);
+			}
 		}
 		
 
