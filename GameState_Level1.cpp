@@ -123,12 +123,51 @@ void GameStateLevel1Update(void)
 		int y1 = static_cast<int>(go1->GetPosition().y);
 		int x2 = static_cast<int>(go2->GetPosition().x);
 		int y2 = static_cast<int>(go2->GetPosition().y);
-		ClientHandle.Send(x1, y1, x2, y2);
+		//ClientHandle.Send(x1, y1, x2, y2);
 
 		int rec_x1, rec_y1;
 		int rec_x2{}, rec_y2{};
 
 		ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
+
+		// player 1
+		if (id == 1)
+		{
+			if (AEInputCheckTriggered(AEVK_RIGHT))
+			{
+				x1 += 10.0f * g_dt; 
+				ClientHandle.Send(x1, y1, x2, y2);
+			}
+			if (AEInputCheckTriggered(AEVK_LEFT))
+			{
+				x1 -= 10.0f * g_dt;
+				ClientHandle.Send(x1, y1, x2, y2);
+			}
+			if (AEInputCheckTriggered(AEVK_UP))
+			{
+				y1 += 10.0f * g_dt;
+				ClientHandle.Send(x1, y1, x2, y2);
+			}
+		}
+		else if (id == 2)
+		{
+			if (AEInputCheckTriggered(AEVK_D))
+			{
+				x2 += 10.0f * g_dt;
+				ClientHandle.Send(x1, y1, x2, y2);
+			}
+			if (AEInputCheckTriggered(AEVK_A))
+			{
+				x2 -= 10.0f * g_dt;
+				ClientHandle.Send(x1, y1, x2, y2);
+			}
+			if (AEInputCheckTriggered(AEVK_W))
+			{
+				y2 += 10.0f * g_dt;
+				ClientHandle.Send(x1, y1, x2, y2);
+			}
+		}
+		
 		if (rec_x1 > 0 && rec_y1 > 0 && rec_x2 > 0 && rec_y2 > 0)
 		{
 			g1_pos = { float(rec_x1), float(rec_y1) };
