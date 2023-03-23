@@ -88,6 +88,7 @@ void PhysicsManager::PhysicsManagerUpdate()
 				ClientHandle.Send(x1, y1, x2, y2);
 		}
 
+		*/
 		 int rec_x1{}, rec_y1{};
 		 int rec_x2{}, rec_y2{};
 
@@ -114,7 +115,7 @@ void PhysicsManager::PhysicsManagerUpdate()
 				}
 			}
 		}
-		*/
+		
 
 		// engine proof updated AABB 
 
