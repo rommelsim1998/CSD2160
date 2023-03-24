@@ -130,7 +130,7 @@ void PhysicsManager::PhysicsManagerUpdate()
 			}
 		}
 
-		ClientHandle.Send(x1, x2, y1, y2);
+		ClientHandle.Send(x1, y1, x2, y2);
 		/*
 		// player 1
 		if (go1)
