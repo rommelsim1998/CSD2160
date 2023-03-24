@@ -22,7 +22,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <iostream>
 #include "../NetworkingSystem/System.h"
 
-const std::string ip = "192.168.106.97";
+const std::string ip = "192.168.106.56";
 const short unsigned port = 54000;
 
 // Create manager instances. (Make them static)

@@ -233,7 +233,8 @@ void PhysicsManager::PhysicsManagerUpdate()
 	else if (_id == 2)
 		ClientHandle.Send(rec_x1, rec_y1, x2, y2);
 	ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
-	std::cout << "OBJ1:( " << rec_x1 << "," << rec_y1 << " ) " << std::endl;
-	std::cout << "OBJ2:( " << rec_x2 << "," << rec_y2 << " ) " << std::endl;
+	//std::cout << "OBJ1:( " << rec_x1 << "," << rec_y1 << " ) " << std::endl;
+	//std::cout << "OBJ2:( " << rec_x2 << "," << rec_y2 << " ) " << std::endl;
+
 
 }
