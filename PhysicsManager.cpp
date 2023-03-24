@@ -91,7 +91,7 @@ void PhysicsManager::PhysicsManagerUpdate()
 			}
 
 			// Client Send Player 1 data over to server for Player 2 to read
-			ClientHandle.Send(x1, y1, rec_x2, rec_y2);
+			//ClientHandle.Send(x1, y1, rec_x2, rec_y2);
 
 			// Update Player 2 physics from server 
 			ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
@@ -118,7 +118,7 @@ void PhysicsManager::PhysicsManagerUpdate()
 			}
 
 			// Client send Player 2 data over to server for Player 1 to read
-			ClientHandle.Send(rec_x1, rec_y1, x2, y2);
+			//ClientHandle.Send(rec_x1, rec_y1, x2, y2);
 
 			// Update Players 1 physics from server
 			ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
@@ -130,7 +130,7 @@ void PhysicsManager::PhysicsManagerUpdate()
 			}
 		}
 
-
+		ClientHandle.Send(x1, x2, y1, y2);
 		/*
 		// player 1
 		if (go1)
