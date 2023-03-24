@@ -103,7 +103,6 @@ void PhysicsManager::PhysicsManagerUpdate()
 			x2 = newPos2.x; y2 = newPos2.y;
 			ClientHandle.Send(x1, y1, x2, y2);
 
-			ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
 			AEVec2 newpos_2 = { rec_x2, rec_y2 };
 			if (rec_x2 >= 1000 && rec_y2 >= 1000 && rec_x2 < 0 && rec_y2 < 0)
 			{
@@ -114,6 +113,9 @@ void PhysicsManager::PhysicsManagerUpdate()
 				it->second->SetPosition(newPos2);
 			}
 		}
+
+		ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
+
 		/*static int x1{}, y1{}, x2{}, y2{};
 		static int rec_x1{}, rec_y1{};
 		static int rec_x2{}, rec_y2{};
