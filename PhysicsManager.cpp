@@ -95,23 +95,25 @@ void PhysicsManager::PhysicsManagerUpdate()
 			static int rec_x1{}, rec_y1{};
 			static int rec_x2{}, rec_y2{};
 			ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
+			if (rec_x1 >= 1000 || rec_x2 >= 1000 || rec_y1 >= 1000 || rec_y2 >= 1000)
+				continue;
 
 			// player 1
 			if (_id == 1)
 			{
-				if (it->first == 7)
+				if (it->first == 8)
 				{
 					AEVec2 updatedPos_go1 = { (float)rec_x1, (float)rec_y1 };
 
 					//it->second->SetVelocity(updatedPos_go1);
-					//it->second->SetPosition(updatedPos_go1);
+					it->second->SetPosition(updatedPos_go1);
 				}
 			}
 
 			// player 2
 			if (_id == 2)
 			{
-				if (it->first == 8)
+				if (it->first == 7)
 				{
 					AEVec2 updatedPos_go2 = { (float)rec_x2, (float)rec_y2 };
 					//it->second->SetVelocity(updatedPos_go2);
