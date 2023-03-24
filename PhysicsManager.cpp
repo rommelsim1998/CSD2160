@@ -91,6 +91,9 @@ void PhysicsManager::PhysicsManagerUpdate()
 			{
 				it->second->SetPosition(newPos1);
 			}
+
+			ClientHandle.Send(x1, y1, x2, y2);
+			ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
 		}
 
 		// player 2
@@ -112,13 +115,17 @@ void PhysicsManager::PhysicsManagerUpdate()
 			{
 				it->second->SetPosition(newPos2);
 			}
+
+			ClientHandle.Send(x1, y1, x2, y2);
+			ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
 		}
 
-		if(_id == 1)
+		/*if(_id == 1)
 			ClientHandle.Send(x1, y1, rec_x2, rec_y2);
 		else if(_id == 2)
-			ClientHandle.Send(rec_x1, rec_y1, x2, y2);
-		ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
+			ClientHandle.Send(rec_x1, rec_y1, x2, y2);*/
+	/*	ClientHandle.Send(x1, y1, x2, y2);
+		ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);*/
 
 		/*static int x1{}, y1{}, x2{}, y2{};
 		static int rec_x1{}, rec_y1{};
