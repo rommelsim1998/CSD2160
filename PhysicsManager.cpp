@@ -86,10 +86,12 @@ void PhysicsManager::PhysicsManagerUpdate()
 			if (rec_x1 >= 1000 && rec_y1 >= 1000 && rec_x1 < 0 && rec_y1 < 0)
 			{
 				it->second->SetPosition(oldPos1);
+				//it->second->SetVelocity(oldPos1);
 			}
 			else
 			{
 				it->second->SetPosition(newPos1);
+				//it->second->SetVelocity(newPos1);
 			}
 		}
 
@@ -107,51 +109,53 @@ void PhysicsManager::PhysicsManagerUpdate()
 			if (rec_x2 >= 1000 && rec_y2 >= 1000 && rec_x2 < 0 && rec_y2 < 0)
 			{
 				it->second->SetPosition(oldPos2);
+				//it->second->SetVelocity(oldPos2);
 			}
 			else
 			{
 				it->second->SetPosition(newPos2);
+				//it->second->SetVelocity(newPos2);
+
 			}
 		}
 
-		if(_id == 1)
-			ClientHandle.Send(x1, y1, rec_x2, rec_y2);
-		else if(_id == 2)
-			ClientHandle.Send(rec_x1, rec_y1, x2, y2);
-		ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
 
-		/*static int x1{}, y1{}, x2{}, y2{};
-		static int rec_x1{}, rec_y1{};
-		static int rec_x2{}, rec_y2{};
-		if (_id == 1 && it->first == 8)
-		{
-			x1 = it->second->GetPosition().x;
-			y1 = it->second->GetPosition().y;
-			if (x1 >= 0 && y1 >= 0 && x1 <= 1000 && y1 <= 1000)
-				ClientHandle.Send(x1, y1, x2, y2);
-			ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
-			if (rec_x1 >= 1000 || rec_x2 >= 1000 || rec_y1 >= 1000 || rec_y2 >= 1000)
-				continue;
-			AEVec2 updatedPos_go1 = { (float)rec_x1, (float)rec_y1 };
 
-			it->second->SetVelocity(updatedPos_go1);
-			auto vel1 = it->second->GetVelocity();
-			AEVec2Add(&updatedPos_go1, )
-		}
-		if (_id == 2 && it->first == 7)
-		{
-			x2 = it->second->GetPosition().x;
-			y2 = it->second->GetPosition().y;
-			if (x2 >= 0 && y2 >= 0 && x2 <= 1000 && y2 <= 1000)
-				ClientHandle.Send(x1, y1, x2, y2);
-			ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
-			if (rec_x1 >= 1000 || rec_x2 >= 1000 || rec_y1 >= 1000 || rec_y2 >= 1000)
-				continue;
-			AEVec2 updatedPos_go2 = { (float)rec_x2, (float)rec_y2 };
 
-			it->second->SetVelocity(updatedPos_go2);
-			it->second->SetPosition(updatedPos_go2);
-		}*/
+	
+
+		/////*static int x1{}, y1{}, x2{}, y2{};
+		////static int rec_x1{}, rec_y1{};
+		////static int rec_x2{}, rec_y2{};
+		////if (_id == 1 && it->first == 8)
+		//{
+		//	x1 = it->second->GetPosition().x;
+		//	y1 = it->second->GetPosition().y;
+		//	if (x1 >= 0 && y1 >= 0 && x1 <= 1000 && y1 <= 1000)
+		//		ClientHandle.Send(x1, y1, x2, y2);
+		//	ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
+		//	if (rec_x1 >= 1000 || rec_x2 >= 1000 || rec_y1 >= 1000 || rec_y2 >= 1000)
+		//		continue;
+		//	AEVec2 updatedPos_go1 = { (float)rec_x1, (float)rec_y1 };
+
+		//	it->second->SetVelocity(updatedPos_go1);
+		//	auto vel1 = it->second->GetVelocity();
+		//	AEVec2Add(&updatedPos_go1, )
+		//}
+		//if (_id == 2 && it->first == 7)
+		//{
+		//	x2 = it->second->GetPosition().x;
+		//	y2 = it->second->GetPosition().y;
+		//	if (x2 >= 0 && y2 >= 0 && x2 <= 1000 && y2 <= 1000)
+		//		ClientHandle.Send(x1, y1, x2, y2);
+		//	ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
+		//	if (rec_x1 >= 1000 || rec_x2 >= 1000 || rec_y1 >= 1000 || rec_y2 >= 1000)
+		//		continue;
+		//	AEVec2 updatedPos_go2 = { (float)rec_x2, (float)rec_y2 };
+
+		//	it->second->SetVelocity(updatedPos_go2);
+		//	it->second->SetPosition(updatedPos_go2);
+		//}*/
 
 
 		//else
@@ -220,5 +224,16 @@ void PhysicsManager::PhysicsManagerUpdate()
 		first.max.y = 0.5f * it->second->GetScale() + it->second->GetPosition().y;
 		it->second->SetBoundingBox(first);*/
 	}
+
+
+	if (_id == 1)
+		ClientHandle.Send(x1, y1, rec_x2, rec_y2);
+
+
+	else if (_id == 2)
+		ClientHandle.Send(rec_x1, rec_y1, x2, y2);
+	ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
+	std::cout << "OBJ1:( " << rec_x1 << "," << rec_y1 << " ) " << std::endl;
+	std::cout << "OBJ2:( " << rec_x2 << "," << rec_y2 << " ) " << std::endl;
 
 }
