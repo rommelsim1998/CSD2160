@@ -45,8 +45,8 @@ AEVec2 TileManager::GetTilePosAt(float x, float y) const
 {
 	
 	int pos = (Map_Width * (Map_Height - (static_cast<int>(ceil(y / TILE_HEIGHT)))) + (static_cast<int>(x / TILE_WIDTH)));
-
-	return MapTile[pos].getPosition();
+	if (pos < 345 && pos > 0)
+		return MapTile[pos].getPosition();
 }
 
 TileType TileManager::GetTileTypeAt(float x, float y) const
@@ -55,8 +55,8 @@ TileType TileManager::GetTileTypeAt(float x, float y) const
 
 	int pos = (Map_Width * (Map_Height - (static_cast<int>(ceil(y / TILE_HEIGHT)))) + (static_cast<int>(x / TILE_WIDTH)));
 
-	
-	return MapTile[pos].getTileType();
+	if (pos < 345 && pos > 0)
+		return MapTile[pos].getTileType();
 }
 
 
