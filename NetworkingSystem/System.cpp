@@ -1,6 +1,7 @@
 #include "System.h"
 #include "System.h"
 #include "System.h"
+#include <cassert>
 #pragma once
 class GameObject;
 
