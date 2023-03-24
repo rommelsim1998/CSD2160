@@ -74,8 +74,8 @@ void PhysicsManager::PhysicsManagerUpdate()
 			it->second->SetPosition(newpos);		// dont set pos for go1 and go2
 
 		// move player 1 
-		if (_id == 1)
-		{
+		//if (_id == 1)
+		//{
 			if (go1)
 			{
 				// Calculate Player 1 physics internally
@@ -100,9 +100,9 @@ void PhysicsManager::PhysicsManagerUpdate()
 				AEVec2 go2PosFromServer = { rec_x2, rec_y2 };
 				go2->SetPosition(go2PosFromServer);
 			}
-		}
-		else if (_id == 2)
-		{
+		//}
+		//else if (_id == 2)
+		//{
 			if (go2)
 			{
 				// Calulcate Player 2 physics internally
@@ -128,7 +128,7 @@ void PhysicsManager::PhysicsManagerUpdate()
 				AEVec2 go1PosFromServer = { rec_x1, rec_y1 };
 				go1->SetPosition(go1PosFromServer);
 			}
-		}
+		//}
 
 		ClientHandle.Send(x1, y1, x2, y2);
 		/*
