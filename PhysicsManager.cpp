@@ -43,7 +43,7 @@ void PhysicsManager::PhysicsManagerUpdate()
 	AEVec2 oldpos;
 	AEVec2 newpos;
 	AEVec2 vel;
-	static int x1, y1, x2, y2;
+	static int x1{}, y1{}, x2{}, y2{};
 	static int rec_x1{}, rec_y1{};
 	static int rec_x2{}, rec_y2{};
 
@@ -74,11 +74,16 @@ void PhysicsManager::PhysicsManagerUpdate()
 		// player 1
 		if (it->first == 8 && _id == 1)
 		{
-			x1 = newpos.x;
-			y1 = newpos.y;
+			static AEVec2 newPos1{};
+			auto oldPos1 = it->second->GetPosition();
+			auto vel1 = it->second->GetVelocity();
+			AEVec2Add(&newPos1, &oldPos1, &vel1);
+			x1 = newPos1.x; y1 = newPos1.y;
 			ClientHandle.Send(x1, y1, x2, y2);
 
 			ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
+			if (rec_x1 >= 1000 || rec_y1 >= 1000)
+				continue;
 			AEVec2 newpos_1 = { rec_x1, rec_y1 };
 			it->second->SetPosition(newpos_1);
 		}
@@ -86,12 +91,16 @@ void PhysicsManager::PhysicsManagerUpdate()
 		// player 2
 		else if (it->first == 7 && _id == 2)
 		{
-			x2 = newpos.x;
-			y2 = newpos.y;
-
+			static AEVec2 newPos2{};
+			auto oldPos2 = it->second->GetPosition();
+			auto vel2 = it->second->GetVelocity();
+			AEVec2Add(&newPos2, &oldPos2, &vel2);
+			x2 = newPos2.x; y2 = newPos2.y;
 			ClientHandle.Send(x1, y1, x2, y2);
 
 			ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
+			if (rec_x2 >= 1000 || rec_y2 >= 1000)
+				continue;
 			AEVec2 newpos_2 = { rec_x2, rec_y2 };
 			it->second->SetPosition(newpos_2);
 		}
