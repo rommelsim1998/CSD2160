@@ -83,7 +83,7 @@ void PhysicsManager::PhysicsManagerUpdate()
 				auto oldPos1 = go1->GetPosition();
 				auto vel1 = go1->GetVelocity();
 				AEVec2Add(&newPos1, &oldPos1, &vel1);
-				if (newPos1.x >= 1000 && newPos1.y >= 1000 && newPos1.x < 0 && newPos1.y < 0 == false)
+				if (!(newPos1.x >= 1000 && newPos1.y >= 1000 && newPos1.x < 0 && newPos1.y < 0))
 					go1->SetPosition(newPos1);
 
 				x1 = newPos1.x;
@@ -110,7 +110,7 @@ void PhysicsManager::PhysicsManagerUpdate()
 				auto oldPos2 = go2->GetPosition();
 				auto vel2 = go2->GetVelocity();
 				AEVec2Add(&newPos2, &oldPos2, &vel2);
-				if (newPos2.x >= 1000 && newPos2.y >= 1000 && newPos2.x < 0 && newPos2.y < 0 == false)
+				if (!(newPos2.x >= 1000 && newPos2.y >= 1000 && newPos2.x < 0 && newPos2.y < 0))
 					go2->SetPosition(newPos2);
 
 				x2 = newPos2.x;
