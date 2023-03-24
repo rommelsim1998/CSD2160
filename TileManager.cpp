@@ -67,7 +67,8 @@ int TileManager::GetColMapValue(float x, float y) const
 	//std::cout << "Val y: " << val2 << std::endl;
 	//std::cout << "Map Width : " << Map_Width << std::endl;
 	int pos = (Map_Width * (Map_Height - val1 - 1)) + (val2);
-	return CollisionMap[pos];
+	if (pos < 345 && pos > 0)
+		return CollisionMap[pos];
 }
 
 void TileManager::Setwidth(int NMap_width)

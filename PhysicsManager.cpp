@@ -117,7 +117,7 @@ void PhysicsManager::PhysicsManagerUpdate()
 				{
 					AEVec2 updatedPos_go2 = { (float)rec_x2, (float)rec_y2 };
 					//it->second->SetVelocity(updatedPos_go2);
-					//it->second->SetPosition(updatedPos_go2);
+					it->second->SetPosition(updatedPos_go2);
 				}
 
 			}
