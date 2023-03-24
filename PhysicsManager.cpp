@@ -85,6 +85,9 @@ void PhysicsManager::PhysicsManagerUpdate()
 				AEVec2Add(&newPos1, &oldPos1, &vel1);
 				if (newPos1.x >= 1000 && newPos1.y >= 1000 && newPos1.x < 0 && newPos1.y < 0 == false)
 					go1->SetPosition(newPos1);
+
+				x1 = newPos1.x;
+				y1 = newPos1.y;
 			}
 
 			// Client Send Player 1 data over to server for Player 2 to read
@@ -109,6 +112,9 @@ void PhysicsManager::PhysicsManagerUpdate()
 				AEVec2Add(&newPos2, &oldPos2, &vel2);
 				if (newPos2.x >= 1000 && newPos2.y >= 1000 && newPos2.x < 0 && newPos2.y < 0 == false)
 					go2->SetPosition(newPos2);
+
+				x2 = newPos2.x;
+				y2 = newPos2.y;
 			}
 
 			// Client send Player 2 data over to server for Player 1 to read
