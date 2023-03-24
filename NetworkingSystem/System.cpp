@@ -352,7 +352,7 @@ void Client::Send(int& x1, int& y1, int& x2, int& y2)
 void Client::Read(int& x1, int& y1, int& x2, int& y2)
 {
 	std::memset(m_buffer_recieve, 0, MTU);
-	int bytes = recvfrom(m_sendSocket, m_buffer_recieve, MTU, 0, nullptr, nullptr);
+	int bytes = recvfrom(m_sendSocket, m_buffer_recieve, 16, 0, nullptr, nullptr);
 	if (bytes == SOCKET_ERROR)
 	{
 		int wsaErr{ WSAGetLastError() };

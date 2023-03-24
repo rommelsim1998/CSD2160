@@ -82,10 +82,10 @@ void PhysicsManager::PhysicsManagerUpdate()
 			ClientHandle.Send(x1, y1, x2, y2);
 
 			ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
-			if (rec_x1 >= 1000 || rec_y1 >= 1000)
+			if (rec_x1 >= 1000 && rec_y1 >= 1000 && rec_x1 < 0 && rec_y1 < 0)
 				continue;
 			AEVec2 newpos_1 = { rec_x1, rec_y1 };
-			it->second->SetPosition(newpos_1);
+			//it->second->SetPosition(newpos_1);
 		}
 
 		// player 2
@@ -99,10 +99,10 @@ void PhysicsManager::PhysicsManagerUpdate()
 			ClientHandle.Send(x1, y1, x2, y2);
 
 			ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
-			if (rec_x2 >= 1000 || rec_y2 >= 1000)
+			if (rec_x2 >= 1000 && rec_y2 >= 1000 && rec_x2 < 0 && rec_y2 < 0)
 				continue;
 			AEVec2 newpos_2 = { rec_x2, rec_y2 };
-			it->second->SetPosition(newpos_2);
+			//it->second->SetPosition(newpos_2);
 		}
 		/*static int x1{}, y1{}, x2{}, y2{};
 		static int rec_x1{}, rec_y1{};
