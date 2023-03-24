@@ -369,7 +369,7 @@ void Client::Read(int& x1, int& y1, int& x2, int& y2)
 		std::memcpy(&y1, m_buffer_recieve + 4, 4);
 		std::memcpy(&x2, m_buffer_recieve + 8, 4);
 		std::memcpy(&y2, m_buffer_recieve + 12, 4);
-		
+		std::cout << "[Client] Recieving: " << "(" << x1 << ", " << y1 << ")" << "(" << x2 << ", " << y2 << ")" << std::endl;
 	}
 }
 
