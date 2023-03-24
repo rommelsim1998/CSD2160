@@ -11,6 +11,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #include "ConnectionManager.h"
 #include "Constants.h"
+#include "NetworkingSystem/System.h"
+//int _id;
 
 using _em = EntityManager;
 static TileManager& _tm = TileManager::GetInstance();
@@ -145,7 +147,8 @@ void Player::GameObjectUpdate()
 		}
 	}
 
-	if (Connectionmanager::isMultiplayer == true)
+	//if (Connectionmanager::isMultiplayer == true)
+	if (_id == 1)
 	{
 		// Movement left and right of Player
 		if (AEInputCheckCurr(AEVK_LEFT))
@@ -174,7 +177,7 @@ void Player::GameObjectUpdate()
 		}
 
 	}
-	else
+	else if(_id == 2)
 	{
 		// Movement left and right of Player
 		if (AEInputCheckCurr(AEVK_A))
@@ -205,7 +208,8 @@ void Player::GameObjectUpdate()
 	}
 
 	// not used
-	if (Connectionmanager::isMultiplayer == true)
+	//if (Connectionmanager::isMultiplayer == true)
+	if (_id == 1)
 	{
 		// Player climbing up the ladder
 		if (_tm.GetTileTypeAt(GetPosition().x, GetPosition().y) == TileType::TILE_LADDER)
@@ -244,7 +248,7 @@ void Player::GameObjectUpdate()
 		}
 
 	}
-	else
+	else if(_id == 2)
 	{
 		// Player climbing up the ladder
 		if (_tm.GetTileTypeAt(GetPosition().x, GetPosition().y) == TileType::TILE_LADDER)
@@ -285,7 +289,8 @@ void Player::GameObjectUpdate()
 
 
 
-	if (Connectionmanager::isMultiplayer == true)
+	//if (Connectionmanager::isMultiplayer == true)
+	if (_id == 1)
 	{
 		// Player jump
 		if (AEInputCheckTriggered(AEVK_UP) && ((GetCollisionFlag() & COLLISION_BOTTOM) || isStanding ||
@@ -297,7 +302,7 @@ void Player::GameObjectUpdate()
 			isStanding = false;
 		}
 	}
-	else
+	else if(_id == 2)
 	{
 		// Player jump
 		if (AEInputCheckTriggered(AEVK_SPACE) && ((GetCollisionFlag() & COLLISION_BOTTOM) || isStanding ||
@@ -311,7 +316,8 @@ void Player::GameObjectUpdate()
 	}
 	
 
-	if (Connectionmanager::isMultiplayer==true)
+	//if (Connectionmanager::isMultiplayer==true)
+	if (_id == 1)
 	{
 		// Direction player is facing when pulling the box
 		if (AEInputCheckCurr(AEVK_M) && AEInputCheckCurr(AEVK_LEFT))
@@ -323,7 +329,7 @@ void Player::GameObjectUpdate()
 			SetDirection(pi);
 		}
 	}
-	else
+	else if(_id == 2)
 	{
 		// Direction player is facing when pulling the box
 		if (AEInputCheckCurr(AEVK_LCTRL) && AEInputCheckCurr(AEVK_A))

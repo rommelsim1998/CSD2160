@@ -43,7 +43,9 @@ void PhysicsManager::PhysicsManagerUpdate()
 	AEVec2 oldpos;
 	AEVec2 newpos;
 	AEVec2 vel;
-
+	static int x1, y1, x2, y2;
+	static int rec_x1{}, rec_y1{};
+	static int rec_x2{}, rec_y2{};
 
 	const std::map<int, GameObject*>& list = _em::GetInstance().GetEntityList();
 	for (auto it = list.begin(); it != list.end(); it++)
@@ -69,59 +71,117 @@ void PhysicsManager::PhysicsManagerUpdate()
 		if(!(it->first == 7 || it->first == 8))
 			it->second->SetPosition(newpos);		// dont set pos for go1 and go2
 
-		else
+		// player 1
+		if (it->first == 8 && _id == 1)
 		{
-			static int x1{}, y1{}, x2{}, y2{};
-			// player 1
-			if (it->first == 7)
-			{
-				x1 = it->second->GetPosition().x;
-				y1 = it->second->GetPosition().y;
-			}
-			// player 2
-			else if (it->first == 8)
-			{
-				x2 = it->second->GetPosition().x;
-				y2 = it->second->GetPosition().y;
-			}
-			if (it->first == 7 || it->first == 8)
-			{
-				if (x1 >= 0 && y1 >= 0 && x2 >= 0 && y2 >= 0 &&
-					x1 <= 1000 && y1 <= 1000 && x2 <= 1000 && y2 <= 1000)
-					ClientHandle.Send(x1, y1, x2, y2);
-			}
+			x1 = newpos.x;
+			y1 = newpos.y;
+			ClientHandle.Send(x1, y1, x2, y2);
 
+			ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
+			AEVec2 newpos_1 = { rec_x1, rec_y1 };
+			it->second->SetPosition(newpos_1);
+		}
 
-			static int rec_x1{}, rec_y1{};
-			static int rec_x2{}, rec_y2{};
+		// player 2
+		else if (it->first == 7 && _id == 2)
+		{
+			x2 = newpos.x;
+			y2 = newpos.y;
+
+			ClientHandle.Send(x1, y1, x2, y2);
+
+			ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
+			AEVec2 newpos_2 = { rec_x2, rec_y2 };
+			it->second->SetPosition(newpos_2);
+		}
+		/*static int x1{}, y1{}, x2{}, y2{};
+		static int rec_x1{}, rec_y1{};
+		static int rec_x2{}, rec_y2{};
+		if (_id == 1 && it->first == 8)
+		{
+			x1 = it->second->GetPosition().x;
+			y1 = it->second->GetPosition().y;
+			if (x1 >= 0 && y1 >= 0 && x1 <= 1000 && y1 <= 1000)
+				ClientHandle.Send(x1, y1, x2, y2);
 			ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
 			if (rec_x1 >= 1000 || rec_x2 >= 1000 || rec_y1 >= 1000 || rec_y2 >= 1000)
 				continue;
+			AEVec2 updatedPos_go1 = { (float)rec_x1, (float)rec_y1 };
 
-			// player 1
-			if (_id == 1)
-			{
-				if (it->first == 8)
-				{
-					AEVec2 updatedPos_go1 = { (float)rec_x1, (float)rec_y1 };
-
-					//it->second->SetVelocity(updatedPos_go1);
-					it->second->SetPosition(updatedPos_go1);
-				}
-			}
-
-			// player 2
-			if (_id == 2)
-			{
-				if (it->first == 7)
-				{
-					AEVec2 updatedPos_go2 = { (float)rec_x2, (float)rec_y2 };
-					//it->second->SetVelocity(updatedPos_go2);
-					it->second->SetPosition(updatedPos_go2);
-				}
-
-			}
+			it->second->SetVelocity(updatedPos_go1);
+			auto vel1 = it->second->GetVelocity();
+			AEVec2Add(&updatedPos_go1, )
 		}
+		if (_id == 2 && it->first == 7)
+		{
+			x2 = it->second->GetPosition().x;
+			y2 = it->second->GetPosition().y;
+			if (x2 >= 0 && y2 >= 0 && x2 <= 1000 && y2 <= 1000)
+				ClientHandle.Send(x1, y1, x2, y2);
+			ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
+			if (rec_x1 >= 1000 || rec_x2 >= 1000 || rec_y1 >= 1000 || rec_y2 >= 1000)
+				continue;
+			AEVec2 updatedPos_go2 = { (float)rec_x2, (float)rec_y2 };
+
+			it->second->SetVelocity(updatedPos_go2);
+			it->second->SetPosition(updatedPos_go2);
+		}*/
+
+
+		//else
+		//{
+		//	static int x1{}, y1{}, x2{}, y2{};
+		//	// player 1
+		//	if (it->first == 7)
+		//	{
+		//		x1 = it->second->GetPosition().x;
+		//		y1 = it->second->GetPosition().y;
+		//	}
+		//	// player 2
+		//	else if (it->first == 8)
+		//	{
+		//		x2 = it->second->GetPosition().x;
+		//		y2 = it->second->GetPosition().y;
+		//	}
+		//	if (it->first == 7 || it->first == 8)
+		//	{
+		//		if (x1 >= 0 && y1 >= 0 && x2 >= 0 && y2 >= 0 &&
+		//			x1 <= 1000 && y1 <= 1000 && x2 <= 1000 && y2 <= 1000)
+		//			ClientHandle.Send(x1, y1, x2, y2);
+		//	}
+
+
+		//	static int rec_x1{}, rec_y1{};
+		//	static int rec_x2{}, rec_y2{};
+		//	ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
+		//	if (rec_x1 >= 1000 || rec_x2 >= 1000 || rec_y1 >= 1000 || rec_y2 >= 1000)
+		//		continue;
+
+		//	// player 1
+		//	if (_id == 1)
+		//	{
+		//		if (it->first == 8)
+		//		{
+		//			AEVec2 updatedPos_go1 = { (float)rec_x1, (float)rec_y1 };
+
+		//			//it->second->SetVelocity(updatedPos_go1);
+		//			//it->second->SetPosition(updatedPos_go1);
+		//		}
+		//	}
+
+		//	// player 2
+		//	if (_id == 2)
+		//	{
+		//		if (it->first == 7)
+		//		{
+		//			AEVec2 updatedPos_go2 = { (float)rec_x2, (float)rec_y2 };
+		//			//it->second->SetVelocity(updatedPos_go2);
+		//			//it->second->SetPosition(updatedPos_go2);
+		//		}
+
+		//	}
+		//}
 		
 		
 
