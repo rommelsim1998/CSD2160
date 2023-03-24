@@ -46,11 +46,13 @@ void PhysicsManager::PhysicsManagerUpdate()
 	static int x1{}, y1{}, x2{}, y2{};
 	static int rec_x1{}, rec_y1{};
 	static int rec_x2{}, rec_y2{};
+	static GameObject* go1{}, * go2{};
 
 	const std::map<int, GameObject*>& list = _em::GetInstance().GetEntityList();
 	for (auto it = list.begin(); it != list.end(); it++)
 	{
-
+		if (it->first == 8) go1 = it->second;
+		else if (it->first == 7) go2 = it->second;
 		/*===================================*
 						Gravity
 		*====================================*/
@@ -71,29 +73,79 @@ void PhysicsManager::PhysicsManagerUpdate()
 		if(!(it->first == 7 || it->first == 8))
 			it->second->SetPosition(newpos);		// dont set pos for go1 and go2
 
+		// move player 1 
+		if (_id == 1)
+		{
+			if (go1)
+			{
+				// Calculate Player 1 physics internally
+				static AEVec2 newPos1{};
+				auto oldPos1 = go1->GetPosition();
+				auto vel1 = go1->GetVelocity();
+				AEVec2Add(&newPos1, &oldPos1, &vel1);
+				if (newPos1.x >= 1000 && newPos1.y >= 1000 && newPos1.x < 0 && newPos1.y < 0 == false)
+					go1->SetPosition(newPos1);
+			}
+
+			// Client Send Player 1 data over to server for Player 2 to read
+			ClientHandle.Send(x1, y1, rec_x2, rec_y2);
+
+			// Update Player 2 physics from server 
+			ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
+			if (go2)
+			{
+				AEVec2 go2PosFromServer = { rec_x2, rec_y2 };
+				go2->SetPosition(go2PosFromServer);
+			}
+		}
+		else if (_id == 2)
+		{
+			if (go2)
+			{
+				// Calulcate Player 2 physics internally
+				static AEVec2 newPos2{};
+				auto oldPos2 = go2->GetPosition();
+				auto vel2 = go2->GetVelocity();
+				AEVec2Add(&newPos2, &oldPos2, &vel2);
+				if (newPos2.x >= 1000 && newPos2.y >= 1000 && newPos2.x < 0 && newPos2.y < 0 == false)
+					go2->SetPosition(newPos2);
+			}
+
+			// Client send Player 2 data over to server for Player 1 to read
+			ClientHandle.Send(rec_x1, rec_y1, x2, y2);
+
+			// Update Players 1 physics from server
+			ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
+
+			if (go1)
+			{
+				AEVec2 go1PosFromServer = { rec_x1, rec_y1 };
+				go1->SetPosition(go1PosFromServer);
+			}
+		}
+
+		/*
 		// player 1
-		if (it->first == 8 && _id == 1)
+		if (go1)
 		{
 			static AEVec2 newPos1{};
-			auto oldPos1 = it->second->GetPosition();
-			auto vel1 = it->second->GetVelocity();
+			auto oldPos1 = go1->GetPosition();
+			auto vel1 = go1->GetVelocity();
 			AEVec2Add(&newPos1, &oldPos1, &vel1);
 			x1 = newPos1.x; y1 = newPos1.y;
-			//ClientHandle.Send(x1, y1, x2, y2);
-
-			ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
 			AEVec2 newpos_1 = { rec_x1, rec_y1 };
 			if (rec_x1 >= 1000 && rec_y1 >= 1000 && rec_x1 < 0 && rec_y1 < 0)
 			{
-				it->second->SetPosition(oldPos1);
+				go1->SetPosition(oldPos1);
 			}
 			else
 			{
-				it->second->SetPosition(newPos1);
+				go1->SetPosition(newPos1);
 			}
 
 			ClientHandle.Send(x1, y1, rec_x2, rec_y2);
-			ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
+
+			
 		}
 
 		// player 2
@@ -104,7 +156,6 @@ void PhysicsManager::PhysicsManagerUpdate()
 			auto vel2 = it->second->GetVelocity();
 			AEVec2Add(&newPos2, &oldPos2, &vel2);
 			x2 = newPos2.x; y2 = newPos2.y;
-			//ClientHandle.Send(x1, y1, x2, y2);
 
 			AEVec2 newpos_2 = { rec_x2, rec_y2 };
 			if (rec_x2 >= 1000 && rec_y2 >= 1000 && rec_x2 < 0 && rec_y2 < 0)
@@ -119,6 +170,7 @@ void PhysicsManager::PhysicsManagerUpdate()
 			ClientHandle.Send(rec_x1, rec_y1, x2, y2);
 			ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
 		}
+		*/
 
 		/*if(_id == 1)
 			ClientHandle.Send(x1, y1, rec_x2, rec_y2);
