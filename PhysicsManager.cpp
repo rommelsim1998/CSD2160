@@ -66,59 +66,60 @@ void PhysicsManager::PhysicsManagerUpdate()
 		oldpos = it->second->GetPosition();
 		vel = it->second->GetVelocity();
 		AEVec2Add(&newpos, &oldpos, &vel);
-		it->second->SetPosition(newpos);
+		if(!(it->first == 7 || it->first == 8))
+			it->second->SetPosition(newpos);		// dont set pos for go1 and go2
 
-
-		static int x1, y1, x2, y2;
-		// player 1
-		if (it->first == 7)
+		else
 		{
-			x1 = it->second->GetPosition().x;
-			y1 = it->second->GetPosition().y;
-		}
-		// player 2
-		else if (it->first == 8)
-		{
-			x2 = it->second->GetPosition().x;
-			y2 = it->second->GetPosition().y;
-		}
-		if (it->first == 7 || it->first == 8)
-		{
-			if (x1 >= 0 && y1 >= 0 && x2 >= 0 && y2 >= 0)
-				ClientHandle.Send(x1, y1, x2, y2);
-		}
+			static int x1{}, y1{}, x2{}, y2{};
+			// player 1
+			if (it->first == 7)
+			{
+				x1 = it->second->GetPosition().x;
+				y1 = it->second->GetPosition().y;
+			}
+			// player 2
+			else if (it->first == 8)
+			{
+				x2 = it->second->GetPosition().x;
+				y2 = it->second->GetPosition().y;
+			}
+			if (it->first == 7 || it->first == 8)
+			{
+				if (x1 >= 0 && y1 >= 0 && x2 >= 0 && y2 >= 0 &&
+					x1 <= 1000 && y1 <= 1000 && x2 <= 1000 && y2 <= 1000)
+					ClientHandle.Send(x1, y1, x2, y2);
+			}
 
 
-		int rec_x1{}, rec_y1{};
-		int rec_x2{}, rec_y2{};
-		ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
+			static int rec_x1{}, rec_y1{};
+			static int rec_x2{}, rec_y2{};
+			ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
 
-		if (rec_x1 >= 0 && rec_y1 >= 0)
-		{
 			// player 1
 			if (_id == 1)
 			{
 				if (it->first == 7)
 				{
 					AEVec2 updatedPos_go1 = { (float)rec_x1, (float)rec_y1 };
-					it->second->SetVelocity(updatedPos_go1);
-					
+
+					//it->second->SetVelocity(updatedPos_go1);
+					//it->second->SetPosition(updatedPos_go1);
 				}
 			}
-		}
-		if (rec_x2 >= 0 && rec_y2 >= 0)
-		{
+
 			// player 2
 			if (_id == 2)
 			{
 				if (it->first == 8)
 				{
 					AEVec2 updatedPos_go2 = { (float)rec_x2, (float)rec_y2 };
-					it->second->SetVelocity(updatedPos_go2);
+					//it->second->SetVelocity(updatedPos_go2);
+					//it->second->SetPosition(updatedPos_go2);
 				}
+
 			}
 		}
-	
 		
 		
 
