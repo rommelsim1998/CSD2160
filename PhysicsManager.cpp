@@ -70,11 +70,11 @@ void PhysicsManager::PhysicsManagerUpdate()
 		oldpos = it->second->GetPosition();
 		vel = it->second->GetVelocity();
 		AEVec2Add(&newpos, &oldpos, &vel);
-		if (!(it->first == 7 || it->first == 8))
+		if(!(it->first == 7 || it->first == 8))
 			it->second->SetPosition(newpos);		// dont set pos for go1 and go2
 
 		// move player 1 
-		if (_id == 1 || _id == 2)
+		if (_id == 1)
 		{
 			if (go1)
 			{
@@ -88,21 +88,21 @@ void PhysicsManager::PhysicsManagerUpdate()
 
 				x1 = newPos1.x;
 				y1 = newPos1.y;
-
-				// Client Send Player 1 data over to server for Player 2 to read
-				//ClientHandle.Send(x1, y1, rec_x2, rec_y2);
-
-				// Update Player 2 physics from server 
-				ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
-				if (go2)
-				{
-					AEVec2 go2PosFromServer = { rec_x2, rec_y2 };
-					go2->SetPosition(go2PosFromServer);
-				}
-
-				ClientHandle.Send(x1, y1, x2, y2);
 			}
 
+			// Client Send Player 1 data over to server for Player 2 to read
+			//ClientHandle.Send(x1, y1, rec_x2, rec_y2);
+
+			// Update Player 2 physics from server 
+			ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
+			if (go2)
+			{
+				AEVec2 go2PosFromServer = { rec_x2, rec_y2 };
+				go2->SetPosition(go2PosFromServer);
+			}
+		}
+		else if (_id == 2)
+		{
 			if (go2)
 			{
 				// Calulcate Player 2 physics internally
@@ -115,23 +115,21 @@ void PhysicsManager::PhysicsManagerUpdate()
 
 				x2 = newPos2.x;
 				y2 = newPos2.y;
+			}
 
-				// Client send Player 2 data over to server for Player 1 to read
-				//ClientHandle.Send(rec_x1, rec_y1, x2, y2);
+			// Client send Player 2 data over to server for Player 1 to read
+			//ClientHandle.Send(rec_x1, rec_y1, x2, y2);
 
-				// Update Players 1 physics from server
-				ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
+			// Update Players 1 physics from server
+			ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
 
-				if (go1)
-				{
-					AEVec2 go1PosFromServer = { rec_x1, rec_y1 };
-					go1->SetPosition(go1PosFromServer);
-				}
-
-				ClientHandle.Send(x1, y1, x2, y2);
+			if (go1)
+			{
+				AEVec2 go1PosFromServer = { rec_x1, rec_y1 };
+				go1->SetPosition(go1PosFromServer);
 			}
 		}
-	
+
 		/*
 		// player 1
 		if (go1)
