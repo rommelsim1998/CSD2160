@@ -12,7 +12,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #ifndef CS230_GAME_STATE_LEVEL1_H_
 #define CS230_GAME_STATE_LEVEL1_H_
-
+#include "GameObject.h"
+#include "Player.h"
 // ---------------------------------------------------------------------------
 
 void GameStateLevel1Load();

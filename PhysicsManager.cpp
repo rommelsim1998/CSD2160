@@ -121,7 +121,6 @@ void PhysicsManager::PhysicsManagerUpdate()
 
 
 
-
 	
 
 		/////*static int x1{}, y1{}, x2{}, y2{};
@@ -224,15 +223,53 @@ void PhysicsManager::PhysicsManagerUpdate()
 		first.max.y = 0.5f * it->second->GetScale() + it->second->GetPosition().y;
 		it->second->SetBoundingBox(first);*/
 	}
+	
 
-
-	if (_id == 1)
+	if (_id == 1) {
 		ClientHandle.Send(x1, y1, rec_x2, rec_y2);
 
 
-	else if (_id == 2)
+		if (AEInputCheckCurr(AEVK_LEFT) || AEInputCheckCurr(AEVK_RIGHT)) {
+
+			std::cout << "Movement Detected:2" << std::endl;
+		}
+	}
+	else if (_id == 2) {
 		ClientHandle.Send(rec_x1, rec_y1, x2, y2);
+
+		if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_D)) {
+
+			std::cout << "Movement Detected:1" << std::endl;
+		}
+	}
 	ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
+
+	const std::map<int, GameObject*>& abc = _em::GetInstance().GetEntityList();
+	for (auto x = abc.begin(); x != abc.end(); x++) {
+
+		std::cout << "TEST 2:   " << std::endl;
+		std::cout << "obj1: " << rec_x1 << " , " << rec_y1 << std::endl;
+		std::cout << "obj2: " << rec_x2 << " , " << rec_y2 << std::endl;
+		std::cout << "TEST 2:   END" << std::endl;
+
+		if (AEInputCheckCurr(AEVK_LEFT) || AEInputCheckCurr(AEVK_RIGHT)) {
+
+			std::cout << "Movement Detected:22" << std::endl;
+		}
+		if (AEInputCheckCurr(AEVK_A) || AEInputCheckCurr(AEVK_D)) {
+			if (_id == 2) {
+				std::cout << "Movement Detected:12" << std::endl;
+				if (x->first == 8) {
+					AEVec2 hehe = { rec_x1,rec_y1 };
+					x->second->SetPosition(hehe);
+				}
+
+			}
+		}
+
+
+	}
+
 	//std::cout << "OBJ1:( " << rec_x1 << "," << rec_y1 << " ) " << std::endl;
 	//std::cout << "OBJ2:( " << rec_x2 << "," << rec_y2 << " ) " << std::endl;
 

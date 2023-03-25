@@ -22,7 +22,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <iostream>
 #include "../NetworkingSystem/System.h"
 
-const std::string ip = "192.168.106.56";
+const std::string ip = "192.168.18.10";
 const short unsigned port = 54000;
 
 // Create manager instances. (Make them static)
@@ -38,6 +38,7 @@ static PauseMenuManager& _pmm = PauseMenuManager::GetInstance();
 static Server& ServerHandle = Server::getInstance();
 static Client& ClientHandle = Client::getInstance();
 
+int id;
  /**************************************************************************/
 /*!
 	"Load" function of this state
@@ -77,6 +78,8 @@ void GameStateLevel1Load(void)
 	/**************************************************************************/
 
 static bool flag = false;
+
+int count = 0;
 void GameStateLevel1Init(void)
 {
 	ServerHandle.Init(ip, port);
@@ -85,7 +88,6 @@ void GameStateLevel1Init(void)
 	AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
 	AEGfxSetCamPosition(0, 0);
 
-	int count = 0;
 	while (1)
 	{
 		count = ServerHandle.GetPlayers();
@@ -111,6 +113,10 @@ void GameStateLevel1Update(void)
 	ServerHandle.Read(x1, y1, x2, y2);
 	std::cout << "[Server]: " << x1 << ", " << y1 << ", " << x2 << ", " << y2 << "\n";
 	ServerHandle.Send(x1, y1, x2, y2);
+
+	
+
+
 }
 /**************************************************************************/
 /*!

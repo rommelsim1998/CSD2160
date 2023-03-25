@@ -22,8 +22,9 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <iostream>
 #include "NetworkingSystem/System.h"
 
-const std::string ip = "192.168.106.56";
+const std::string ip = "192.168.18.18";
 const short unsigned port = 54000;
+int playerID = 0;
 
 // Create manager instances. (Make them static)
 static UIManager& _um = UIManager::GetInstance();
@@ -44,7 +45,7 @@ static Client& ClientHandle = Client::getInstance();
 	*/
 	/**************************************************************************/
 
-
+GameObject* go{};
 void GameStateLevel1Load(void)
 {
 	
@@ -190,6 +191,17 @@ void GameStateLevel1Update(void)
 		_cm.CollisionManagerUpdate();   // Collision (And Collision Response)
 		_bm.BackgroundManagerUpdate();
 		_um.UIManagerUpdate();
+
+		//static int x1, y1, x2, y2;
+		//std::cout << "TEST START" << std::endl;
+		//ClientHandle.Read(x1, y1, x2, y2);
+		//std::cout << "obj1: " << x1 <<" , "<< y1 << std::endl;
+		//std::cout << "obj2: " << x2 << " , " << y2 << std::endl;
+		//std::cout << "TEST END" << std::endl;
+
+
+
+		
 	}
 		
 
