@@ -239,7 +239,7 @@ void Server::Read(int& x1, int& y1, int& x2, int& y2)
 
 void Client::Init(const std::string& _ipAddress, unsigned short _portNumber)
 {
-	std::cout << "[Client]: Initializing WSA and server informationdddd" << std::endl;
+	std::cout << "[Client]: Initializing WSA and server information" << std::endl;
 	//! Initialize WSA
 	WSADATA wsaData{};
 	int wsaErr{ WSAStartup(MAKEWORD(2, 2), &wsaData) };
