@@ -148,8 +148,8 @@ void Player::GameObjectUpdate()
 	}
 
 	//if (Connectionmanager::isMultiplayer == true)
-	if (_id == 1)
-	{
+	/*if (_id == 1)
+	{*/
 		// Movement left and right of Player
 		if (AEInputCheckCurr(AEVK_LEFT))
 		{
@@ -176,7 +176,8 @@ void Player::GameObjectUpdate()
 			SetVelocity(newvel);
 		}
 
-	}
+	
+/*
 	else if(_id == 2)
 	{
 		// Movement left and right of Player
@@ -206,21 +207,24 @@ void Player::GameObjectUpdate()
 		}
 		
 	}
+	*/
 
 	// not used
 	//if (Connectionmanager::isMultiplayer == true)
+/*
 	if (_id == 1)
 	{
+	*/
 		// Player climbing up the ladder
 		if (_tm.GetTileTypeAt(GetPosition().x, GetPosition().y) == TileType::TILE_LADDER)
 		{
-			if (AEInputCheckCurr(AEVK_UP))
+			if (AEInputCheckCurr(AEVK_SPACE))
 			{
 				AEVec2 newvel = GetVelocity();
 				newvel.y = 5.0f;
 				SetVelocity(newvel);
 			}
-			else if (AEInputCheckReleased(AEVK_UP))
+			else if (AEInputCheckReleased(AEVK_SPACE))
 			{
 				SetHasGravity(false);
 				AEVec2 newvel = GetVelocity();
@@ -247,7 +251,8 @@ void Player::GameObjectUpdate()
 			}
 		}
 
-	}
+	
+	/*
 	else if(_id == 2)
 	{
 		// Player climbing up the ladder
@@ -286,14 +291,16 @@ void Player::GameObjectUpdate()
 			}
 		}
 	}
+	*/
 
 
 
 	//if (Connectionmanager::isMultiplayer == true)
+	/*
 	if (_id == 1)
-	{
+	{*/
 		// Player jump
-		if (AEInputCheckTriggered(AEVK_UP) && ((GetCollisionFlag() & COLLISION_BOTTOM) || isStanding ||
+		if (AEInputCheckTriggered(AEVK_SPACE) && ((GetCollisionFlag() & COLLISION_BOTTOM) || isStanding ||
 			_tm.GetTileTypeAt(GetPosition().x, GetPosition().y - GetScale() * 0.5f) == TileType::TILE_LADDER))
 		{
 			AEVec2 vel = GetVelocity();
@@ -301,7 +308,8 @@ void Player::GameObjectUpdate()
 			SetVelocity(vel);
 			isStanding = false;
 		}
-	}
+	//}
+		/*
 	else if(_id == 2)
 	{
 		// Player jump
@@ -313,22 +321,23 @@ void Player::GameObjectUpdate()
 			SetVelocity(vel);
 			isStanding = false;
 		}
-	}
+	}*/
 	
 
 	//if (Connectionmanager::isMultiplayer==true)
 	if (_id == 1)
 	{
 		// Direction player is facing when pulling the box
-		if (AEInputCheckCurr(AEVK_M) && AEInputCheckCurr(AEVK_LEFT))
+		if (AEInputCheckCurr(AEVK_LSHIFT) && AEInputCheckCurr(AEVK_LEFT))
 		{
 			SetDirection(0.0f);
 		}
-		else if (AEInputCheckCurr(AEVK_M) && AEInputCheckCurr(AEVK_RIGHT))
+		else if (AEInputCheckCurr(AEVK_LSHIFT) && AEInputCheckCurr(AEVK_RIGHT))
 		{
 			SetDirection(pi);
 		}
 	}
+	/*
 	else if(_id == 2)
 	{
 		// Direction player is facing when pulling the box
@@ -341,7 +350,7 @@ void Player::GameObjectUpdate()
 			SetDirection(pi);
 		}
 
-	}
+	}*/
 
 	
 
@@ -386,12 +395,7 @@ void Player::GameObjectUpdate()
 			// Blue color
 			if (((found = line.find("B")) != std::string::npos))
 			{
-				if (Connectionmanager::isMultiplayer == true)
-				{
 
-				}
-				else
-				{
 
 					if (AEInputCheckTriggered(AEVK_2) &&
 						(_bm.GetCounter() <= 0.0f))
@@ -417,7 +421,7 @@ void Player::GameObjectUpdate()
 						}
 					}
 
-				}
+				
 		
 			}
 			// Green color
@@ -451,12 +455,6 @@ void Player::GameObjectUpdate()
 			if (((found = line.find("D")) != std::string::npos))
 			{
 
-				if (Connectionmanager::isMultiplayer == true)
-				{
-
-				}
-				else
-				{
 					if (AEInputCheckTriggered(AEVK_4) &&
 						(_bm.GetCounter() <= 0.0f))
 					{
@@ -480,7 +478,7 @@ void Player::GameObjectUpdate()
 							}
 						}
 					}
-				}
+				
 		
 			}
 		}

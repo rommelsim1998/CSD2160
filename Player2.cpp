@@ -1,16 +1,18 @@
 /******************************************************************************
-* \file			Player.cpp
-* \brief		This file handles the initializing of player object, updates in
-				which the user can do, and drawing the player object.
+* \file			Player2.cpp
+* \brief		This file handles the initializing of Player2 object, updates in
+				which the user can do, and drawing the Player2 object.
 * \author		Sebastian Yew Kai Jie, 100% Code Contribution
 
 Copyright (C) 2021 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the
 prior written consent of DigiPen Institute of Technology is prohibited.
 ******************************************************************************/
+
 #include "ConnectionManager.h"
 #include "Constants.h"
-
+#include "NetworkingSystem/System.h"
+//int _id;
 
 using _em = EntityManager;
 static TileManager& _tm = TileManager::GetInstance();
@@ -20,24 +22,24 @@ static BackgroundManager& _bm = BackgroundManager::GetInstance();
 /***************************************************************************/
 /*!
 \brief
-	Player constructor that constructs the player objects by inheriting
+	Player22 constructor that constructs the Player22 objects by inheriting
 	from GameObject. It also checks if a color.txt file is available, else
 	create one. It also set the starting background color for all game states.
 
 \param id
-	The id value tagged to the player object.
+	The id value tagged to the Player2 object.
 */
 /**************************************************************************/
-Player2::Player2(int id) : GameObject{ TYPE_PLAYER2, id }, test{ 14 }
+Player2::Player2(int id) : GameObject{ TYPE_PLAYER2, id }, test{ 6 }
 {
 	//Checks if a color.txt file is available, else create one.
 	std::ifstream colorfile;
-	colorfile.open("Resources/color2.txt");
+	colorfile.open("Resources/color.txt");
 	if (colorfile.peek() == std::ifstream::traits_type::eof())
 	{
 		colorfile.close();
 		std::ofstream colorfile2;
-		colorfile2.open("Resources/color2.txt");
+		colorfile2.open("Resources/color.txt");
 		colorfile2 << "a" << "\n" << "b" << "\n" << "c" << "\n" << "d";
 		colorfile2.close();
 	}
@@ -69,7 +71,7 @@ Player2::Player2(int id) : GameObject{ TYPE_PLAYER2, id }, test{ 14 }
 /***************************************************************************/
 /*!
 \brief
-	Player destructor that destroys the player object.
+	Player22 destructor that destroys the Player22 object.
 */
 /**************************************************************************/
 Player2::~Player2()
@@ -80,7 +82,7 @@ Player2::~Player2()
 /***************************************************************************/
 /*!
 \brief
-	A function that initializes the player object during each game state.
+	A function that initializes the Player22 object during each game state.
 */
 /**************************************************************************/
 void Player2::GameObjectInitialize()
@@ -115,7 +117,7 @@ void Player2::GameObjectInitialize()
 /***************************************************************************/
 /*!
 \brief
-	A function that handles updates on user input on the player object
+	A function that handles updates on user input on the Player2 object
 	during each game state.
 */
 /**************************************************************************/
@@ -130,7 +132,7 @@ void Player2::GameObjectUpdate()
 	}
 	*/
 
-	// Enable or disable Player gravity based on tile
+	// Enable or disable Player2 gravity based on tile
 	if (_tm.GetTileTypeAt(GetPosition().x, GetPosition().y) == TileType::TILE_EMPTY)
 	{
 		SetHasGravity(true);
@@ -145,15 +147,18 @@ void Player2::GameObjectUpdate()
 		}
 	}
 
-	// Movement left and right of Player
-	if (AEInputCheckCurr(AEVK_A))
+	//if (Connectionmanager::isMultiPlayer2 == true)
+	/*if (_id == 1)
+	{*/
+	// Movement left and right of Player2
+	if (AEInputCheckCurr(AEVK_LEFT))
 	{
 		SetDirection(pi);
 		AEVec2 newvel = GetVelocity();
 		newvel.x = -playerSpeed * g_dt;
 		SetVelocity(newvel);
 	}
-	else if (AEInputCheckCurr(AEVK_D))
+	else if (AEInputCheckCurr(AEVK_RIGHT))
 	{
 		SetDirection(0.0f);
 		AEVec2 newvel = GetVelocity();
@@ -171,16 +176,55 @@ void Player2::GameObjectUpdate()
 		SetVelocity(newvel);
 	}
 
-	// Player climbing up the ladder
+
+	/*
+		else if(_id == 2)
+		{
+			// Movement left and right of Player2
+			if (AEInputCheckCurr(AEVK_A))
+			{
+				SetDirection(pi);
+				AEVec2 newvel = GetVelocity();
+				newvel.x = -Player2Speed * g_dt;
+				SetVelocity(newvel);
+			}
+			else if (AEInputCheckCurr(AEVK_D))
+			{
+				SetDirection(0.0f);
+				AEVec2 newvel = GetVelocity();
+				newvel.x = Player2Speed * g_dt;
+				SetVelocity(newvel);
+			}
+			else
+			{
+				AEVec2 newvel = GetVelocity();
+				newvel.x = 0.0f;
+				if (GetCollisionFlag() == COLLISION_BOTTOM)
+				{
+					newvel.y = 0.0f;
+				}
+				SetVelocity(newvel);
+			}
+
+		}
+		*/
+
+		// not used
+		//if (Connectionmanager::isMultiPlayer2 == true)
+	/*
+		if (_id == 1)
+		{
+		*/
+		// Player2 climbing up the ladder
 	if (_tm.GetTileTypeAt(GetPosition().x, GetPosition().y) == TileType::TILE_LADDER)
 	{
-		if (AEInputCheckCurr(AEVK_W))
+		if (AEInputCheckCurr(AEVK_SPACE))
 		{
 			AEVec2 newvel = GetVelocity();
 			newvel.y = 5.0f;
 			SetVelocity(newvel);
 		}
-		else if (AEInputCheckReleased(AEVK_W))
+		else if (AEInputCheckReleased(AEVK_SPACE))
 		{
 			SetHasGravity(false);
 			AEVec2 newvel = GetVelocity();
@@ -189,16 +233,16 @@ void Player2::GameObjectUpdate()
 		}
 	}
 
-	// Player climbing down the ladder
+	// Player2 climbing down the ladder
 	if (_tm.GetTileTypeAt(GetPosition().x, GetPosition().y - GetScale() * 0.5f) == TileType::TILE_LADDER)
 	{
-		if (AEInputCheckCurr(AEVK_S))
+		if (AEInputCheckCurr(AEVK_DOWN))
 		{
 			AEVec2 newvel = GetVelocity();
 			newvel.y = -5.0f;
 			SetVelocity(newvel);
 		}
-		else if (AEInputCheckReleased(AEVK_S))
+		else if (AEInputCheckReleased(AEVK_DOWN))
 		{
 			SetHasGravity(false);
 			AEVec2 newvel = GetVelocity();
@@ -207,8 +251,56 @@ void Player2::GameObjectUpdate()
 		}
 	}
 
-	// Player jump
-	if (AEInputCheckTriggered(AEVK_W) && ((GetCollisionFlag() & COLLISION_BOTTOM) || isStanding ||
+
+	/*
+	else if(_id == 2)
+	{
+		// Player2 climbing up the ladder
+		if (_tm.GetTileTypeAt(GetPosition().x, GetPosition().y) == TileType::TILE_LADDER)
+		{
+			if (AEInputCheckCurr(AEVK_W))
+			{
+				AEVec2 newvel = GetVelocity();
+				newvel.y = 5.0f;
+				SetVelocity(newvel);
+			}
+			else if (AEInputCheckReleased(AEVK_W))
+			{
+				SetHasGravity(false);
+				AEVec2 newvel = GetVelocity();
+				newvel.y = 0.0f;
+				SetVelocity(newvel);
+			}
+		}
+
+		// Player2 climbing down the ladder
+		if (_tm.GetTileTypeAt(GetPosition().x, GetPosition().y - GetScale() * 0.5f) == TileType::TILE_LADDER)
+		{
+			if (AEInputCheckCurr(AEVK_S))
+			{
+				AEVec2 newvel = GetVelocity();
+				newvel.y = -5.0f;
+				SetVelocity(newvel);
+			}
+			else if (AEInputCheckReleased(AEVK_S))
+			{
+				SetHasGravity(false);
+				AEVec2 newvel = GetVelocity();
+				newvel.y = 0.0f;
+				SetVelocity(newvel);
+			}
+		}
+	}
+	*/
+
+
+
+	//if (Connectionmanager::isMultiPlayer2 == true)
+	/*
+	if (_id == 1)
+	{*/
+	// Player2 jump
+	if (AEInputCheckTriggered(AEVK_SPACE) && ((GetCollisionFlag() & COLLISION_BOTTOM) || isStanding ||
 		_tm.GetTileTypeAt(GetPosition().x, GetPosition().y - GetScale() * 0.5f) == TileType::TILE_LADDER))
 	{
 		AEVec2 vel = GetVelocity();
@@ -216,18 +308,53 @@ void Player2::GameObjectUpdate()
 		SetVelocity(vel);
 		isStanding = false;
 	}
-
-	// Direction player is facing when pulling the box
-	if (AEInputCheckCurr(AEVK_LSHIFT) && AEInputCheckCurr(AEVK_A))
+	//}
+		/*
+	else if(_id == 2)
 	{
-		SetDirection(0.0f);
-	}
-	else if (AEInputCheckCurr(AEVK_LSHIFT) && AEInputCheckCurr(AEVK_D))
-	{
-		SetDirection(pi);
-	}
+		// Player2 jump
+		if (AEInputCheckTriggered(AEVK_SPACE) && ((GetCollisionFlag() & COLLISION_BOTTOM) || isStanding ||
+			_tm.GetTileTypeAt(GetPosition().x, GetPosition().y - GetScale() * 0.5f) == TileType::TILE_LADDER))
+		{
+			AEVec2 vel = GetVelocity();
+			vel.y = Player2_JUMP;
+			SetVelocity(vel);
+			isStanding = false;
+		}
+	}*/
 
-	// Read color.txt file to see if player has unlocked that color so to be able to use it
+
+	//if (Connectionmanager::isMultiPlayer2==true)
+	/*if (_id == 1)
+	{*/
+		// Direction Player2 is facing when pulling the box
+		if (AEInputCheckCurr(AEVK_LSHIFT) && AEInputCheckCurr(AEVK_LEFT))
+		{
+			SetDirection(0.0f);
+		}
+		else if (AEInputCheckCurr(AEVK_LSHIFT) && AEInputCheckCurr(AEVK_RIGHT))
+		{
+			SetDirection(pi);
+		}
+	//}
+	/*
+	else if(_id == 2)
+	{
+		// Direction Player2 is facing when pulling the box
+		if (AEInputCheckCurr(AEVK_LCTRL) && AEInputCheckCurr(AEVK_A))
+		{
+			SetDirection(0.0f);
+		}
+		else if (AEInputCheckCurr(AEVK_LCTRL) && AEInputCheckCurr(AEVK_D))
+		{
+			SetDirection(pi);
+		}
+
+	}*/
+
+
+
+	// Read color.txt file to see if Player2 has unlocked that color so to be able to use it
 	std::ifstream colorfile;
 	std::string line;
 
@@ -241,42 +368,36 @@ void Player2::GameObjectUpdate()
 			// Red color
 			if (((found = line.find("A")) != std::string::npos))
 			{
-				if (Connectionmanager::isMultiplayer == true)
+				if (AEInputCheckTriggered(AEVK_COMMA) &&
+					(_bm.GetCounter() <= 0.0f))
 				{
-					// do nothing
-				}
-				else
-				{
-					if (AEInputCheckTriggered(AEVK_U) &&
-						(_bm.GetCounter() <= 0.0f))
-					{
-						SetColor(Color::COLOR_RED);
-						if (GetColor() != _bm.GetColor())
-							_bm.ChangeColor(Color::COLOR_RED);
+					SetColor(Color::COLOR_RED);
+					if (GetColor() != _bm.GetColor())
+						_bm.ChangeColor(Color::COLOR_RED);
 
-						const std::map<int, GameObject*>& list = _em::GetInstance().GetEntityList();
-						for (auto it = list.begin(); it != list.end(); it++)
+					const std::map<int, GameObject*>& list = _em::GetInstance().GetEntityList();
+					for (auto it = list.begin(); it != list.end(); it++)
+					{
+						if (it->second->GetColor() != Color::COLOR_BLACK)
 						{
-							if (it->second->GetColor() != Color::COLOR_BLACK)
+							if (it->second->GetColor() == GetColor())
 							{
-								if (it->second->GetColor() == GetColor())
-								{
-									it->second->SetIsCollidable(false);
-								}
-								else
-								{
-									it->second->SetIsCollidable(true);
-								}
+								it->second->SetIsCollidable(false);
+							}
+							else
+							{
+								it->second->SetIsCollidable(true);
 							}
 						}
 					}
 				}
-			
 			}
 			// Blue color
 			if (((found = line.find("B")) != std::string::npos))
 			{
-				if (AEInputCheckTriggered(AEVK_C) &&
+
+
+				if (AEInputCheckTriggered(AEVK_2) &&
 					(_bm.GetCounter() <= 0.0f))
 				{
 					SetColor(Color::COLOR_BLUE);
@@ -299,36 +420,32 @@ void Player2::GameObjectUpdate()
 						}
 					}
 				}
+
+
+
 			}
 			// Green color
 			if (((found = line.find("C")) != std::string::npos))
 			{
-				if (Connectionmanager::isMultiplayer == true)
+				if (AEInputCheckTriggered(AEVK_PERIOD) &&
+					(_bm.GetCounter() <= 0.0f))
 				{
-					// do nothing
-				}
-				else
-				{
-					if (AEInputCheckTriggered(AEVK_O) &&
-						(_bm.GetCounter() <= 0.0f))
-					{
-						SetColor(Color::COLOR_GREEN);
-						if (GetColor() != _bm.GetColor())
-							_bm.ChangeColor(Color::COLOR_GREEN);
+					SetColor(Color::COLOR_GREEN);
+					if (GetColor() != _bm.GetColor())
+						_bm.ChangeColor(Color::COLOR_GREEN);
 
-						const std::map<int, GameObject*>& list = _em::GetInstance().GetEntityList();
-						for (auto it = list.begin(); it != list.end(); it++)
+					const std::map<int, GameObject*>& list = _em::GetInstance().GetEntityList();
+					for (auto it = list.begin(); it != list.end(); it++)
+					{
+						if (it->second->GetColor() != Color::COLOR_BLACK)
 						{
-							if (it->second->GetColor() != Color::COLOR_BLACK)
+							if (it->second->GetColor() == GetColor())
 							{
-								if (it->second->GetColor() == GetColor())
-								{
-									it->second->SetIsCollidable(false);
-								}
-								else
-								{
-									it->second->SetIsCollidable(true);
-								}
+								it->second->SetIsCollidable(false);
+							}
+							else
+							{
+								it->second->SetIsCollidable(true);
 							}
 						}
 					}
@@ -337,7 +454,8 @@ void Player2::GameObjectUpdate()
 			// Yellow color
 			if (((found = line.find("D")) != std::string::npos))
 			{
-				if (AEInputCheckTriggered(AEVK_V) &&
+
+				if (AEInputCheckTriggered(AEVK_4) &&
 					(_bm.GetCounter() <= 0.0f))
 				{
 					SetColor(Color::COLOR_YELLOW);
@@ -360,12 +478,14 @@ void Player2::GameObjectUpdate()
 						}
 					}
 				}
+
+
 			}
 		}
 		colorfile.close();
 	}
 
-	// Setting of position of Player
+	// Setting of position of Player2
 	AEVec2 distance, velocity, position;
 	velocity = GetVelocity();
 	position = GetPosition();
@@ -373,7 +493,7 @@ void Player2::GameObjectUpdate()
 	AEVec2Add(&position, &position, &distance);
 	SetPosition(position);
 
-	// Setting of bounding box for Player
+	// Setting of bounding box for Player2
 	AABB boundbox;
 	boundbox.min.x = -0.3f * GetScale() + GetPosition().x;
 	boundbox.max.x = 0.3f * GetScale() + GetPosition().x;
@@ -385,7 +505,7 @@ void Player2::GameObjectUpdate()
 /***************************************************************************/
 /*!
 \brief
-	A function that draws the player object during each game state.
+	A function that draws the Player2 object during each game state.
 */
 /**************************************************************************/
 void Player2::GameObjectDraw()
@@ -416,8 +536,8 @@ void Player2::GameObjectDraw()
 /***************************************************************************/
 /*!
 \brief
-	A function that set the boolean check in which whether the player is
-	standing hence to be able to enable jumping of player.
+	A function that set the boolean check in which whether the Player2 is
+	standing hence to be able to enable jumping of Player2.
 
 \param standing
 	The boolean that is set to change the variable isStanding.
@@ -432,7 +552,7 @@ void Player2::SetisStanding(bool standing)
 /*!
 \brief
 	A function that returns the boolean of the variable pull for checks
-	if player can pull.
+	if Player2 can pull.
 */
 /**************************************************************************/
 bool Player2::GetPull() const
@@ -443,8 +563,8 @@ bool Player2::GetPull() const
 /***************************************************************************/
 /*!
 \brief
-	A function that set the boolean check in which whether the player can
-	pull, hence allowing pulling of objects of player.
+	A function that set the boolean check in which whether the Player2 can
+	pull, hence allowing pulling of objects of Player2.
 
 \param able
 	The boolean that is set to change the variable pull.
