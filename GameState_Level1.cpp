@@ -185,6 +185,7 @@ void GameStateLevel1Update(void)
 
 			std::cout << "[Client]: " << rec_x1 << ", " << rec_y1 << ", " <<
 				rec_x2 << ", " << rec_y2 << "\n";
+				*/
 
 		_em.EntityManagerUpdate();      // Logic
 		_pm.PhysicsManagerUpdate();     // Physics
