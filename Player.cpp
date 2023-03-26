@@ -530,7 +530,12 @@ void Player::GameObjectDraw()
 	AEMtx33Trans(&mTrans, pos.x, pos.y);
 	SetMTrans(mTrans);
 
-	AEGfxSetCamPosition(pos.x, pos.y);   //Set Camera
+	//set camera to player 1 if you player 1
+	if (_id == 1)
+	{
+		AEGfxSetCamPosition(pos.x, pos.y);   //Set Camera
+	}
+
 }
 
 /***************************************************************************/
