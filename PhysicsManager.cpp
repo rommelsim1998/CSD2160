@@ -49,6 +49,8 @@ void PhysicsManager::PhysicsManagerUpdate()
 	static GameObject* go1{}, * go2{};
 
 	ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
+
+	//
 	const std::map<int, GameObject*>& list = _em::GetInstance().GetEntityList();
 	for (auto it = list.begin(); it != list.end(); it++)
 	{
@@ -193,8 +195,10 @@ void PhysicsManager::PhysicsManagerUpdate()
 		first.max.y = 0.5f * it->second->GetScale() + it->second->GetPosition().y;
 		it->second->SetBoundingBox(first);*/
 	}
+	/*
 	if(_id == 1)
 		ClientHandle.Send(x1, y1, rec_x2, rec_y2);
 	else if(_id == 2)
 		ClientHandle.Send(rec_x1, rec_y1, x2, y2);
+		*/
 }

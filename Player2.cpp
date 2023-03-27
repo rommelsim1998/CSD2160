@@ -502,6 +502,8 @@ else if(_id == 2)
 /**************************************************************************/
 void Player2::GameObjectDraw()
 {
+
+
 	// Setting matrix for render.
 	AEMtx33 mScale;
 	float theScale = GetScale();
@@ -524,10 +526,12 @@ void Player2::GameObjectDraw()
 
 	// set camera to player 2 if you player 2
 	// NOT WORKING SOMEHOW
-	if (_id == 2)
+	
+	if (_id == 1)
 	{
 		AEGfxSetCamPosition(pos.x, pos.y); // Set Camera
 	}
+	
 }
 
 /***************************************************************************/

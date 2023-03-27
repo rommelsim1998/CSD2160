@@ -22,7 +22,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <iostream>
 #include "NetworkingSystem/System.h"
 
-const std::string ip = "192.168.86.30";
+const std::string ip = "192.168.26.56";
 
 const short unsigned port = 54000;
 
@@ -191,13 +191,16 @@ void GameStateLevel1Update(void)
 		_um.UIManagerUpdate();
 	}
 
-	static GameObject *go1 = _em.GetEntityList()[8];
-	static GameObject *go2 = _em.GetEntityList()[7];
+	static GameObject* go1 = _em.GetEntityList()[8];
+	static GameObject* go2 = _em.GetEntityList()[7];
 
 	int x1 = static_cast<int>(go1->GetPosition().x);
 	int y1 = static_cast<int>(go1->GetPosition().y);
 	int x2 = static_cast<int>(go2->GetPosition().x);
 	int y2 = static_cast<int>(go2->GetPosition().y);
+
+	/*
+	
 	// ClientHandle.Send(x1, y1, x2, y2);
 
 	int rec_x1, rec_y1;
@@ -215,9 +218,14 @@ void GameStateLevel1Update(void)
 	{
 		go1->SetPosition(g1_pos);
 	}
+	*/
+	
 
 	_am.AudioManagerUpdate();
 	_pmm.PauseMenuManagerUpdate();
+
+
+		ClientHandle.Send(x1, y1, x2, y2);
 }
 /**************************************************************************/
 /*!
