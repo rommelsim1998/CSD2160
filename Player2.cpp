@@ -410,14 +410,14 @@ void Player2::GameObjectDraw()
 	AEMtx33Trans(&mTrans, pos.x, pos.y);
 	SetMTrans(mTrans);
 
-	//AEGfxSetCamPosition(pos.x, pos.y);   //Set Camera
+	AEGfxSetCamPosition(pos.x, pos.y);   //Set Camera
 	//set camera to player 2 if you player 2
 	//NOT WORKING SOMEHOW
-	if (_id == 2)
-	{
-		std::cout << "player 2 camera updating\n";
-		AEGfxSetCamPosition(pos.x, pos.y);   //Set Camera
-	}
+	//if (_id == 2)
+	//{
+	//	std::cout << "player 2 camera updating\n";
+	//	AEGfxSetCamPosition(pos.x, pos.y);   //Set Camera
+	//}
 
 }
 
