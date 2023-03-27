@@ -23,7 +23,7 @@ private:
 	float playerSpeed = 200.0f;
 	bool isStanding = false;
 	bool pull = false;
-	Color startingColor = Color::COLOR_GREY;
+	Color startingColor = Color::COLOR_GREEN;
 	int playerid = -1;
 
 public:

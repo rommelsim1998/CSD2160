@@ -12,12 +12,12 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include "ConnectionManager.h"
 #include "Constants.h"
 #include "NetworkingSystem/System.h"
-//int _id;
+// int _id;
 
 using _em = EntityManager;
-static TileManager& _tm = TileManager::GetInstance();
-static CollisionManager& _cm = CollisionManager::GetInstance();
-static BackgroundManager& _bm = BackgroundManager::GetInstance();
+static TileManager &_tm = TileManager::GetInstance();
+static CollisionManager &_cm = CollisionManager::GetInstance();
+static BackgroundManager &_bm = BackgroundManager::GetInstance();
 
 /***************************************************************************/
 /*!
@@ -30,9 +30,9 @@ static BackgroundManager& _bm = BackgroundManager::GetInstance();
 	The id value tagged to the Player2 object.
 */
 /**************************************************************************/
-Player2::Player2(int id) : GameObject{ TYPE_PLAYER2, id }, test{ 6 }
+Player2::Player2(int id) : GameObject{TYPE_PLAYER2, id}, test{6}
 {
-	//Checks if a color.txt file is available, else create one.
+	// Checks if a color.txt file is available, else create one.
 	std::ifstream colorfile;
 	colorfile.open("Resources/color.txt");
 	if (colorfile.peek() == std::ifstream::traits_type::eof())
@@ -40,7 +40,13 @@ Player2::Player2(int id) : GameObject{ TYPE_PLAYER2, id }, test{ 6 }
 		colorfile.close();
 		std::ofstream colorfile2;
 		colorfile2.open("Resources/color.txt");
-		colorfile2 << "a" << "\n" << "b" << "\n" << "c" << "\n" << "d";
+		colorfile2 << "a"
+				   << "\n"
+				   << "b"
+				   << "\n"
+				   << "c"
+				   << "\n"
+				   << "d";
 		colorfile2.close();
 	}
 	else
@@ -48,9 +54,9 @@ Player2::Player2(int id) : GameObject{ TYPE_PLAYER2, id }, test{ 6 }
 		colorfile.close();
 	}
 
-	//Set starting background color of levels
+	// Set starting background color of levels
 	if (current == GS_LEVEL1 || current == GS_MAINMENU || current == GS_LEVEL2 || current == GS_TESTLEVEL ||
-		current == GS_LEVEL4 || current == GS_LEVEL7 || current == GS_LEVEL8) //King Story
+		current == GS_LEVEL4 || current == GS_LEVEL7 || current == GS_LEVEL8) // King Story
 	{
 		startingColor = Color::COLOR_GREY;
 	}
@@ -76,7 +82,6 @@ Player2::Player2(int id) : GameObject{ TYPE_PLAYER2, id }, test{ 6 }
 /**************************************************************************/
 Player2::~Player2()
 {
-
 }
 
 /***************************************************************************/
@@ -97,10 +102,10 @@ void Player2::GameObjectInitialize()
 	SetColor(startingColor);
 	_bm.SetBackgroundColor(startingColor);
 
-	const std::map<int, GameObject*>& list = _em::GetInstance().GetEntityList();
+	const std::map<int, GameObject *> &list = _em::GetInstance().GetEntityList();
 	for (auto it = list.begin(); it != list.end(); it++)
 	{
-		if (it->second->GetColor() != Color::COLOR_BLACK)
+		if (it->second->GetColor() != Color::COLOR_GREEN)
 		{
 			if (it->second->GetColor() == GetColor())
 			{
@@ -147,7 +152,7 @@ void Player2::GameObjectUpdate()
 		}
 	}
 
-	//if (Connectionmanager::isMultiPlayer2 == true)
+	// if (Connectionmanager::isMultiPlayer2 == true)
 	/*if (_id == 1)
 	{*/
 	// Movement left and right of Player2
@@ -175,7 +180,6 @@ void Player2::GameObjectUpdate()
 		}
 		SetVelocity(newvel);
 	}
-
 
 	/*
 		else if(_id == 2)
@@ -209,13 +213,13 @@ void Player2::GameObjectUpdate()
 		}
 		*/
 
-		// not used
-		//if (Connectionmanager::isMultiPlayer2 == true)
+	// not used
+	// if (Connectionmanager::isMultiPlayer2 == true)
 	/*
 		if (_id == 1)
 		{
 		*/
-		// Player2 climbing up the ladder
+	// Player2 climbing up the ladder
 	if (_tm.GetTileTypeAt(GetPosition().x, GetPosition().y) == TileType::TILE_LADDER)
 	{
 		if (AEInputCheckCurr(AEVK_SPACE))
@@ -250,7 +254,6 @@ void Player2::GameObjectUpdate()
 			SetVelocity(newvel);
 		}
 	}
-
 
 	/*
 	else if(_id == 2)
@@ -293,15 +296,13 @@ void Player2::GameObjectUpdate()
 	}
 	*/
 
-
-
-	//if (Connectionmanager::isMultiPlayer2 == true)
+	// if (Connectionmanager::isMultiPlayer2 == true)
 	/*
 	if (_id == 1)
 	{*/
 	// Player2 jump
 	if (AEInputCheckTriggered(AEVK_SPACE) && ((GetCollisionFlag() & COLLISION_BOTTOM) || isStanding ||
-		_tm.GetTileTypeAt(GetPosition().x, GetPosition().y - GetScale() * 0.5f) == TileType::TILE_LADDER))
+											  _tm.GetTileTypeAt(GetPosition().x, GetPosition().y - GetScale() * 0.5f) == TileType::TILE_LADDER))
 	{
 		AEVec2 vel = GetVelocity();
 		vel.y = PLAYER_JUMP;
@@ -309,33 +310,32 @@ void Player2::GameObjectUpdate()
 		isStanding = false;
 	}
 	//}
-		/*
-	else if(_id == 2)
+	/*
+else if(_id == 2)
+{
+	// Player2 jump
+	if (AEInputCheckTriggered(AEVK_SPACE) && ((GetCollisionFlag() & COLLISION_BOTTOM) || isStanding ||
+		_tm.GetTileTypeAt(GetPosition().x, GetPosition().y - GetScale() * 0.5f) == TileType::TILE_LADDER))
 	{
-		// Player2 jump
-		if (AEInputCheckTriggered(AEVK_SPACE) && ((GetCollisionFlag() & COLLISION_BOTTOM) || isStanding ||
-			_tm.GetTileTypeAt(GetPosition().x, GetPosition().y - GetScale() * 0.5f) == TileType::TILE_LADDER))
-		{
-			AEVec2 vel = GetVelocity();
-			vel.y = Player2_JUMP;
-			SetVelocity(vel);
-			isStanding = false;
-		}
-	}*/
+		AEVec2 vel = GetVelocity();
+		vel.y = Player2_JUMP;
+		SetVelocity(vel);
+		isStanding = false;
+	}
+}*/
 
-
-	//if (Connectionmanager::isMultiPlayer2==true)
+	// if (Connectionmanager::isMultiPlayer2==true)
 	/*if (_id == 1)
 	{*/
-		// Direction Player2 is facing when pulling the box
-		if (AEInputCheckCurr(AEVK_LSHIFT) && AEInputCheckCurr(AEVK_LEFT))
-		{
-			SetDirection(0.0f);
-		}
-		else if (AEInputCheckCurr(AEVK_LSHIFT) && AEInputCheckCurr(AEVK_RIGHT))
-		{
-			SetDirection(pi);
-		}
+	// Direction Player2 is facing when pulling the box
+	if (AEInputCheckCurr(AEVK_LSHIFT) && AEInputCheckCurr(AEVK_LEFT))
+	{
+		SetDirection(0.0f);
+	}
+	else if (AEInputCheckCurr(AEVK_LSHIFT) && AEInputCheckCurr(AEVK_RIGHT))
+	{
+		SetDirection(pi);
+	}
 	//}
 	/*
 	else if(_id == 2)
@@ -351,8 +351,6 @@ void Player2::GameObjectUpdate()
 		}
 
 	}*/
-
-
 
 	// Read color.txt file to see if Player2 has unlocked that color so to be able to use it
 	std::ifstream colorfile;
@@ -375,7 +373,7 @@ void Player2::GameObjectUpdate()
 					if (GetColor() != _bm.GetColor())
 						_bm.ChangeColor(Color::COLOR_RED);
 
-					const std::map<int, GameObject*>& list = _em::GetInstance().GetEntityList();
+					const std::map<int, GameObject *> &list = _em::GetInstance().GetEntityList();
 					for (auto it = list.begin(); it != list.end(); it++)
 					{
 						if (it->second->GetColor() != Color::COLOR_BLACK)
@@ -396,7 +394,6 @@ void Player2::GameObjectUpdate()
 			if (((found = line.find("B")) != std::string::npos))
 			{
 
-
 				if (AEInputCheckTriggered(AEVK_2) &&
 					(_bm.GetCounter() <= 0.0f))
 				{
@@ -404,7 +401,7 @@ void Player2::GameObjectUpdate()
 					if (GetColor() != _bm.GetColor())
 						_bm.ChangeColor(Color::COLOR_BLUE);
 
-					const std::map<int, GameObject*>& list = _em::GetInstance().GetEntityList();
+					const std::map<int, GameObject *> &list = _em::GetInstance().GetEntityList();
 					for (auto it = list.begin(); it != list.end(); it++)
 					{
 						if (it->second->GetColor() != Color::COLOR_BLACK)
@@ -420,9 +417,6 @@ void Player2::GameObjectUpdate()
 						}
 					}
 				}
-
-
-
 			}
 			// Green color
 			if (((found = line.find("C")) != std::string::npos))
@@ -434,7 +428,7 @@ void Player2::GameObjectUpdate()
 					if (GetColor() != _bm.GetColor())
 						_bm.ChangeColor(Color::COLOR_GREEN);
 
-					const std::map<int, GameObject*>& list = _em::GetInstance().GetEntityList();
+					const std::map<int, GameObject *> &list = _em::GetInstance().GetEntityList();
 					for (auto it = list.begin(); it != list.end(); it++)
 					{
 						if (it->second->GetColor() != Color::COLOR_BLACK)
@@ -462,7 +456,7 @@ void Player2::GameObjectUpdate()
 					if (GetColor() != _bm.GetColor())
 						_bm.ChangeColor(Color::COLOR_YELLOW);
 
-					const std::map<int, GameObject*>& list = _em::GetInstance().GetEntityList();
+					const std::map<int, GameObject *> &list = _em::GetInstance().GetEntityList();
 					for (auto it = list.begin(); it != list.end(); it++)
 					{
 						if (it->second->GetColor() != Color::COLOR_BLACK)
@@ -478,8 +472,6 @@ void Player2::GameObjectUpdate()
 						}
 					}
 				}
-
-
 			}
 		}
 		colorfile.close();
@@ -530,13 +522,12 @@ void Player2::GameObjectDraw()
 	AEMtx33Trans(&mTrans, pos.x, pos.y);
 	SetMTrans(mTrans);
 
-	//set camera to player 2 if you player 2
-	//NOT WORKING SOMEHOW
+	// set camera to player 2 if you player 2
+	// NOT WORKING SOMEHOW
 	if (_id == 2)
 	{
-		AEGfxSetCamPosition(pos.x, pos.y);   //Set Camera
+		AEGfxSetCamPosition(pos.x, pos.y); // Set Camera
 	}
-
 }
 
 /***************************************************************************/

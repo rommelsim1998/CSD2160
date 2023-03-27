@@ -1,6 +1,6 @@
 /******************************************************************************
 * \file			Player.cpp
-* \brief		This file handles the initializing of player object, updates in 
+* \brief		This file handles the initializing of player object, updates in
 				which the user can do, and drawing the player object.
 * \author		Sebastian Yew Kai Jie, 100% Code Contribution
 
@@ -12,17 +12,17 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include "ConnectionManager.h"
 #include "Constants.h"
 #include "NetworkingSystem/System.h"
-//int _id;
+// int _id;
 
 using _em = EntityManager;
-static TileManager& _tm = TileManager::GetInstance();
-static CollisionManager& _cm = CollisionManager::GetInstance();
-static BackgroundManager& _bm = BackgroundManager::GetInstance();
+static TileManager &_tm = TileManager::GetInstance();
+static CollisionManager &_cm = CollisionManager::GetInstance();
+static BackgroundManager &_bm = BackgroundManager::GetInstance();
 
 /***************************************************************************/
 /*!
 \brief
-	Player constructor that constructs the player objects by inheriting 
+	Player constructor that constructs the player objects by inheriting
 	from GameObject. It also checks if a color.txt file is available, else
 	create one. It also set the starting background color for all game states.
 
@@ -30,9 +30,9 @@ static BackgroundManager& _bm = BackgroundManager::GetInstance();
 	The id value tagged to the player object.
 */
 /**************************************************************************/
-Player::Player(int id) : GameObject{TYPE_PLAYER, id}, test{ 6 }
+Player::Player(int id) : GameObject{TYPE_PLAYER, id}, test{6}
 {
-	//Checks if a color.txt file is available, else create one.
+	// Checks if a color.txt file is available, else create one.
 	std::ifstream colorfile;
 	colorfile.open("Resources/color.txt");
 	if (colorfile.peek() == std::ifstream::traits_type::eof())
@@ -40,7 +40,13 @@ Player::Player(int id) : GameObject{TYPE_PLAYER, id}, test{ 6 }
 		colorfile.close();
 		std::ofstream colorfile2;
 		colorfile2.open("Resources/color.txt");
-		colorfile2 << "a" << "\n" << "b" << "\n" << "c" << "\n" << "d";
+		colorfile2 << "a"
+				   << "\n"
+				   << "b"
+				   << "\n"
+				   << "c"
+				   << "\n"
+				   << "d";
 		colorfile2.close();
 	}
 	else
@@ -48,9 +54,9 @@ Player::Player(int id) : GameObject{TYPE_PLAYER, id}, test{ 6 }
 		colorfile.close();
 	}
 
-	//Set starting background color of levels
-	if (current == GS_LEVEL1 || current == GS_MAINMENU || current == GS_LEVEL2 || current == GS_TESTLEVEL || 
-		current == GS_LEVEL4 || current == GS_LEVEL7 || current == GS_LEVEL8) //King Story
+	// Set starting background color of levels
+	if (current == GS_LEVEL1 || current == GS_MAINMENU || current == GS_LEVEL2 || current == GS_TESTLEVEL ||
+		current == GS_LEVEL4 || current == GS_LEVEL7 || current == GS_LEVEL8) // King Story
 	{
 		startingColor = Color::COLOR_GREY;
 	}
@@ -74,9 +80,8 @@ Player::Player(int id) : GameObject{TYPE_PLAYER, id}, test{ 6 }
 	Player destructor that destroys the player object.
 */
 /**************************************************************************/
-Player::~Player() 
+Player::~Player()
 {
-
 }
 
 /***************************************************************************/
@@ -97,7 +102,7 @@ void Player::GameObjectInitialize()
 	SetColor(startingColor);
 	_bm.SetBackgroundColor(startingColor);
 
-	const std::map<int, GameObject*>& list = _em::GetInstance().GetEntityList();
+	const std::map<int, GameObject *> &list = _em::GetInstance().GetEntityList();
 	for (auto it = list.begin(); it != list.end(); it++)
 	{
 		if (it->second->GetColor() != Color::COLOR_BLACK)
@@ -117,11 +122,11 @@ void Player::GameObjectInitialize()
 /***************************************************************************/
 /*!
 \brief
-	A function that handles updates on user input on the player object 
+	A function that handles updates on user input on the player object
 	during each game state.
 */
 /**************************************************************************/
-void Player::GameObjectUpdate() 
+void Player::GameObjectUpdate()
 {
 	// Trigger game fullscreen
 	/*
@@ -147,111 +152,109 @@ void Player::GameObjectUpdate()
 		}
 	}
 
-	//if (Connectionmanager::isMultiplayer == true)
+	// if (Connectionmanager::isMultiplayer == true)
 	/*if (_id == 1)
 	{*/
-		// Movement left and right of Player
-		if (AEInputCheckCurr(AEVK_LEFT))
-		{
-			SetDirection(pi);
-			AEVec2 newvel = GetVelocity();
-			newvel.x = -playerSpeed * g_dt;
-			SetVelocity(newvel);
-		}
-		else if (AEInputCheckCurr(AEVK_RIGHT))
-		{
-			SetDirection(0.0f);
-			AEVec2 newvel = GetVelocity();
-			newvel.x = playerSpeed * g_dt;
-			SetVelocity(newvel);
-		}
-		else
-		{
-			AEVec2 newvel = GetVelocity();
-			newvel.x = 0.0f;
-			if (GetCollisionFlag() == COLLISION_BOTTOM)
-			{
-				newvel.y = 0.0f;
-			}
-			SetVelocity(newvel);
-		}
-
-	
-/*
-	else if(_id == 2)
+	// Movement left and right of Player
+	if (AEInputCheckCurr(AEVK_LEFT))
 	{
-		// Movement left and right of Player
-		if (AEInputCheckCurr(AEVK_A))
-		{
-			SetDirection(pi);
-			AEVec2 newvel = GetVelocity();
-			newvel.x = -playerSpeed * g_dt;
-			SetVelocity(newvel);
-		}
-		else if (AEInputCheckCurr(AEVK_D))
-		{
-			SetDirection(0.0f);
-			AEVec2 newvel = GetVelocity();
-			newvel.x = playerSpeed * g_dt;
-			SetVelocity(newvel);
-		}
-		else
-		{
-			AEVec2 newvel = GetVelocity();
-			newvel.x = 0.0f;
-			if (GetCollisionFlag() == COLLISION_BOTTOM)
-			{
-				newvel.y = 0.0f;
-			}
-			SetVelocity(newvel);
-		}
-		
+		SetDirection(pi);
+		AEVec2 newvel = GetVelocity();
+		newvel.x = -playerSpeed * g_dt;
+		SetVelocity(newvel);
 	}
-	*/
+	else if (AEInputCheckCurr(AEVK_RIGHT))
+	{
+		SetDirection(0.0f);
+		AEVec2 newvel = GetVelocity();
+		newvel.x = playerSpeed * g_dt;
+		SetVelocity(newvel);
+	}
+	else
+	{
+		AEVec2 newvel = GetVelocity();
+		newvel.x = 0.0f;
+		if (GetCollisionFlag() == COLLISION_BOTTOM)
+		{
+			newvel.y = 0.0f;
+		}
+		SetVelocity(newvel);
+	}
+
+	/*
+		else if(_id == 2)
+		{
+			// Movement left and right of Player
+			if (AEInputCheckCurr(AEVK_A))
+			{
+				SetDirection(pi);
+				AEVec2 newvel = GetVelocity();
+				newvel.x = -playerSpeed * g_dt;
+				SetVelocity(newvel);
+			}
+			else if (AEInputCheckCurr(AEVK_D))
+			{
+				SetDirection(0.0f);
+				AEVec2 newvel = GetVelocity();
+				newvel.x = playerSpeed * g_dt;
+				SetVelocity(newvel);
+			}
+			else
+			{
+				AEVec2 newvel = GetVelocity();
+				newvel.x = 0.0f;
+				if (GetCollisionFlag() == COLLISION_BOTTOM)
+				{
+					newvel.y = 0.0f;
+				}
+				SetVelocity(newvel);
+			}
+
+		}
+		*/
 
 	// not used
-	//if (Connectionmanager::isMultiplayer == true)
-/*
-	if (_id == 1)
+	// if (Connectionmanager::isMultiplayer == true)
+	/*
+		if (_id == 1)
+		{
+		*/
+	// Player climbing up the ladder
+	if (_tm.GetTileTypeAt(GetPosition().x, GetPosition().y) == TileType::TILE_LADDER)
 	{
-	*/
-		// Player climbing up the ladder
-		if (_tm.GetTileTypeAt(GetPosition().x, GetPosition().y) == TileType::TILE_LADDER)
+		if (AEInputCheckCurr(AEVK_SPACE))
 		{
-			if (AEInputCheckCurr(AEVK_SPACE))
-			{
-				AEVec2 newvel = GetVelocity();
-				newvel.y = 5.0f;
-				SetVelocity(newvel);
-			}
-			else if (AEInputCheckReleased(AEVK_SPACE))
-			{
-				SetHasGravity(false);
-				AEVec2 newvel = GetVelocity();
-				newvel.y = 0.0f;
-				SetVelocity(newvel);
-			}
+			AEVec2 newvel = GetVelocity();
+			newvel.y = 5.0f;
+			SetVelocity(newvel);
 		}
-
-		// Player climbing down the ladder
-		if (_tm.GetTileTypeAt(GetPosition().x, GetPosition().y - GetScale() * 0.5f) == TileType::TILE_LADDER)
+		else if (AEInputCheckReleased(AEVK_SPACE))
 		{
-			if (AEInputCheckCurr(AEVK_DOWN))
-			{
-				AEVec2 newvel = GetVelocity();
-				newvel.y = -5.0f;
-				SetVelocity(newvel);
-			}
-			else if (AEInputCheckReleased(AEVK_DOWN))
-			{
-				SetHasGravity(false);
-				AEVec2 newvel = GetVelocity();
-				newvel.y = 0.0f;
-				SetVelocity(newvel);
-			}
+			SetHasGravity(false);
+			AEVec2 newvel = GetVelocity();
+			newvel.y = 0.0f;
+			SetVelocity(newvel);
 		}
+	}
 
-	
+	// Player climbing down the ladder
+	if (_tm.GetTileTypeAt(GetPosition().x, GetPosition().y - GetScale() * 0.5f) == TileType::TILE_LADDER)
+	{
+		if (AEInputCheckCurr(AEVK_DOWN))
+		{
+			AEVec2 newvel = GetVelocity();
+			newvel.y = -5.0f;
+			SetVelocity(newvel);
+		}
+		else if (AEInputCheckReleased(AEVK_DOWN))
+		{
+			SetHasGravity(false);
+			AEVec2 newvel = GetVelocity();
+			newvel.y = 0.0f;
+			SetVelocity(newvel);
+		}
+	}
+
 	/*
 	else if(_id == 2)
 	{
@@ -293,38 +296,35 @@ void Player::GameObjectUpdate()
 	}
 	*/
 
-
-
-	//if (Connectionmanager::isMultiplayer == true)
+	// if (Connectionmanager::isMultiplayer == true)
 	/*
 	if (_id == 1)
 	{*/
-		// Player jump
-		if (AEInputCheckTriggered(AEVK_SPACE) && ((GetCollisionFlag() & COLLISION_BOTTOM) || isStanding ||
-			_tm.GetTileTypeAt(GetPosition().x, GetPosition().y - GetScale() * 0.5f) == TileType::TILE_LADDER))
-		{
-			AEVec2 vel = GetVelocity();
-			vel.y = PLAYER_JUMP;
-			SetVelocity(vel);
-			isStanding = false;
-		}
-	//}
-		/*
-	else if(_id == 2)
+	// Player jump
+	if (AEInputCheckTriggered(AEVK_SPACE) && ((GetCollisionFlag() & COLLISION_BOTTOM) || isStanding ||
+											  _tm.GetTileTypeAt(GetPosition().x, GetPosition().y - GetScale() * 0.5f) == TileType::TILE_LADDER))
 	{
-		// Player jump
-		if (AEInputCheckTriggered(AEVK_SPACE) && ((GetCollisionFlag() & COLLISION_BOTTOM) || isStanding ||
-			_tm.GetTileTypeAt(GetPosition().x, GetPosition().y - GetScale() * 0.5f) == TileType::TILE_LADDER))
-		{
-			AEVec2 vel = GetVelocity();
-			vel.y = PLAYER_JUMP;
-			SetVelocity(vel);
-			isStanding = false;
-		}
-	}*/
-	
+		AEVec2 vel = GetVelocity();
+		vel.y = PLAYER_JUMP;
+		SetVelocity(vel);
+		isStanding = false;
+	}
+	//}
+	/*
+else if(_id == 2)
+{
+	// Player jump
+	if (AEInputCheckTriggered(AEVK_SPACE) && ((GetCollisionFlag() & COLLISION_BOTTOM) || isStanding ||
+		_tm.GetTileTypeAt(GetPosition().x, GetPosition().y - GetScale() * 0.5f) == TileType::TILE_LADDER))
+	{
+		AEVec2 vel = GetVelocity();
+		vel.y = PLAYER_JUMP;
+		SetVelocity(vel);
+		isStanding = false;
+	}
+}*/
 
-	//if (Connectionmanager::isMultiplayer==true)
+	// if (Connectionmanager::isMultiplayer==true)
 	if (_id == 1)
 	{
 		// Direction player is facing when pulling the box
@@ -352,8 +352,6 @@ void Player::GameObjectUpdate()
 
 	}*/
 
-	
-
 	// Read color.txt file to see if player has unlocked that color so to be able to use it
 	std::ifstream colorfile;
 	std::string line;
@@ -375,7 +373,7 @@ void Player::GameObjectUpdate()
 					if (GetColor() != _bm.GetColor())
 						_bm.ChangeColor(Color::COLOR_RED);
 
-					const std::map<int, GameObject*>& list = _em::GetInstance().GetEntityList();
+					const std::map<int, GameObject *> &list = _em::GetInstance().GetEntityList();
 					for (auto it = list.begin(); it != list.end(); it++)
 					{
 						if (it->second->GetColor() != Color::COLOR_BLACK)
@@ -396,33 +394,29 @@ void Player::GameObjectUpdate()
 			if (((found = line.find("B")) != std::string::npos))
 			{
 
+				if (AEInputCheckTriggered(AEVK_2) &&
+					(_bm.GetCounter() <= 0.0f))
+				{
+					SetColor(Color::COLOR_BLUE);
+					if (GetColor() != _bm.GetColor())
+						_bm.ChangeColor(Color::COLOR_BLUE);
 
-					if (AEInputCheckTriggered(AEVK_2) &&
-						(_bm.GetCounter() <= 0.0f))
+					const std::map<int, GameObject *> &list = _em::GetInstance().GetEntityList();
+					for (auto it = list.begin(); it != list.end(); it++)
 					{
-						SetColor(Color::COLOR_BLUE);
-						if (GetColor() != _bm.GetColor())
-							_bm.ChangeColor(Color::COLOR_BLUE);
-
-						const std::map<int, GameObject*>& list = _em::GetInstance().GetEntityList();
-						for (auto it = list.begin(); it != list.end(); it++)
+						if (it->second->GetColor() != Color::COLOR_BLACK)
 						{
-							if (it->second->GetColor() != Color::COLOR_BLACK)
+							if (it->second->GetColor() == GetColor())
 							{
-								if (it->second->GetColor() == GetColor())
-								{
-									it->second->SetIsCollidable(false);
-								}
-								else
-								{
-									it->second->SetIsCollidable(true);
-								}
+								it->second->SetIsCollidable(false);
+							}
+							else
+							{
+								it->second->SetIsCollidable(true);
 							}
 						}
 					}
-
-				
-		
+				}
 			}
 			// Green color
 			if (((found = line.find("C")) != std::string::npos))
@@ -434,7 +428,7 @@ void Player::GameObjectUpdate()
 					if (GetColor() != _bm.GetColor())
 						_bm.ChangeColor(Color::COLOR_GREEN);
 
-					const std::map<int, GameObject*>& list = _em::GetInstance().GetEntityList();
+					const std::map<int, GameObject *> &list = _em::GetInstance().GetEntityList();
 					for (auto it = list.begin(); it != list.end(); it++)
 					{
 						if (it->second->GetColor() != Color::COLOR_BLACK)
@@ -455,31 +449,29 @@ void Player::GameObjectUpdate()
 			if (((found = line.find("D")) != std::string::npos))
 			{
 
-					if (AEInputCheckTriggered(AEVK_4) &&
-						(_bm.GetCounter() <= 0.0f))
-					{
-						SetColor(Color::COLOR_YELLOW);
-						if (GetColor() != _bm.GetColor())
-							_bm.ChangeColor(Color::COLOR_YELLOW);
+				if (AEInputCheckTriggered(AEVK_4) &&
+					(_bm.GetCounter() <= 0.0f))
+				{
+					SetColor(Color::COLOR_YELLOW);
+					if (GetColor() != _bm.GetColor())
+						_bm.ChangeColor(Color::COLOR_YELLOW);
 
-						const std::map<int, GameObject*>& list = _em::GetInstance().GetEntityList();
-						for (auto it = list.begin(); it != list.end(); it++)
+					const std::map<int, GameObject *> &list = _em::GetInstance().GetEntityList();
+					for (auto it = list.begin(); it != list.end(); it++)
+					{
+						if (it->second->GetColor() != Color::COLOR_BLACK)
 						{
-							if (it->second->GetColor() != Color::COLOR_BLACK)
+							if (it->second->GetColor() == GetColor())
 							{
-								if (it->second->GetColor() == GetColor())
-								{
-									it->second->SetIsCollidable(false);
-								}
-								else
-								{
-									it->second->SetIsCollidable(true);
-								}
+								it->second->SetIsCollidable(false);
+							}
+							else
+							{
+								it->second->SetIsCollidable(true);
 							}
 						}
 					}
-				
-		
+				}
 			}
 		}
 		colorfile.close();
@@ -530,12 +522,11 @@ void Player::GameObjectDraw()
 	AEMtx33Trans(&mTrans, pos.x, pos.y);
 	SetMTrans(mTrans);
 
-	//set camera to player 1 if you player 1
+	// set camera to player 1 if you player 1
 	if (_id == 1)
 	{
-		AEGfxSetCamPosition(pos.x, pos.y);   //Set Camera
+		AEGfxSetCamPosition(pos.x, pos.y); // Set Camera
 	}
-
 }
 
 /***************************************************************************/
