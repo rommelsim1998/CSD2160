@@ -126,16 +126,18 @@ void PhysicsManager::PhysicsManagerUpdate()
 				y1 = newPos1.y;
 			}
 
+
 			// Client Send Player 1 data over to server for Player 2 to read
 			//ClientHandle.Send(x1, y1, rec_x2, rec_y2);
 
 			// Update Player 2 physics from server 
 			//ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
-			/*if (go2)
+			if (go2)
 			{
-				AEVec2 go2PosFromServer = { static_cast<f32>(rec_x2), static_cast<f32>(rec_y2) };
-				go2->SetPosition(go2PosFromServer);
-			}*/
+				PredictPosition(go2, g_dt, { static_cast<f32>(rec_x2), static_cast<f32>(rec_y2) });
+				/*AEVec2 go2PosFromServer = { static_cast<f32>(rec_x2), static_cast<f32>(rec_y2) };
+				go2->SetPosition(go2PosFromServer);*/
+			}
 		}
 		else if (_id == 2)
 		{
@@ -159,11 +161,12 @@ void PhysicsManager::PhysicsManagerUpdate()
 			// Update Players 1 physics from server
 			//ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
 
-			/*if (go1)
+			if (go1)
 			{
-				AEVec2 go1PosFromServer = { static_cast<f32>(rec_x1), static_cast<f32>(rec_y1) };
-				go1->SetPosition(go1PosFromServer);
-			}*/
+				PredictPosition(go1, g_dt, { static_cast<f32>(rec_x1), static_cast<f32>(rec_y1) });
+				//AEVec2 go1PosFromServer = { static_cast<f32>(rec_x1), static_cast<f32>(rec_y1) };
+				//go1->SetPosition(go1PosFromServer);
+			}
 		}
 		/*
 		// player 1
@@ -232,12 +235,11 @@ void PhysicsManager::PhysicsManagerUpdate()
 	
 	if(_id == 1)
 	{
-		PredictPosition(go2, g_dt, { static_cast<f32>(rec_x2), static_cast<f32>(rec_y2) });
+		
 		ClientHandle.Send(x1, y1, rec_x2, rec_y2);
 	}
 	else if(_id == 2)
 	{
-		PredictPosition(go1, g_dt, { static_cast<f32>(rec_x1), static_cast<f32>(rec_y1) });
 		ClientHandle.Send(rec_x1, rec_y1, x2, y2);
 	}
 }
