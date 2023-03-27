@@ -22,7 +22,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <iostream>
 #include "NetworkingSystem/System.h"
 
-const std::string ip = "192.168.128.173";
+const std::string ip = "192.168.18.10";
 
 const short unsigned port = 54000;
 

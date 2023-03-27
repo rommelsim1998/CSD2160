@@ -14,12 +14,18 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #define PHYSICSMANAGER_H
 #include "GameObject.h"
 #include "Player.h"
+#include <chrono>
 
 class PhysicsManager
 {
 private:
-
+	 std::chrono::steady_clock::time_point prevTP;
+	 std::chrono::steady_clock::time_point lastTP;
+	 float serverupdatetime = 0.0f;
+	 float end_dt = 0.0f;
 public:
+
+
 	/*===================================*
 				Constructors
 	*====================================*/
@@ -27,7 +33,7 @@ public:
 	~PhysicsManager() = default;
 
 	void PhysicsManagerUpdate();
-
+	//void EntityInterpolate(int ent_x1, int ent_y1, int ent_x2, int ent_y2);
 	// Other collision and collision response.
 
 	/*===================================*
