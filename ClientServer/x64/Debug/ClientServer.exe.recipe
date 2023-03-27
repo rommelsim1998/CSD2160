@@ -2,7 +2,11 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
+<<<<<<< Updated upstream
       <FullPath>C:\Users\rommel\Desktop\CSD2160\x64\Debug\ClientServer.exe</FullPath>
+=======
+      <FullPath>C:\Users\romme\Desktop\gam250\CSD2160\x64\Debug\ClientServer.exe</FullPath>
+>>>>>>> Stashed changes
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

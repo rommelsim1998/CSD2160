@@ -98,7 +98,7 @@ void Player2::GameObjectInitialize()
 	const std::map<int, GameObject*>& list = _em::GetInstance().GetEntityList();
 	for (auto it = list.begin(); it != list.end(); it++)
 	{
-		if (it->second->GetColor() != Color::COLOR_BLACK)
+		if (it->second->GetColor() != Color::COLOR_GREEN)
 		{
 			if (it->second->GetColor() == GetColor())
 			{
@@ -410,7 +410,18 @@ void Player2::GameObjectDraw()
 	AEMtx33Trans(&mTrans, pos.x, pos.y);
 	SetMTrans(mTrans);
 
+<<<<<<< Updated upstream
 	AEGfxSetCamPosition(pos.x, pos.y);   //Set Camera
+=======
+	//set camera to player 2 if you player 2
+	//NOT WORKING SOMEHOW
+	if (_id == 2)
+	{
+		std::cout << "player 2 camera updating\n";
+		AEGfxSetCamPosition(pos.x, pos.y);   //Set Camera
+	}
+
+>>>>>>> Stashed changes
 }
 
 /***************************************************************************/

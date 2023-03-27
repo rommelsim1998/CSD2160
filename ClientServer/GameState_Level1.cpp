@@ -22,7 +22,11 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <iostream>
 #include "../NetworkingSystem/System.h"
 
+<<<<<<< Updated upstream
 const std::string ip = "192.168.50.119";
+=======
+const std::string ip = "192.168.128.173";
+>>>>>>> Stashed changes
 const short unsigned port = 54000;
 
 // Create manager instances. (Make them static)
@@ -48,13 +52,13 @@ AEGfxTexture* Tex_ServerMode;
 AEGfxVertexList* pMesh = 0;
 void GameStateLevel1Load(void)
 {
-	_tm.TileManagerLoad("Resources/Level 1.txt");
-	_em.EntityManagerLoad();        // Makes the objects from map info.
-	_rm.RenderManagerLoad();
-	_um.UIManagerLoad();
-	_bm.BackgroundManagerLoad();
-	_pmm.PauseMenuManagerLoad();
-	_am.AudioManagerLoad();
+	//_tm.TileManagerLoad("Resources/Level 1.txt");
+	//_em.EntityManagerLoad();        // Makes the objects from map info.
+	//_rm.RenderManagerLoad();
+	//_um.UIManagerLoad();
+	//_bm.BackgroundManagerLoad();
+	//_pmm.PauseMenuManagerLoad();
+	//_am.AudioManagerLoad();
 
 	Tex_ServerMode = AEGfxTextureLoad("Resources/servermode.png");
 	AEGfxMeshStart();
@@ -81,7 +85,7 @@ void GameStateLevel1Init(void)
 {
 	ServerHandle.Init(ip, port);
 
-	_em.EntityManagerInitialize();  // Initializes all object's init function.
+	//_em.EntityManagerInitialize();  // Initializes all object's init function.
 	AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
 	AEGfxSetCamPosition(0, 0);
 
