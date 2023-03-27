@@ -27,6 +27,32 @@ using _em = EntityManager;
 static Server& ServerHandle = Server::getInstance();
 static Client& ClientHandle = Client::getInstance();
 
+void PredictPosition(GameObject* obj, float delta_time, AEVec2 serverInput)
+{
+	//	save copy of current object position
+	AEVec2 tempPosition = obj->GetPosition();
+	
+	AEVec2 newvel = obj->GetVelocity();;
+	//	predict obj position
+	if (obj->GetDirection() >= pi)	//	left
+		newvel.x = -200.f * delta_time;
+
+	else if (obj->GetDirection() <= 0.0f)	//	right
+		newvel.x = 200.f * delta_time;
+	
+	obj->SetVelocity(newvel);
+
+	//	update current object based on prediction
+	static AEVec2 newPos{};
+	AEVec2Add(&newPos, &tempPosition, &newvel);
+	
+	if ((newPos.x < serverInput.x || newPos.x > serverInput.x))	//	check if prediction verses server input
+		obj->SetPosition(serverInput);
+	else
+		obj->SetPosition(newPos);
+}
+
+
 
 /*===================================*
 		Physics Man Update
@@ -98,8 +124,9 @@ void PhysicsManager::PhysicsManagerUpdate()
 			//ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
 			if (go2)
 			{
-				AEVec2 go2PosFromServer = { rec_x2, rec_y2 };
-				go2->SetPosition(go2PosFromServer);
+				AEVec2 go2PosFromServer = { static_cast<f32>(rec_x2), static_cast<f32>(rec_y2) };
+				//go2->SetPosition(go2PosFromServer);
+				PredictPosition(go2, g_dt, go2PosFromServer);
 			}
 		}
 		else if (_id == 2)
@@ -126,8 +153,9 @@ void PhysicsManager::PhysicsManagerUpdate()
 
 			if (go1)
 			{
-				AEVec2 go1PosFromServer = { rec_x1, rec_y1 };
-				go1->SetPosition(go1PosFromServer);
+				AEVec2 go1PosFromServer = { static_cast<f32>(rec_x1), static_cast<f32>(rec_y1) };
+				//go1->SetPosition(go1PosFromServer);
+				PredictPosition(go2, g_dt, go1PosFromServer);
 			}
 		}
 		/*
@@ -191,6 +219,10 @@ void PhysicsManager::PhysicsManagerUpdate()
 		first.max.y = 0.5f * it->second->GetScale() + it->second->GetPosition().y;
 		it->second->SetBoundingBox(first);*/
 	}
+
+
+
+	
 	if(_id == 1)
 		ClientHandle.Send(x1, y1, rec_x2, rec_y2);
 	else if(_id == 2)
