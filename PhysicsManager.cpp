@@ -49,9 +49,16 @@ void PredictPosition(GameObject* obj, float delta_time, AEVec2 serverInput)
 	float x_diff = serverInput.x - newPos.x;
 
 	if (x_diff < 5.0f)	//	check if prediction verses server input
+	{
+		if (!(serverInput.x >= 1000 && serverInput.y >= 1000 && serverInput.x < 0 && serverInput.y < 0))
 		obj->SetPosition(serverInput);
+	}
 	else
-		obj->SetPosition(newPos);
+	{
+		if (!(newPos.x >= 1000 && newPos.y >= 1000 && newPos.x < 0 && newPos.y < 0))
+			obj->SetPosition(newPos);
+	}
+
 }
 
 
@@ -112,8 +119,8 @@ void PhysicsManager::PhysicsManagerUpdate()
 				auto oldPos1 = go1->GetPosition();
 				auto vel1 = go1->GetVelocity();
 				AEVec2Add(&newPos1, &oldPos1, &vel1);
-				if (!(newPos1.x >= 1000 && newPos1.y >= 1000 && newPos1.x < 0 && newPos1.y < 0))
-					go1->SetPosition(newPos1);
+				/*if (!(newPos1.x >= 1000 && newPos1.y >= 1000 && newPos1.x < 0 && newPos1.y < 0))
+					go1->SetPosition(newPos1);*/
 
 				x1 = newPos1.x;
 				y1 = newPos1.y;
@@ -139,8 +146,8 @@ void PhysicsManager::PhysicsManagerUpdate()
 				auto oldPos2 = go2->GetPosition();
 				auto vel2 = go2->GetVelocity();
 				AEVec2Add(&newPos2, &oldPos2, &vel2);
-				if (!(newPos2.x >= 1000 && newPos2.y >= 1000 && newPos2.x < 0 && newPos2.y < 0))
-					go2->SetPosition(newPos2);
+				/*if (!(newPos2.x >= 1000 && newPos2.y >= 1000 && newPos2.x < 0 && newPos2.y < 0))
+					go2->SetPosition(newPos2);*/
 
 				x2 = newPos2.x;
 				y2 = newPos2.y;
