@@ -191,5 +191,8 @@ void PhysicsManager::PhysicsManagerUpdate()
 		first.max.y = 0.5f * it->second->GetScale() + it->second->GetPosition().y;
 		it->second->SetBoundingBox(first);*/
 	}
-	ClientHandle.Send(x1, y1, x2, y2);
+	if(_id == 1)
+		ClientHandle.Send(x1, y1, rec_x2, rec_y2);
+	else if(_id == 2)
+		ClientHandle.Send(rec_x1, rec_y1, x2, y2);
 }
