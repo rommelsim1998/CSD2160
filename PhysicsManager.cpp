@@ -45,8 +45,10 @@ void PredictPosition(GameObject* obj, float delta_time, AEVec2 serverInput)
 	//	update current object based on prediction
 	static AEVec2 newPos{};
 	AEVec2Add(&newPos, &tempPosition, &newvel);
-	
-	if ((newPos.x < serverInput.x || newPos.x > serverInput.x))	//	check if prediction verses server input
+
+	float x_diff = serverInput.x - newPos.x;
+
+	if (x_diff < 5.0f)	//	check if prediction verses server input
 		obj->SetPosition(serverInput);
 	else
 		obj->SetPosition(newPos);
@@ -122,12 +124,11 @@ void PhysicsManager::PhysicsManagerUpdate()
 
 			// Update Player 2 physics from server 
 			//ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
-			if (go2)
+			/*if (go2)
 			{
 				AEVec2 go2PosFromServer = { static_cast<f32>(rec_x2), static_cast<f32>(rec_y2) };
-				//go2->SetPosition(go2PosFromServer);
-				PredictPosition(go2, g_dt, go2PosFromServer);
-			}
+				go2->SetPosition(go2PosFromServer);
+			}*/
 		}
 		else if (_id == 2)
 		{
@@ -151,12 +152,11 @@ void PhysicsManager::PhysicsManagerUpdate()
 			// Update Players 1 physics from server
 			//ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
 
-			if (go1)
+			/*if (go1)
 			{
 				AEVec2 go1PosFromServer = { static_cast<f32>(rec_x1), static_cast<f32>(rec_y1) };
-				//go1->SetPosition(go1PosFromServer);
-				PredictPosition(go2, g_dt, go1PosFromServer);
-			}
+				go1->SetPosition(go1PosFromServer);
+			}*/
 		}
 		/*
 		// player 1
@@ -224,7 +224,13 @@ void PhysicsManager::PhysicsManagerUpdate()
 
 	
 	if(_id == 1)
+	{
+		PredictPosition(go2, g_dt, { static_cast<f32>(rec_x2), static_cast<f32>(rec_y2) });
 		ClientHandle.Send(x1, y1, rec_x2, rec_y2);
+	}
 	else if(_id == 2)
+	{
+		PredictPosition(go1, g_dt, { static_cast<f32>(rec_x1), static_cast<f32>(rec_y1) });
 		ClientHandle.Send(rec_x1, rec_y1, x2, y2);
+	}
 }
