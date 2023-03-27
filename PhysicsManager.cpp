@@ -84,6 +84,10 @@ void PhysicsManager::PhysicsManagerUpdate()
 	static GameObject* go1{}, * go2{};
 
 	ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
+	if (_id == 1)
+		PredictPosition(go2, g_dt, { static_cast<f32>(rec_x2), static_cast<f32>(rec_y2) });
+	else if(_id == 2)
+		PredictPosition(go1, g_dt, { static_cast<f32>(rec_x1), static_cast<f32>(rec_y1) });
 	const std::map<int, GameObject*>& list = _em::GetInstance().GetEntityList();
 	for (auto it = list.begin(); it != list.end(); it++)
 	{
@@ -134,7 +138,7 @@ void PhysicsManager::PhysicsManagerUpdate()
 			//ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
 			if (go2)
 			{
-				PredictPosition(go2, g_dt, { static_cast<f32>(rec_x2), static_cast<f32>(rec_y2) });
+				//PredictPosition(go2, g_dt, { static_cast<f32>(rec_x2), static_cast<f32>(rec_y2) });
 				/*AEVec2 go2PosFromServer = { static_cast<f32>(rec_x2), static_cast<f32>(rec_y2) };
 				go2->SetPosition(go2PosFromServer);*/
 			}
@@ -163,7 +167,7 @@ void PhysicsManager::PhysicsManagerUpdate()
 
 			if (go1)
 			{
-				PredictPosition(go1, g_dt, { static_cast<f32>(rec_x1), static_cast<f32>(rec_y1) });
+				//PredictPosition(go1, g_dt, { static_cast<f32>(rec_x1), static_cast<f32>(rec_y1) });
 				//AEVec2 go1PosFromServer = { static_cast<f32>(rec_x1), static_cast<f32>(rec_y1) };
 				//go1->SetPosition(go1PosFromServer);
 			}
