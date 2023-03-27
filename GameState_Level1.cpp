@@ -22,13 +22,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <iostream>
 #include "NetworkingSystem/System.h"
 
-<<<<<<< Updated upstream
-const std::string ip = "192.168.50.119";
-=======
-
 const std::string ip = "192.168.128.173";
 
->>>>>>> Stashed changes
 const short unsigned port = 54000;
 
 // Create manager instances. (Make them static)
