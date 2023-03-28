@@ -274,7 +274,7 @@ void PhysicsManager::PhysicsManagerUpdate()
 		it->second->SetBoundingBox(first);*/
 	}
 
-	/*
+	// Client prediction function this and Entity cannot be turned on tgt at the same time
 	if(_id == 1)
 	{
 		ClientHandle.Send(x1, y1, rec_x2, rec_y2);
@@ -285,21 +285,10 @@ void PhysicsManager::PhysicsManagerUpdate()
 		ClientHandle.Send(rec_x1, rec_y1, x2, y2);
 		updatePosition(go1, { static_cast<f32>(rec_x1), static_cast<f32>(rec_y1) });
 	}
-	*/
+	
 
 
-////entity interpolation
-// if (AEInputCheckCurr(AEVK_3)) {
-//	entity = true;
-//	std::cout << "Pressedddddddddddddddd" << std::endl;
-// }
-
-// if(_id == 1)
-//	ClientHandle.Send(x1, y1, rec_x2, rec_y2);
-// else if(_id == 2)
-//	ClientHandle.Send(rec_x1, rec_y1, x2, y2);
-////-----///
-// if (entity) {
+//entity interpolation this cannot be turned on tgt with Client prediction function
 if (_id == 1)
 {
 	// EntityInterpolate();
