@@ -113,76 +113,7 @@ void GameStateLevel1Update(void)
 	// if its in pause state
 	if (!isPaused)
 	{
-		/*
-			static GameObject* go1 = _em.GetEntityList()[7];
-			static GameObject* go2 = _em.GetEntityList()[8];
-
-			int x1 = static_cast<int>(go1->GetPosition().x);
-			int y1 = static_cast<int>(go1->GetPosition().y);
-			int x2 = static_cast<int>(go2->GetPosition().x);
-			int y2 = static_cast<int>(go2->GetPosition().y);
-			//ClientHandle.Send(x1, y1, x2, y2);
-
-			int rec_x1, rec_y1;
-			int rec_x2{}, rec_y2{};
-
-			ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
-
-			// player 1
-			if (id == 1)
-			{
-				if (AEInputCheckCurr(AEVK_RIGHT))
-				{
-					x1 += 10000.0f * g_dt;
-					ClientHandle.Send(x1, y1, x2, y2);
-				}
-				if (AEInputCheckCurr(AEVK_LEFT))
-				{
-					x1 -= 10000.0f * g_dt;
-					ClientHandle.Send(x1, y1, x2, y2);
-				}
-				if (AEInputCheckCurr(AEVK_UP))
-				{
-					y1 += 10000.0f * g_dt;
-					ClientHandle.Send(x1, y1, x2, y2);
-				}
-			}
-			else if (id == 2)
-			{
-				if (AEInputCheckCurr(AEVK_D))
-				{
-					x2 += 10000.0f * g_dt;
-					ClientHandle.Send(x1, y1, x2, y2);
-				}
-				if (AEInputCheckCurr(AEVK_A))
-				{
-					x2 -= 10000.0f * g_dt;
-					ClientHandle.Send(x1, y1, x2, y2);
-				}
-				if (AEInputCheckCurr(AEVK_W))
-				{
-					y2 += 10000.0f * g_dt;
-					ClientHandle.Send(x1, y1, x2, y2);
-				}
-			}
-
-			if (rec_x1 > 0 && rec_y1 > 0 && rec_x2 > 0 && rec_y2 > 0)
-			{
-				g1_pos = { float(rec_x1), float(rec_y1) };
-				g2_pos = { float(rec_x2), float(rec_y2) };
-				if (id == 1)
-				{
-					go2->SetPosition(g2_pos);
-				}
-				else if (id == 2)
-				{
-					go1->SetPosition(g1_pos);
-				}
-
-
-			std::cout << "[Client]: " << rec_x1 << ", " << rec_y1 << ", " <<
-				rec_x2 << ", " << rec_y2 << "\n";
-				*/
+	
 
 		_em.EntityManagerUpdate();	  // Logic
 		_pm.PhysicsManagerUpdate();	  // Physics
@@ -191,6 +122,7 @@ void GameStateLevel1Update(void)
 		_um.UIManagerUpdate();
 	}
 
+	/*
 	static GameObject *go1 = _em.GetEntityList()[8];
 	static GameObject *go2 = _em.GetEntityList()[7];
 
@@ -198,7 +130,7 @@ void GameStateLevel1Update(void)
 	int y1 = static_cast<int>(go1->GetPosition().y);
 	int x2 = static_cast<int>(go2->GetPosition().x);
 	int y2 = static_cast<int>(go2->GetPosition().y);
-
+	*/
 	/*
 
 	// ClientHandle.Send(x1, y1, x2, y2);
@@ -223,7 +155,7 @@ void GameStateLevel1Update(void)
 	_am.AudioManagerUpdate();
 	_pmm.PauseMenuManagerUpdate();
 
-	ClientHandle.Send(x1, y1, x2, y2);
+	//ClientHandle.Send(x1, y1, x2, y2);
 }
 /**************************************************************************/
 /*!

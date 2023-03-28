@@ -286,7 +286,7 @@ void PhysicsManager::PhysicsManagerUpdate()
 		updatePosition(go1, { static_cast<f32>(rec_x1), static_cast<f32>(rec_y1) });
 	}
 	*/
-}
+
 
 ////entity interpolation
 // if (AEInputCheckCurr(AEVK_3)) {
