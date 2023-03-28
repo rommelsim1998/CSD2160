@@ -27,41 +27,79 @@ using _em = EntityManager;
 static Server& ServerHandle = Server::getInstance();
 static Client& ClientHandle = Client::getInstance();
 
-void PredictPosition(GameObject* obj, float delta_time, AEVec2 serverInput)
+
+
+
+//void PredictPosition(GameObject* obj, float delta_time, AEVec2 serverInput)
+//{
+//	//	save copy of current object position
+//	AEVec2 tempPosition = obj->GetPosition();
+//	
+//	AEVec2 newvel = obj->GetVelocity();;
+//	//	predict obj position
+//	if (obj->GetDirection() >= pi)	//	left
+//		newvel.x = -200.f * delta_time;
+//
+//	else if (obj->GetDirection() <= 0.0f)	//	right
+//		newvel.x = 200.f * delta_time;
+//	
+//	obj->SetVelocity(newvel);
+//
+//	//	update current object based on prediction
+//	static AEVec2 newPos{};
+//	AEVec2Add(&newPos, &tempPosition, &newvel);
+//
+//	float x_diff = serverInput.x - newPos.x;
+//
+//	if (x_diff < 5.0f)	//	check if prediction verses server input
+//	{
+//		if (!(serverInput.x >= 1000 && serverInput.y >= 1000 && serverInput.x < 0 && serverInput.y < 0))
+//		obj->SetPosition(serverInput);
+//	}
+//	else
+//	{
+//		if (!(newPos.x >= 1000 && newPos.y >= 1000 && newPos.x < 0 && newPos.y < 0))
+//			obj->SetPosition(newPos);
+//	}
+//
+//}
+
+void Reconcile(GameObject* obj, AEVec2 prePosition, AEVec2 serverInput)	//	check position vs server data
 {
-	//	save copy of current object position
-	AEVec2 tempPosition = obj->GetPosition();
-	
-	AEVec2 newvel = obj->GetVelocity();;
-	//	predict obj position
-	if (obj->GetDirection() >= pi)	//	left
-		newvel.x = -200.f * delta_time;
+	const AEVec2 serverPosition = serverInput;
+	const AEVec2 objPosition = obj->GetPosition();
 
-	else if (obj->GetDirection() <= 0.0f)	//	right
-		newvel.x = 200.f * delta_time;
-	
-	obj->SetVelocity(newvel);
+	float positionError = serverPosition.x - objPosition.x;	//	checking for x only
 
-	//	update current object based on prediction
-	static AEVec2 newPos{};
-	AEVec2Add(&newPos, &tempPosition, &newvel);
-
-	float x_diff = serverInput.x - newPos.x;
-
-	if (x_diff < 5.0f)	//	check if prediction verses server input
+	if (positionError > 10.0f)
 	{
 		if (!(serverInput.x >= 1000 && serverInput.y >= 1000 && serverInput.x < 0 && serverInput.y < 0))
-		obj->SetPosition(serverInput);
+			obj->SetPosition(serverInput);
 	}
-	else
-	{
-		if (!(newPos.x >= 1000 && newPos.y >= 1000 && newPos.x < 0 && newPos.y < 0))
-			obj->SetPosition(newPos);
-	}
-
 }
 
+void updatePosition(GameObject* obj, AEVec2 serverInput)
+{
+	AEVec2 prevPos = obj->GetPosition();
+	AEVec2 prevVel = obj->GetVelocity();
 
+	//	predict obj velocity
+	if (obj->GetDirection() >= pi)	//	left
+		prevVel.x += -200.f * g_dt;
+	
+	else if (obj->GetDirection() <= 0.0f)	//	right
+		prevVel.x += 200.f * g_dt;
+
+	//	update position based on predicted velocity
+	AEVec2 distance;
+	AEVec2Scale(&distance, &prevVel, (float)AEFrameRateControllerGetFrameTime());
+	AEVec2Add(&prevPos, &prevPos, &distance);
+
+	if (!(prevPos.x >= 1000 && prevPos.y >= 1000 && prevPos.x < 0 && prevPos.y < 0))
+		obj->SetPosition(prevPos);
+
+	Reconcile(obj, prevPos, serverInput);
+}
 
 /*===================================*
 		Physics Man Update
@@ -84,10 +122,10 @@ void PhysicsManager::PhysicsManagerUpdate()
 	static GameObject* go1{}, * go2{};
 
 	ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
-	if (_id == 1)
+	/*if (_id == 1)
 		PredictPosition(go2, g_dt, { static_cast<f32>(rec_x2), static_cast<f32>(rec_y2) });
 	else if(_id == 2)
-		PredictPosition(go1, g_dt, { static_cast<f32>(rec_x1), static_cast<f32>(rec_y1) });
+		PredictPosition(go1, g_dt, { static_cast<f32>(rec_x1), static_cast<f32>(rec_y1) });*/
 	const std::map<int, GameObject*>& list = _em::GetInstance().GetEntityList();
 	for (auto it = list.begin(); it != list.end(); it++)
 	{
@@ -123,8 +161,8 @@ void PhysicsManager::PhysicsManagerUpdate()
 				auto oldPos1 = go1->GetPosition();
 				auto vel1 = go1->GetVelocity();
 				AEVec2Add(&newPos1, &oldPos1, &vel1);
-				/*if (!(newPos1.x >= 1000 && newPos1.y >= 1000 && newPos1.x < 0 && newPos1.y < 0))
-					go1->SetPosition(newPos1);*/
+				if (!(newPos1.x >= 1000 && newPos1.y >= 1000 && newPos1.x < 0 && newPos1.y < 0))
+					go1->SetPosition(newPos1);
 
 				x1 = newPos1.x;
 				y1 = newPos1.y;
@@ -139,8 +177,8 @@ void PhysicsManager::PhysicsManagerUpdate()
 			if (go2)
 			{
 				//PredictPosition(go2, g_dt, { static_cast<f32>(rec_x2), static_cast<f32>(rec_y2) });
-				/*AEVec2 go2PosFromServer = { static_cast<f32>(rec_x2), static_cast<f32>(rec_y2) };
-				go2->SetPosition(go2PosFromServer);*/
+				AEVec2 go2PosFromServer = { static_cast<f32>(rec_x2), static_cast<f32>(rec_y2) };
+				go2->SetPosition(go2PosFromServer);
 			}
 		}
 		else if (_id == 2)
@@ -152,8 +190,8 @@ void PhysicsManager::PhysicsManagerUpdate()
 				auto oldPos2 = go2->GetPosition();
 				auto vel2 = go2->GetVelocity();
 				AEVec2Add(&newPos2, &oldPos2, &vel2);
-				/*if (!(newPos2.x >= 1000 && newPos2.y >= 1000 && newPos2.x < 0 && newPos2.y < 0))
-					go2->SetPosition(newPos2);*/
+				if (!(newPos2.x >= 1000 && newPos2.y >= 1000 && newPos2.x < 0 && newPos2.y < 0))
+					go2->SetPosition(newPos2);
 
 				x2 = newPos2.x;
 				y2 = newPos2.y;
@@ -168,8 +206,8 @@ void PhysicsManager::PhysicsManagerUpdate()
 			if (go1)
 			{
 				//PredictPosition(go1, g_dt, { static_cast<f32>(rec_x1), static_cast<f32>(rec_y1) });
-				//AEVec2 go1PosFromServer = { static_cast<f32>(rec_x1), static_cast<f32>(rec_y1) };
-				//go1->SetPosition(go1PosFromServer);
+				AEVec2 go1PosFromServer = { static_cast<f32>(rec_x1), static_cast<f32>(rec_y1) };
+				go1->SetPosition(go1PosFromServer);
 			}
 		}
 		/*
@@ -239,11 +277,14 @@ void PhysicsManager::PhysicsManagerUpdate()
 	
 	if(_id == 1)
 	{
-		
 		ClientHandle.Send(x1, y1, rec_x2, rec_y2);
+		updatePosition(go2, { static_cast<f32>(rec_x2), static_cast<f32>(rec_y2) });
 	}
 	else if(_id == 2)
 	{
 		ClientHandle.Send(rec_x1, rec_y1, x2, y2);
+		updatePosition(go1, { static_cast<f32>(rec_x1), static_cast<f32>(rec_y1) });
 	}
+
+
 }
