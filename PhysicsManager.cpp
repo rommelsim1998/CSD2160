@@ -115,8 +115,12 @@ void PhysicsManager::PhysicsManagerUpdate()
 	static int x1{}, y1{}, x2{}, y2{};
 	static int rec_x1{}, rec_y1{};
 	static int rec_x2{}, rec_y2{};
-	static GameObject* go1{}, * go2{};
+	static GameObject *go1{}, *go2{};
 
+	// test
+	static int ent_x1{}, ent_y1{}, ent_x2{}, ent_y2{};
+	bool entity = false;
+	prevTP = std::chrono::steady_clock::now();
 	ClientHandle.Read(rec_x1, rec_y1, rec_x2, rec_y2);
 
 	//
@@ -124,7 +128,7 @@ void PhysicsManager::PhysicsManagerUpdate()
 		PredictPosition(go2, g_dt, { static_cast<f32>(rec_x2), static_cast<f32>(rec_y2) });
 	else if(_id == 2)
 		PredictPosition(go1, g_dt, { static_cast<f32>(rec_x1), static_cast<f32>(rec_y1) });*/
-	const std::map<int, GameObject*>& list = _em::GetInstance().GetEntityList();
+	const std::map<int, GameObject *> &list = _em::GetInstance().GetEntityList();
 	for (auto it = list.begin(); it != list.end(); it++)
 	{
 		if (it->first == 8)
@@ -176,7 +180,7 @@ void PhysicsManager::PhysicsManagerUpdate()
 			if (go2)
 			{
 				// PredictPosition(go2, g_dt, { static_cast<f32>(rec_x2), static_cast<f32>(rec_y2) });
-				AEVec2 go2PosFromServer = { static_cast<f32>(rec_x2), static_cast<f32>(rec_y2) };
+				AEVec2 go2PosFromServer = {static_cast<f32>(rec_x2), static_cast<f32>(rec_y2)};
 				go2->SetPosition(go2PosFromServer);
 			}
 		}
@@ -205,7 +209,7 @@ void PhysicsManager::PhysicsManagerUpdate()
 			if (go1)
 			{
 				// PredictPosition(go1, g_dt, { static_cast<f32>(rec_x1), static_cast<f32>(rec_y1) });
-				AEVec2 go1PosFromServer = { static_cast<f32>(rec_x1), static_cast<f32>(rec_y1) };
+				AEVec2 go1PosFromServer = {static_cast<f32>(rec_x1), static_cast<f32>(rec_y1)};
 				go1->SetPosition(go1PosFromServer);
 			}
 		}
@@ -269,9 +273,6 @@ void PhysicsManager::PhysicsManagerUpdate()
 		first.max.y = 0.5f * it->second->GetScale() + it->second->GetPosition().y;
 		it->second->SetBoundingBox(first);*/
 	}
-	
-
-
 
 	/*
 	if(_id == 1)
@@ -285,7 +286,55 @@ void PhysicsManager::PhysicsManagerUpdate()
 		updatePosition(go1, { static_cast<f32>(rec_x1), static_cast<f32>(rec_y1) });
 	}
 	*/
-
 }
 
+////entity interpolation
+// if (AEInputCheckCurr(AEVK_3)) {
+//	entity = true;
+//	std::cout << "Pressedddddddddddddddd" << std::endl;
+// }
 
+// if(_id == 1)
+//	ClientHandle.Send(x1, y1, rec_x2, rec_y2);
+// else if(_id == 2)
+//	ClientHandle.Send(rec_x1, rec_y1, x2, y2);
+////-----///
+// if (entity) {
+if (_id == 1)
+{
+	// EntityInterpolate();
+	// formula
+	/*
+	entity.x = before.x + (after.x-before.x)*(dt/serverupdatetime)*/
+	ClientHandle.Send(x1, y1, rec_x2, rec_y2);
+	if (x1 != rec_x1)
+	{
+		x1 = rec_x1 + (x1 - rec_x1) * (g_dt - end_dt / serverupdatetime);
+		std::cout << "To check: " << x1 << std::endl;
+		// y1 = rec_y1 + (y1 - rec_y1) * (g_dt / 100.f);
+	}
+}
+else if (_id == 2)
+{
+	ClientHandle.Send(rec_x1, rec_y1, x2, y2);
+	if (x2 != rec_x2)
+	{
+		x2 = rec_x2 + (x2 - rec_x2) * (g_dt - end_dt / serverupdatetime);
+		std::cout << "To check: " << x2 << std::endl;
+
+	} // y2 = rec_y2 + (y2 - rec_y2) * (g_dt / 100.f);
+}
+// serverupdatetime = std::chrono::duration<float>(std::chrono::steady_clock::now() - prevTP).count();
+// serverupdatetime = std::chrono::milliseconds(std::chrono::steady_clock::now()).count();
+lastTP = std::chrono::steady_clock::now();
+end_dt = std::chrono::duration<float>(lastTP.time_since_epoch()).count();
+serverupdatetime = std::chrono::duration<float>(lastTP - prevTP).count();
+std::cout << "END DT..." << end_dt << std::endl;
+std::cout << serverupdatetime << std::endl;
+//}
+}
+
+// void PhysicsManager::EntityInterpolate(int ent_x1, int ent_y1, int ent_x2, int ent_y2)
+//{
+//
+// }

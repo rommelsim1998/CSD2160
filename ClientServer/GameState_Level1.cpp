@@ -8,12 +8,11 @@ Reproduction or disclosure of this file or its contents without the
 prior written consent of DigiPen Institute of Technology is prohibited.
 ******************************************************************************/
 
-
 /******************************************************************************
 						SERVER
 ******************************************************************************/
 
-//#include "Constants.h"
+// #include "Constants.h"
 
 #include <WS2tcpip.h>
 #include <winsock.h>
@@ -26,30 +25,30 @@ const std::string ip = "192.168.26.56";
 const short unsigned port = 54000;
 
 // Create manager instances. (Make them static)
-static UIManager& _um = UIManager::GetInstance();
-static EntityManager& _em = EntityManager::GetInstance();
-static RenderManager& _rm = RenderManager::GetInstance();
-static PhysicsManager& _pm = PhysicsManager::GetInstance();
-static TileManager& _tm = TileManager::GetInstance();
-static CollisionManager& _cm = CollisionManager::GetInstance();
-static BackgroundManager& _bm = BackgroundManager::GetInstance();
-static AudioManager& _am = AudioManager::GetInstance();
-static PauseMenuManager& _pmm = PauseMenuManager::GetInstance();
-static Server& ServerHandle = Server::getInstance();
-static Client& ClientHandle = Client::getInstance();
+static UIManager &_um = UIManager::GetInstance();
+static EntityManager &_em = EntityManager::GetInstance();
+static RenderManager &_rm = RenderManager::GetInstance();
+static PhysicsManager &_pm = PhysicsManager::GetInstance();
+static TileManager &_tm = TileManager::GetInstance();
+static CollisionManager &_cm = CollisionManager::GetInstance();
+static BackgroundManager &_bm = BackgroundManager::GetInstance();
+static AudioManager &_am = AudioManager::GetInstance();
+static PauseMenuManager &_pmm = PauseMenuManager::GetInstance();
+static Server &ServerHandle = Server::getInstance();
+static Client &ClientHandle = Client::getInstance();
 
- /**************************************************************************/
+/**************************************************************************/
 /*!
 	"Load" function of this state
 	*/
-	/**************************************************************************/
+/**************************************************************************/
 
-AEGfxTexture* Tex_ServerMode;
-AEGfxVertexList* pMesh = 0;
+AEGfxTexture *Tex_ServerMode;
+AEGfxVertexList *pMesh = 0;
 void GameStateLevel1Load(void)
 {
 	_tm.TileManagerLoad("Resources/Level 1.txt");
-	_em.EntityManagerLoad();        // Makes the objects from map info.
+	_em.EntityManagerLoad(); // Makes the objects from map info.
 	_rm.RenderManagerLoad();
 	_um.UIManagerLoad();
 	_bm.BackgroundManagerLoad();
@@ -74,14 +73,14 @@ void GameStateLevel1Load(void)
 /*!
 	"Initialize" function of this state
 	*/
-	/**************************************************************************/
+/**************************************************************************/
 
 static bool flag = false;
 void GameStateLevel1Init(void)
 {
 	ServerHandle.Init(ip, port);
 
-	_em.EntityManagerInitialize();  // Initializes all object's init function.
+	_em.EntityManagerInitialize(); // Initializes all object's init function.
 	AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
 	AEGfxSetCamPosition(0, 0);
 
@@ -104,7 +103,7 @@ void GameStateLevel1Init(void)
 /*!
 	"Update" function of this state
 	*/
-	/**************************************************************************/
+/**************************************************************************/
 void GameStateLevel1Update(void)
 {
 	int x1, y1, x2, y2;
@@ -116,7 +115,7 @@ void GameStateLevel1Update(void)
 /*!
 	The "Drawing" function of this state
 	*/
-	/**************************************************************************/
+/**************************************************************************/
 
 AEMtx33 Scale, trans, concat;
 void GameStateLevel1Draw(void)
@@ -138,10 +137,10 @@ void GameStateLevel1Draw(void)
 	"Free" function of this state
 	Destroy the Objects
 	*/
-	/**************************************************************************/
+/**************************************************************************/
 void GameStateLevel1Free(void)
 {
-	
+
 	// Empty
 }
 
@@ -150,7 +149,7 @@ void GameStateLevel1Free(void)
 	"Unload" function of this state
 	This will Free memory for the Program to not have Memory leak
 	*/
-	/**************************************************************************/
+/**************************************************************************/
 void GameStateLevel1Unload(void)
 {
 	AEGfxMeshFree(pMesh);
