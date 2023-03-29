@@ -339,6 +339,11 @@ void PhysicsManager::PhysicsManagerUpdate()
 
 			} // y2 = rec_y2 + (y2 - rec_y2) * (g_dt / 100.f);
 		}
+
+
+
+
+
 		// serverupdatetime = std::chrono::duration<float>(std::chrono::steady_clock::now() - prevTP).count();
 		// serverupdatetime = std::chrono::milliseconds(std::chrono::steady_clock::now()).count();
 		lastTP = std::chrono::steady_clock::now();
@@ -348,6 +353,22 @@ void PhysicsManager::PhysicsManagerUpdate()
 		std::cout << serverupdatetime << std::endl;
 		//}
 	}
+
+
+	if (!useClientSidePrediction && !useEntityInterpolation) {
+		
+		if (_id == 1)
+		{
+			ClientHandle.Send(x1, y1, rec_x2, rec_y2);
+
+		}
+		if (_id == 2)
+		{
+			ClientHandle.Send(rec_x1, rec_y1, x2, y2);
+		}
+		
+	}
+
 }
 
 
