@@ -300,7 +300,7 @@ void Client::Send(void* buffer, int len)
 {
 	std::memset(m_buffer, 0, MTU);
 	sendto(m_sendSocket, (const char*)buffer, len, 0, reinterpret_cast<SOCKADDR*>(&m_serverAddr), sizeof(m_serverAddr));
-	std::cout << "[Client]: Sending " << len << " bytes of data\n";
+	//std::cout << "[Client]: Sending " << len << " bytes of data\n";
 }
 
 int Server::GetPlayers()
@@ -370,7 +370,7 @@ void Client::Read(int& x1, int& y1, int& x2, int& y2)
 		std::memcpy(&y1, m_buffer_recieve + 4, 4);
 		std::memcpy(&x2, m_buffer_recieve + 8, 4);
 		std::memcpy(&y2, m_buffer_recieve + 12, 4);
-		std::cout << "[Client] Recieving: " << "go1: (" << x1 << ", " << y1 << ")" << "go2: (" << x2 << ", " << y2 << ")" << std::endl;
+		//std::cout << "[Client] Recieving: " << "go1: (" << x1 << ", " << y1 << ")" << "go2: (" << x2 << ", " << y2 << ")" << std::endl;
 	}
 }
 
