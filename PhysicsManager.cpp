@@ -25,8 +25,8 @@ int _id;
 using _em = EntityManager;
 static Server& ServerHandle = Server::getInstance();
 static Client& ClientHandle = Client::getInstance();
-bool useClientSidePrediction = true;
-bool useEntitySidePrediction = false;
+extern bool useClientSidePrediction = false;
+extern bool useEntityInterpolation = false;
 // void PredictPosition(GameObject* obj, float delta_time, AEVec2 serverInput)
 //{
 //	//	save copy of current object position
@@ -275,23 +275,33 @@ void PhysicsManager::PhysicsManagerUpdate()
 		it->second->SetBoundingBox(first);*/
 	}
 
-	if ((AEInputCheckTriggered(AEVK_C)))
+	if ((AEInputCheckTriggered(AEVK_C)) && !useClientSidePrediction)
 	{
 		useClientSidePrediction = true;
-		useEntitySidePrediction = false;
+		//useEntityInterpolation = false;
 		std::cout << "client side prediction turned ON" << std::endl;
+		//std::cout << "entity interpolation turned OFF" << std::endl;
+	}
+	if ((AEInputCheckTriggered(AEVK_C)) && useClientSidePrediction)
+	{
+		useClientSidePrediction = false;
+		//useEntityInterpolation = false;
+		std::cout << "client side prediction turned OFF" << std::endl;
+		//std::cout << "entity interpolation turned OFF" << std::endl;
+	}
+
+	if (AEInputCheckTriggered(AEVK_S) && !useEntityInterpolation)
+	{
+		useEntityInterpolation = true;
+		std::cout << "entity interpolation turned ON" << std::endl;
+	}
+	if (AEInputCheckTriggered(AEVK_S) && useEntityInterpolation)
+	{
+		useEntityInterpolation = false;
 		std::cout << "entity interpolation turned OFF" << std::endl;
 	}
 
-	if (AEInputCheckTriggered(AEVK_S))
-	{
-		useClientSidePrediction = false;
-		useEntitySidePrediction = true;
-		std::cout << "client side prediction turned OFF" << std::endl;
-		std::cout << "entity interpolation turned ON" << std::endl;
-	}
-
-	if (useClientSidePrediction && !useEntitySidePrediction) {
+	if (useClientSidePrediction && !useEntityInterpolation) {
 		// Client prediction function this and Entity cannot be turned on tgt at the same time
 		if (_id == 1)
 		{
@@ -308,7 +318,7 @@ void PhysicsManager::PhysicsManagerUpdate()
 
 
 	//entity interpolation this cannot be turned on tgt with Client prediction function
-	if (!useClientSidePrediction && useEntitySidePrediction) {
+	if (!useClientSidePrediction && useEntityInterpolation) {
 		if (_id == 1)
 		{
 			// EntityInterpolate();
