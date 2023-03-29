@@ -277,12 +277,12 @@ void PhysicsManager::PhysicsManagerUpdate()
 
 	if ((AEInputCheckTriggered(AEVK_C)) && !useClientSidePrediction)
 	{
-		useClientSidePrediction = true;
 		if (useEntityInterpolation)
 		{
 			useEntityInterpolation = false;
 			std::cout << "entity interpolation turned OFF" << std::endl;
 		}
+		useClientSidePrediction = true;
 		std::cout << "client side prediction turned ON" << std::endl;
 	}
 	else if ((AEInputCheckTriggered(AEVK_C)) && useClientSidePrediction)
@@ -293,14 +293,13 @@ void PhysicsManager::PhysicsManagerUpdate()
 
 	if (AEInputCheckTriggered(AEVK_S) && !useEntityInterpolation)
 	{
-		useEntityInterpolation = true;
 		if (useClientSidePrediction) 
 		{
 			useClientSidePrediction = false;
 			std::cout << "client side prediction turned OFF" << std::endl;
 		}
+		useEntityInterpolation = true;
 		std::cout << "entity interpolation turned ON" << std::endl;
-
 	}
 	else if (AEInputCheckTriggered(AEVK_S) && useEntityInterpolation)
 	{
