@@ -288,7 +288,7 @@ void PhysicsManager::PhysicsManagerUpdate()
 	else if ((AEInputCheckTriggered(AEVK_C)) && useClientSidePrediction)
 	{
 		useClientSidePrediction = false;
-		std::cout << "entity interpolation turned OFF" << std::endl;
+		std::cout << "client side prediction turned OFF" << std::endl;
 	}
 
 	if (AEInputCheckTriggered(AEVK_S) && !useEntityInterpolation)
