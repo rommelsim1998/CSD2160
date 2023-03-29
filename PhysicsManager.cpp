@@ -8,9 +8,9 @@ Copyright (C) 2021 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the
 prior written consent of DigiPen Institute of Technology is prohibited.
  */
-/******************************************************************************/
+ /******************************************************************************/
 
-// #include "Constants.h"
+ // #include "Constants.h"
 
 #include <WS2tcpip.h>
 #include <winsock.h>
@@ -23,9 +23,10 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 int _id;
 using _em = EntityManager;
-static Server &ServerHandle = Server::getInstance();
-static Client &ClientHandle = Client::getInstance();
-
+static Server& ServerHandle = Server::getInstance();
+static Client& ClientHandle = Client::getInstance();
+bool useClientSidePrediction = true;
+bool useEntitySidePrediction = false;
 // void PredictPosition(GameObject* obj, float delta_time, AEVec2 serverInput)
 //{
 //	//	save copy of current object position
@@ -60,7 +61,7 @@ static Client &ClientHandle = Client::getInstance();
 //
 // }
 
-void Reconcile(GameObject *obj, AEVec2 prePosition, AEVec2 serverInput) //	check position vs server data
+void Reconcile(GameObject* obj, AEVec2 prePosition, AEVec2 serverInput) //	check position vs server data
 {
 	const AEVec2 serverPosition = serverInput;
 	const AEVec2 objPosition = obj->GetPosition();
@@ -74,7 +75,7 @@ void Reconcile(GameObject *obj, AEVec2 prePosition, AEVec2 serverInput) //	check
 	}
 }
 
-void updatePosition(GameObject *obj, AEVec2 serverInput)
+void updatePosition(GameObject* obj, AEVec2 serverInput)
 {
 	AEVec2 prevPos = obj->GetPosition();
 	AEVec2 prevVel = obj->GetVelocity();
@@ -115,7 +116,7 @@ void PhysicsManager::PhysicsManagerUpdate()
 	static int x1{}, y1{}, x2{}, y2{};
 	static int rec_x1{}, rec_y1{};
 	static int rec_x2{}, rec_y2{};
-	static GameObject *go1{}, *go2{};
+	static GameObject* go1{}, * go2{};
 
 	// test
 	static int ent_x1{}, ent_y1{}, ent_x2{}, ent_y2{};
@@ -128,7 +129,7 @@ void PhysicsManager::PhysicsManagerUpdate()
 		PredictPosition(go2, g_dt, { static_cast<f32>(rec_x2), static_cast<f32>(rec_y2) });
 	else if(_id == 2)
 		PredictPosition(go1, g_dt, { static_cast<f32>(rec_x1), static_cast<f32>(rec_y1) });*/
-	const std::map<int, GameObject *> &list = _em::GetInstance().GetEntityList();
+	const std::map<int, GameObject*>& list = _em::GetInstance().GetEntityList();
 	for (auto it = list.begin(); it != list.end(); it++)
 	{
 		if (it->first == 8)
@@ -180,7 +181,7 @@ void PhysicsManager::PhysicsManagerUpdate()
 			if (go2)
 			{
 				// PredictPosition(go2, g_dt, { static_cast<f32>(rec_x2), static_cast<f32>(rec_y2) });
-				AEVec2 go2PosFromServer = {static_cast<f32>(rec_x2), static_cast<f32>(rec_y2)};
+				AEVec2 go2PosFromServer = { static_cast<f32>(rec_x2), static_cast<f32>(rec_y2) };
 				go2->SetPosition(go2PosFromServer);
 			}
 		}
@@ -209,7 +210,7 @@ void PhysicsManager::PhysicsManagerUpdate()
 			if (go1)
 			{
 				// PredictPosition(go1, g_dt, { static_cast<f32>(rec_x1), static_cast<f32>(rec_y1) });
-				AEVec2 go1PosFromServer = {static_cast<f32>(rec_x1), static_cast<f32>(rec_y1)};
+				AEVec2 go1PosFromServer = { static_cast<f32>(rec_x1), static_cast<f32>(rec_y1) };
 				go1->SetPosition(go1PosFromServer);
 			}
 		}
@@ -274,54 +275,75 @@ void PhysicsManager::PhysicsManagerUpdate()
 		it->second->SetBoundingBox(first);*/
 	}
 
-	// Client prediction function this and Entity cannot be turned on tgt at the same time
-	if(_id == 1)
+	if ((AEInputCheckTriggered(AEVK_C)))
 	{
-		ClientHandle.Send(x1, y1, rec_x2, rec_y2);
-		updatePosition(go2, { static_cast<f32>(rec_x2), static_cast<f32>(rec_y2) });
+		useClientSidePrediction = true;
+		useEntitySidePrediction = false;
+		std::cout << "client side prediction turned ON" << std::endl;
+		std::cout << "entity interpolation turned OFF" << std::endl;
 	}
-	else if(_id == 2)
+
+	if (AEInputCheckTriggered(AEVK_S))
 	{
-		ClientHandle.Send(rec_x1, rec_y1, x2, y2);
-		updatePosition(go1, { static_cast<f32>(rec_x1), static_cast<f32>(rec_y1) });
+		useClientSidePrediction = false;
+		useEntitySidePrediction = true;
+		std::cout << "client side prediction turned OFF" << std::endl;
+		std::cout << "entity interpolation turned ON" << std::endl;
 	}
-	
+
+	if (useClientSidePrediction && !useEntitySidePrediction) {
+		// Client prediction function this and Entity cannot be turned on tgt at the same time
+		if (_id == 1)
+		{
+			ClientHandle.Send(x1, y1, rec_x2, rec_y2);
+			updatePosition(go2, { static_cast<f32>(rec_x2), static_cast<f32>(rec_y2) });
+		}
+		else if (_id == 2)
+		{
+			ClientHandle.Send(rec_x1, rec_y1, x2, y2);
+			updatePosition(go1, { static_cast<f32>(rec_x1), static_cast<f32>(rec_y1) });
+		}
+	}
 
 
-//entity interpolation this cannot be turned on tgt with Client prediction function
-if (_id == 1)
-{
-	// EntityInterpolate();
-	// formula
-	/*
-	entity.x = before.x + (after.x-before.x)*(dt/serverupdatetime)*/
-	ClientHandle.Send(x1, y1, rec_x2, rec_y2);
-	if (x1 != rec_x1)
-	{
-		x1 = rec_x1 + (x1 - rec_x1) * (g_dt - end_dt / serverupdatetime);
-		std::cout << "To check: " << x1 << std::endl;
-		// y1 = rec_y1 + (y1 - rec_y1) * (g_dt / 100.f);
+
+	//entity interpolation this cannot be turned on tgt with Client prediction function
+	if (!useClientSidePrediction && useEntitySidePrediction) {
+		if (_id == 1)
+		{
+			// EntityInterpolate();
+			// formula
+			/*
+			entity.x = before.x + (after.x-before.x)*(dt/serverupdatetime)*/
+			ClientHandle.Send(x1, y1, rec_x2, rec_y2);
+			if (x1 != rec_x1)
+			{
+				x1 = rec_x1 + (x1 - rec_x1) * (g_dt - end_dt / serverupdatetime);
+				std::cout << "To check: " << x1 << std::endl;
+				// y1 = rec_y1 + (y1 - rec_y1) * (g_dt / 100.f);
+			}
+		}
+		else if (_id == 2)
+		{
+			ClientHandle.Send(rec_x1, rec_y1, x2, y2);
+			if (x2 != rec_x2)
+			{
+				x2 = rec_x2 + (x2 - rec_x2) * (g_dt - end_dt / serverupdatetime);
+				std::cout << "To check: " << x2 << std::endl;
+
+			} // y2 = rec_y2 + (y2 - rec_y2) * (g_dt / 100.f);
+		}
+		// serverupdatetime = std::chrono::duration<float>(std::chrono::steady_clock::now() - prevTP).count();
+		// serverupdatetime = std::chrono::milliseconds(std::chrono::steady_clock::now()).count();
+		lastTP = std::chrono::steady_clock::now();
+		end_dt = std::chrono::duration<float>(lastTP.time_since_epoch()).count();
+		serverupdatetime = std::chrono::duration<float>(lastTP - prevTP).count();
+		std::cout << "END DT..." << end_dt << std::endl;
+		std::cout << serverupdatetime << std::endl;
+		//}
 	}
 }
-else if (_id == 2)
-{
-	ClientHandle.Send(rec_x1, rec_y1, x2, y2);
-	if (x2 != rec_x2)
-	{
-		x2 = rec_x2 + (x2 - rec_x2) * (g_dt - end_dt / serverupdatetime);
-		std::cout << "To check: " << x2 << std::endl;
 
-	} // y2 = rec_y2 + (y2 - rec_y2) * (g_dt / 100.f);
-}
-// serverupdatetime = std::chrono::duration<float>(std::chrono::steady_clock::now() - prevTP).count();
-// serverupdatetime = std::chrono::milliseconds(std::chrono::steady_clock::now()).count();
-lastTP = std::chrono::steady_clock::now();
-end_dt = std::chrono::duration<float>(lastTP.time_since_epoch()).count();
-serverupdatetime = std::chrono::duration<float>(lastTP - prevTP).count();
-std::cout << "END DT..." << end_dt << std::endl;
-std::cout << serverupdatetime << std::endl;
-//}
-}
 
 // void PhysicsManager::EntityInterpolate(int ent_x1, int ent_y1, int ent_x2, int ent_y2)
 //{
