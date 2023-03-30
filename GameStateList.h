@@ -29,14 +29,15 @@ enum GS_STATES
     GS_LEVEL8,
     GS_LS,
     GS_CONNECTION,
-    GS_MLEVEL1,
-    GS_MLEVEL2,
+    GS_PLAYER1,
+    GS_PLAYER2,
     GS_MLEVEL3,
     GS_MLEVEL4,
     GS_EXTRA,
     GS_END,
     GS_RESTART,
     GS_QUIT
+   
 };
 
 #endif // !GS_LIST_H

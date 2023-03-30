@@ -171,6 +171,8 @@
     <ClCompile Include="GameState_Level8.cpp" />
     <ClCompile Include="GameState_LS.cpp" />
     <ClCompile Include="GameState_Menu.cpp" />
+    <ClCompile Include="GameState_player1win.cpp" />
+    <ClCompile Include="GameState_player2win.cpp" />
     <ClCompile Include="GameState_SplashScreen.cpp" />
     <ClCompile Include="Gate.cpp" />
     <ClCompile Include="Gate2.cpp" />
@@ -238,6 +240,8 @@
     <ClInclude Include="GameState_Level8.h" />
     <ClInclude Include="GameState_LS.h" />
     <ClInclude Include="GameState_Menu.h" />
+    <ClInclude Include="GameState_player1win.h" />
+    <ClInclude Include="GameState_player2win.h" />
     <ClInclude Include="GameState_SplashScreen.h" />
     <ClInclude Include="Gate.h" />
     <ClInclude Include="Gate2.h" />

@@ -36,6 +36,8 @@ enum GS_STATES
     GS_EXTRA,
     GS_END,
     GS_RESTART,
+    GS_PLAYER1,
+    GS_PLAYER2,
     GS_QUIT
 };
 

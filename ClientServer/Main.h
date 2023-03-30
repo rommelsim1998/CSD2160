@@ -41,6 +41,8 @@ extern bool     isOptionsEnabled;
 #include "GameState_SplashScreen.h"
 #include "GameState_Credits.h"
 #include "GameState_Extra.h"
+#include "../GameState_player1win.h"
+#include "../GameState_player2win.h"
 #include "EntityManager.h"
 #include "RenderManager.h"
 #include "AudioManager.h"

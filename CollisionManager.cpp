@@ -680,8 +680,11 @@ void CollisionManager::CollisionManagerUpdate()
 
 				if (current == GS_LEVEL1)
 				{
+					
 					if (it2->second->GetType() == TYPE_CAVE1 && AEInputCheckTriggered(AEVK_UP) && (Colide == true))
 					{
+
+
 						std::fstream levelfile;
 						std::string line;
 						int count = 0;
@@ -715,7 +718,24 @@ void CollisionManager::CollisionManagerUpdate()
 							}
 							levelfile.close();
 						}
-						next = GS_LEVEL2;
+
+						if (_id == 1)
+						{
+							next = GS_PLAYER1;
+
+						}
+						else if (_id == 2)
+						{
+							next = GS_PLAYER2;
+						}
+						else
+						{
+							next = GS_LEVEL2;
+						
+						}
+
+
+						
 					}
 				}
 

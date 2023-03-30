@@ -38,6 +38,8 @@ extern bool     isOptionsEnabled;
 #include "GameState_Connect.h"
 #include "GameState_LS.h"
 #include "GameState_End.h"
+#include "GameState_player1win.h"
+#include "GameState_player2win.h"
 #include "GameState_SplashScreen.h"
 #include "GameState_Credits.h"
 #include "GameState_Extra.h"

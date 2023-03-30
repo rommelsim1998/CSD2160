@@ -139,23 +139,23 @@ void GSM_Update()
 		fpFree = GameStateLevelconnectFree;
 		fpUnload = GameStateLevelconnectUnload;
 		break;
+	case GS_PLAYER1:
+		fpLoad = GameStateplayer1winLoad;
+		fpInitialize = GameStateplayer1winInit;
+		fpUpdate = GameStateplayer1winUpdate;
+		fpDraw = GameStateplayer1winDraw;
+		fpFree = GameStateplayer1winFree;
+		fpUnload = GameStateplayer1winUnload;
+		break;
+	case GS_PLAYER2:
+		fpLoad = GameStateplayer2winLoad;
+		fpInitialize = GameStateplayer2winInit;
+		fpUpdate = GameStateplayer2winUpdate;
+		fpDraw = GameStateplayer2winDraw;
+		fpFree = GameStateplayer2winFree;
+		fpUnload = GameStateplayer2winUnload;
+		break;
 		/*
-	case GS_MLEVEL1:
-		fpLoad = GameStateMLevel1Load;
-		fpInitialize = GameStateMLevel1Init;
-		fpUpdate = GameStateMLevel1Update;
-		fpDraw = GameStateMLevel1Draw;
-		fpFree = GameStateMLevel1Free;
-		fpUnload = GameStateMLevel1unload;
-		break;
-	case GS_MLEVEL2:
-		fpLoad = GameStateMLevel2Load;
-		fpInitialize = GameStateMLevel2Init;
-		fpUpdate = GameStateMLevel2Update;
-		fpDraw = GameStateMLevel2Draw;
-		fpFree = GameStateMLevel12Free;
-		fpUnload = GameStateMLevel2unload;
-		break;
 	case GS_MLEVEL3:
 		fpLoad = GameStateMLevel3Load;
 		fpInitialize = GameStateMLevel3Init;
